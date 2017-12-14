@@ -3,10 +3,11 @@ package org.base.advent.code2017;
 import java.util.Arrays;
 import java.util.List;
 import org.base.advent.Point;
-import org.base.advent.Solution;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for daily puzzle examples.
@@ -15,7 +16,7 @@ public class Examples2017UnitTests {
 
 	@Test
 	public void testDay01Examples() {
-		Day01 day01 = new Day01();
+		final Day01 day01 = new Day01();
 		assertEquals(3L, day01.solve("1122", Day01.INCREMENT_ONE));
 		assertEquals(4L, day01.solve("1111", Day01.INCREMENT_ONE));
 		assertEquals(0L, day01.solve("1234", Day01.INCREMENT_ONE));
@@ -30,7 +31,7 @@ public class Examples2017UnitTests {
 
 	@Test
 	public void testDay02Examples() {
-		Day02 day02 = new Day02();
+		final Day02 day02 = new Day02();
 		List<String> list = Arrays.asList("5 1 9 5", "7 5 3", "2 4 6 8");
 		assertEquals(18, day02.checksum(list));
 		// part 2
@@ -40,7 +41,7 @@ public class Examples2017UnitTests {
 
 	@Test
 	public void testDay03Examples() {
-		Day03 day03 = new Day03();
+		final Day03 day03 = new Day03();
 		assertEquals(0, Point.ORIGIN.getManhattanDistance());
 		assertEquals(3, (new Point(2, 1)).getManhattanDistance());
 		assertEquals(2, (new Point(0, -2)).getManhattanDistance());
@@ -57,7 +58,7 @@ public class Examples2017UnitTests {
 		 * 351   11   23   25   26
 		 * 362  747  806--->   ...
 		 */
-		int[] expected = { -1, 1, 1, 2, 4, 5, 10, 11, 23, 25, 26, 54, 57, 59, 122, 133, 142, 147, 304, 330, 351, 362, 747, 806 };
+		final int[] expected = { -1, 1, 1, 2, 4, 5, 10, 11, 23, 25, 26, 54, 57, 59, 122, 133, 142, 147, 304, 330, 351, 362, 747, 806 };
 		for (int i = 1; i < 24; i++)
 			assertEquals("Expected: "+ i, expected[i], day03.spiralSum(day03.toPoint(i)));
 
@@ -70,7 +71,7 @@ public class Examples2017UnitTests {
 
 	@Test
 	public void testDay04Examples() {
-		Day04 day04 = new Day04();
+		final Day04 day04 = new Day04();
 		assertTrue(day04.isValid("aa bb cc dd ee"));
 		assertFalse(day04.isValid("aa bb cc dd aa"));
 		assertTrue(day04.isValid("aa bb cc dd aaa"));
@@ -80,5 +81,15 @@ public class Examples2017UnitTests {
 		assertTrue(day04.hasAnagrams("a ab abc abd abf abj"));
 		assertTrue(day04.hasAnagrams("iiii oiii ooii oooi oooo"));
 		assertFalse(day04.hasAnagrams("oiii ioii iioi iiio"));
+	}
+
+	@Test
+	public void testDay05Examples() {
+		final Day05 day05 = new Day05();
+		final List<Integer> instructions = Arrays.asList(0, 3, 0, 1, -3);
+		assertEquals(5, day05.jumpsToEscape(instructions, Day05.NORMAL_JUMP));
+		// part 2
+		final List<Integer> instructions2 = Arrays.asList(0, 3, 0, 1, -3);
+		assertEquals(10, day05.jumpsToEscape(instructions2, Day05.STRANGE_JUMP));
 	}
 }
