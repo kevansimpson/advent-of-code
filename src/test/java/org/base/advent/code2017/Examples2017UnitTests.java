@@ -92,4 +92,19 @@ public class Examples2017UnitTests {
 		final List<Integer> instructions2 = Arrays.asList(0, 3, 0, 1, -3);
 		assertEquals(10, day05.jumpsToEscape(instructions2, Day05.STRANGE_JUMP));
 	}
+
+	@Test
+	public void testDay06Examples() {
+		final Day06 day06 = new Day06();
+		final List<Integer> instructions = Arrays.asList(0, 2, 7, 0);
+		assertEquals(Arrays.asList(2, 4, 1, 2), day06.distributeBlocks(instructions));
+		assertEquals(Arrays.asList(3, 1, 2, 3), day06.distributeBlocks(Arrays.asList(2, 4, 1, 2)));
+		assertEquals(Arrays.asList(0, 2, 3, 4), day06.distributeBlocks(Arrays.asList(3, 1, 2, 3)));
+		assertEquals(Arrays.asList(1, 3, 4, 1), day06.distributeBlocks(Arrays.asList(0, 2, 3, 4)));
+		assertEquals(Arrays.asList(2, 4, 1, 2), day06.distributeBlocks(Arrays.asList(1, 3, 4, 1)));
+		assertEquals(5, (int) day06.distributionsUntilDuplicate(instructions).getLeft());
+		// part 2
+		assertEquals(4, (int) day06.distributionsUntilDuplicate(Arrays.asList(2, 4, 1, 2)).getLeft());
+		assertEquals(4, (int) day06.distributionsUntilDuplicate(day06.distributionsUntilDuplicate(instructions).getRight()).getLeft());
+	}
 }
