@@ -50,4 +50,11 @@ public class Solutions2017UnitTests {
 		assertEquals(8038, day06.solvePart2());
 	}
 
+	@Test
+	public void verifyDay07() throws Exception {
+		final Day07 day07 = new Day07();
+		assertEquals("hmvwl", day07.solvePart1());
+		assertEquals(1853, day07.solvePart2());
+	}
+
 }

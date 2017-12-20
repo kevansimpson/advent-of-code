@@ -107,4 +107,27 @@ public class Examples2017UnitTests {
 		assertEquals(4, (int) day06.distributionsUntilDuplicate(Arrays.asList(2, 4, 1, 2)).getLeft());
 		assertEquals(4, (int) day06.distributionsUntilDuplicate(day06.distributionsUntilDuplicate(instructions).getRight()).getLeft());
 	}
+
+	@Test
+	public void testDay07Examples() {
+		final Day07 day07 = new Day07();
+		final List<String> input = Arrays.asList(
+				"pbga (66)",
+				"xhth (57)",
+				"ebii (61)",
+				"havc (66)",
+				"ktlj (57)",
+				"fwft (72) -> ktlj, cntj, xhth",
+				"qoyq (66)",
+				"padx (45) -> pbga, havc, qoyq",
+				"tknk (41) -> ugml, padx, fwft",
+				"jptl (61)",
+				"ugml (68) -> gyxo, ebii, jptl",
+				"gyxo (61)",
+				"cntj (57)");
+		List<Day07.Tower> towers = day07.parseTowers(input);
+		assertEquals("tknk", day07.findBottomTower(towers));
+		// part 2
+		assertEquals(60, day07.findMisweightedTowerSimple(towers));
+	}
 }
