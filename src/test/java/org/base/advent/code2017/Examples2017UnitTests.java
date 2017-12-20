@@ -1,12 +1,15 @@
 package org.base.advent.code2017;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import org.base.advent.Point;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -129,5 +132,27 @@ public class Examples2017UnitTests {
 		assertEquals("tknk", day07.findBottomTower(towers));
 		// part 2
 		assertEquals(60, day07.findMisweightedTowerSimple(towers));
+	}
+
+	@Test
+	public void testDay08Examples() {
+		final Day08 day08 = new Day08();
+		final List<String> input = Arrays.asList("b inc 5 if a > 1", "a inc 1 if b < 5", "c dec -10 if a >= 1", "c inc -20 if c == 10");
+
+		Map<String, Integer> register = day08.updateRegisters(input, false);
+		assertNotNull(register);
+		assertEquals(1, (int) register.getOrDefault("a", 0));
+		assertFalse(register.containsKey("b"));
+		assertEquals(0, (int) register.getOrDefault("b", 0));
+		assertEquals(-10, (int) register.getOrDefault("c", 0));
+		assertEquals(1, (int) register.values().stream().max(Comparator.naturalOrder()).get());
+		// part 2
+		register = day08.updateRegisters(input, true);
+		assertNotNull(register);
+		assertEquals(1, (int) register.getOrDefault("a", 0));
+		assertFalse(register.containsKey("b"));
+		assertEquals(0, (int) register.getOrDefault("b", 0));
+		assertEquals(-10, (int) register.getOrDefault("c", 0));
+		assertEquals(10, (int) register.getOrDefault(Day08.HIGHEST, 0));
 	}
 }
