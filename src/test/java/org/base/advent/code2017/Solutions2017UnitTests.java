@@ -67,8 +67,15 @@ public class Solutions2017UnitTests {
 	@Test
 	public void verifyDay09() throws Exception {
 		final Day09 day09 = new Day09();
-		assertEquals(16869, day09.solvePart1());	// 1889 is too low
+		assertEquals(16869, day09.solvePart1());
 		assertEquals(7284, day09.solvePart2());
+	}
+
+	@Test
+	public void verifyDay10() throws Exception {
+		final Day10 day10 = new Day10();
+		assertEquals(4480, day10.solvePart1());
+		assertEquals("c500ffe015c83b60fad2e4b7d59dabc4", day10.solvePart2());
 	}
 
 }

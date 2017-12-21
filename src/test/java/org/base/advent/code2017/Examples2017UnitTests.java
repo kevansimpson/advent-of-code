@@ -128,7 +128,7 @@ public class Examples2017UnitTests {
 				"ugml (68) -> gyxo, ebii, jptl",
 				"gyxo (61)",
 				"cntj (57)");
-		List<Day07.Tower> towers = day07.parseTowers(input);
+		final List<Day07.Tower> towers = day07.parseTowers(input);
 		assertEquals("tknk", day07.findBottomTower(towers));
 		// part 2
 		assertEquals(60, day07.findMisweightedTowerSimple(towers));
@@ -192,5 +192,33 @@ public class Examples2017UnitTests {
 		assertEquals(0, day09.countGarbage("<!!>"));
 		assertEquals(0, day09.countGarbage("<!!!>>"));
 		assertEquals(10, day09.countGarbage("<{o\"i!a,<{i<a>"));
+	}
+
+	@Test
+	public void testDay10Examples() {
+		final Day10 day10 = new Day10();
+
+		final Day10.Result result = day10.twist(day10.circularList(5), new int[] {3,4,1,5}, 5, 0, 0);
+		assertEquals(3, (int) result.getCircularList().get(0));
+		assertEquals(4, (int) result.getCircularList().get(1));
+		assertEquals(4, result.getPosition());
+		assertEquals(4, result.getSkipSize());
+		// part 2
+		assertEquals("49,44,50,44,51", day10.convertToASCII("1,2,3"));
+		final int[] expected = {49,44,50,44,51,17,31,73,47,23};
+		final int[] actual = day10.concoctMagicSequence(day10.convertToASCII("1,2,3"));
+		for (int i = 0; i < expected.length; i++)
+			assertEquals(expected[i], actual[i]);
+
+		final int[] sparse = {65, 27, 9, 1, 4, 3, 40, 50, 91, 7, 6, 0, 2, 5, 68, 22};
+		int xor = 0;
+		for (final int val : sparse)
+			xor ^= val;
+
+		assertEquals(64, xor);
+		assertEquals("a2582a3a0e66e6e86e3812dcb672a272", day10.toHexidecimal(day10.fullKnot("", 256)));
+		assertEquals("33efeb34ea91902bb2f59c9920caa6cd", day10.toHexidecimal(day10.fullKnot("AoC 2017", 256)));
+		assertEquals("3efbe78a8d82f29979031a4aa0b16a9d", day10.toHexidecimal(day10.fullKnot("1,2,3", 256)));
+		assertEquals("63960835bcdc130f0b66d7ff4f6a5a8e", day10.toHexidecimal(day10.fullKnot("1,2,4", 256)));
 	}
 }
