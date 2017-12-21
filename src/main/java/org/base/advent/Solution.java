@@ -17,18 +17,27 @@ public interface Solution<T> {
 	Object solvePart1() throws Exception;
 	Object solvePart2() throws Exception;
 
-	default String readInput(String filename) throws IOException {
+	default String readInput(final String filename) throws IOException {
 		return IOUtils.resourceToString(filename, Charset.defaultCharset());
 	}
 
-	default List<String> readLines(String filename) throws IOException {
+	default List<String> readLines(final String filename) throws IOException {
 		return IOUtils.readLines(getClass().getResourceAsStream(filename), Charset.defaultCharset());
 	}
 
-	default String sortString(String input) {
-		char tempArray[] = input.toCharArray();
+	default String sortString(final String input) {
+		final char tempArray[] = input.toCharArray();
 		Arrays.sort(tempArray);
 		return new String(tempArray);
 	}
 
+	default boolean debug() {
+		return false;
+	}
+
+	default void debug(final String message, final Object... args) {
+		if (debug())
+			//noinspection UseOfSystemOutOrSystemErr
+			System.out.println(String.format(message, args));
+	}
 }
