@@ -155,4 +155,42 @@ public class Examples2017UnitTests {
 		assertEquals(-10, (int) register.getOrDefault("c", 0));
 		assertEquals(10, (int) register.getOrDefault(Day08.HIGHEST, 0));
 	}
+
+	@Test
+	public void testDay09Examples() {
+		final Day09 day09 = new Day09();
+		assertEquals(0, day09.countGroups("<>"));					// empty garbage.
+		assertEquals(0, day09.countGroups("<random characters>"));	// garbage containing random characters.
+		assertEquals(0, day09.countGroups("<<<<>"));					// because the extra < are ignored.
+		assertEquals(0, day09.countGroups("<{!>}>"));				// because the first > is canceled.
+		assertEquals(0, day09.countGroups("<!!>"));					// because the second ! is canceled, allowing the > to terminate the garbage.
+		assertEquals(0, day09.countGroups("<!!!>>"));				// because the second ! and the first > are canceled.
+		assertEquals(0, day09.countGroups("<{o\"i!a,<{i<a>"));		// which ends at the first >.
+
+		assertEquals(1, day09.countGroups("{}"));
+		assertEquals(3, day09.countGroups("{{{}}}"));
+		assertEquals(3, day09.countGroups("{{},{}}"));
+		assertEquals(6, day09.countGroups("{{{},{},{{}}}}"));
+		assertEquals(1, day09.countGroups("{<{},{},{{}}>}"));
+		assertEquals(1, day09.countGroups("{<a>,<a>,<a>,<a>}"));
+		assertEquals(5, day09.countGroups("{{<a>},{<a>},{<a>},{<a>}}"));
+		assertEquals(2, day09.countGroups("{{<!>},{<!>},{<!>},{<a>}}"));
+
+		assertEquals(1, day09.score("{}"));									// score of 1.
+		assertEquals(6, day09.score("{{{}}}"));								// score of 1 + 2 + 3 = 6.
+		assertEquals(5, day09.score("{{},{}}"));								// score of 1 + 2 + 2 = 5.
+		assertEquals(16, day09.score("{{{},{},{{}}}}"));						// score of 1 + 2 + 3 + 3 + 3 + 4 = 16.
+		assertEquals(1, day09.score("{<a>,<a>,<a>,<a>}"));					// score of 1.
+		assertEquals(9, day09.score("{{<ab>},{<ab>},{<ab>},{<ab>}}"));		// score of 1 + 2 + 2 + 2 + 2 = 9.
+		assertEquals(9, day09.score("{{<!!>},{<!!>},{<!!>},{<!!>}}"));		// score of 1 + 2 + 2 + 2 + 2 = 9.
+		assertEquals(3, day09.score("{{<a!>},{<a!>},{<a!>},{<ab>}}"));		// score of 1 + 2 = 3.
+
+		assertEquals(0, day09.countGarbage("<>"));
+		assertEquals(17, day09.countGarbage("<random characters>"));
+		assertEquals(3, day09.countGarbage("<<<<>"));
+		assertEquals(2, day09.countGarbage("<{!>}>"));
+		assertEquals(0, day09.countGarbage("<!!>"));
+		assertEquals(0, day09.countGarbage("<!!!>>"));
+		assertEquals(10, day09.countGarbage("<{o\"i!a,<{i<a>"));
+	}
 }
