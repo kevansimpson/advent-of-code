@@ -18,7 +18,7 @@ public class Point {
 	public final int x;
 	public final int y;
 
-	public Point(int x, int y) {
+	public Point(final int x, final int y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -28,16 +28,16 @@ public class Point {
 		return "["+ this.x +","+ this.y +"]";
 	}
 
-	public Point up(int move) {
+	public Point up(final int move) {
 		return new Point(x, y + move);
 	}
-	public Point down(int move) {
+	public Point down(final int move) {
 		return new Point(x, y - move);
 	}
-	public Point left(int move) {
+	public Point left(final int move) {
 		return new Point(x - move, y);
 	}
-	public Point right(int move) {
+	public Point right(final int move) {
 		return new Point(x + move, y);
 	}
 
@@ -45,21 +45,27 @@ public class Point {
 		return MANHATTAN_DISTANCE.apply(this, ORIGIN);
 	}
 
+
+	/**
+	 * Clockwise points, starting from directly up (12 o'clock position).
+	 * @return Clockwise points, starting from directly up (12 o'clock position).
+	 */
 	public List<Point> surrounding() {
-		List<Point> surrounding = new ArrayList<>();
-		surrounding.add(right(1));
-		surrounding.add(right(1).up(1));
+		final List<Point> surrounding = new ArrayList<>();
 		surrounding.add(up(1));
-		surrounding.add(up(1).left(1));
-		surrounding.add(left(1));
-		surrounding.add(left(1).down(1));
-		surrounding.add(down(1));
+		surrounding.add(right(1).up(1));
+		surrounding.add(right(1));
 		surrounding.add(down(1).right(1));
+		surrounding.add(down(1));
+		surrounding.add(left(1).down(1));
+		surrounding.add(left(1));
+		surrounding.add(up(1).left(1));
+
 		return surrounding;
 	}
 
-	public static Point point(String commaDelimitedValues) {
-		String[] values = commaDelimitedValues.split(",");
+	public static Point point(final String commaDelimitedValues) {
+		final String[] values = commaDelimitedValues.split(",");
 		return new Point(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
 	}
 }
