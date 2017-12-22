@@ -78,4 +78,11 @@ public class Solutions2017UnitTests {
 		assertEquals("c500ffe015c83b60fad2e4b7d59dabc4", day10.solvePart2());
 	}
 
+	@Test
+	public void verifyDay11() throws Exception {
+		final Day11 day11 = new Day11();
+		assertEquals(643, day11.solvePart1());
+		assertEquals(1471, day11.solvePart2());
+	}
+
 }

@@ -221,4 +221,13 @@ public class Examples2017UnitTests {
 		assertEquals("3efbe78a8d82f29979031a4aa0b16a9d", day10.toHexidecimal(day10.fullKnot("1,2,3", 256)));
 		assertEquals("63960835bcdc130f0b66d7ff4f6a5a8e", day10.toHexidecimal(day10.fullKnot("1,2,4", 256)));
 	}
+
+	@Test
+	public void testDay11Examples() {
+		final Day11 day11 = new Day11();
+		assertEquals(3, (int) day11.countSteps("ne,ne,ne").getLeft());
+		assertEquals(0, (int) day11.countSteps("ne,ne,sw,sw").getLeft());
+		assertEquals(2, (int) day11.countSteps("ne,ne,s,s").getLeft());
+		assertEquals(3, (int) day11.countSteps("se,sw,se,sw,sw").getLeft());
+	}
 }
