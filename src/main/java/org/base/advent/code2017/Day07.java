@@ -182,7 +182,7 @@ public class Day07 implements Solution<List<String>> {
 
 	public String findBottomTower(final List<Tower> towers) {
 		final List<String> rootNames = towers.stream()
-				.filter(t -> t.getSubs().isEmpty())
+				.filter(t -> !t.getSubs().isEmpty())
 				.map(Tower::getName)
 				.collect(Collectors.toList());
 		towers.forEach(tower -> rootNames.removeAll(tower.getSubs()));
