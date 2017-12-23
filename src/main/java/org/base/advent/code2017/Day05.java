@@ -3,9 +3,7 @@ package org.base.advent.code2017;
 import java.io.IOException;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.base.advent.Solution;
 
 
@@ -61,7 +59,7 @@ public class Day05 implements Solution<List<Integer>> {
 
 	@Override
 	public List<Integer> getInput() throws IOException {
-		return readLines("/input05.txt").stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList());
+		return readLines("/2017/input05.txt").stream().map(s -> Integer.parseInt(s)).collect(Collectors.toList());
 	}
 
 	@Override

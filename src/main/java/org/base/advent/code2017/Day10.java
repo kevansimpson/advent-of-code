@@ -101,7 +101,7 @@ public class Day10 implements Solution<String> {
 
 	@Override
 	public String getInput() throws IOException {
-		return readInput("/input10.txt");
+		return readInput("/2017/input10.txt");
 	}
 
 

@@ -68,7 +68,7 @@ public class Day12 implements Solution<List<String>> {
 
 	@Override
 	public List<String> getInput() throws IOException {
-		return readLines("/input12.txt");
+		return readLines("/2017/input12.txt");
 	}
 
 

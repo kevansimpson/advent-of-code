@@ -32,7 +32,7 @@ public class Day01 implements Solution<String> {
 
 	@Override
 	public String getInput() throws IOException {
-		return readInput("/input01.txt");
+		return readInput("/2017/input01.txt");
 	}
 
 	@Override

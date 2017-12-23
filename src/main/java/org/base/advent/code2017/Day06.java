@@ -59,7 +59,7 @@ public class Day06 implements Solution<List<Integer>> {
 
 	@Override
 	public List<Integer> getInput() throws IOException {
-		return Stream.of(readInput("/input06.txt").split("\\s")).map(Integer::parseInt).collect(Collectors.toList());
+		return Stream.of(readInput("/2017/input06.txt").split("\\s")).map(Integer::parseInt).collect(Collectors.toList());
 	}
 
 	@Override

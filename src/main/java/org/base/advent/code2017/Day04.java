@@ -1,9 +1,7 @@
 package org.base.advent.code2017;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -44,7 +42,7 @@ public class Day04 implements Solution<List<String>> {
 
 	@Override
 	public List<String> getInput() throws IOException {
-		return readLines("/input04.txt");
+		return readLines("/2017/input04.txt");
 	}
 
 	@Override

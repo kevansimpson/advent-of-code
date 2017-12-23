@@ -1,17 +1,11 @@
 package org.base.advent.code2017;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.Solution;
 
 
@@ -54,7 +48,7 @@ public class Day08 implements Solution<List<String>> {
 
 	@Override
 	public List<String> getInput() throws IOException {
-		return readLines("/input08.txt");
+		return readLines("/2017/input08.txt");
 	}
 
 	@Override

@@ -105,7 +105,7 @@ public class Day07 implements Solution<List<String>> {
 
 	@Override
 	public List<String> getInput() throws IOException {
-		return readLines("/input07.txt");
+		return readLines("/2017/input07.txt");
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class Day07 implements Solution<List<String>> {
 
 	public int findMisweightedTower(List<Tower> towers) {
 		try {
-			final Process process = Runtime.getRuntime().exec("./src/main/resources/day07.rb");
+			final Process process = Runtime.getRuntime().exec("./src/main/resources/2017/day07.rb");
 			process.waitFor();
 
 			final BufferedReader processIn = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -132,22 +132,22 @@ public class Day07 implements Solution<List<String>> {
 
 			return Integer.parseInt("1853");
 		}
-		catch (Exception e) {
-			throw new RuntimeException("Failed to find unbalanced!", e);
+		catch (final Exception ex) {
+			throw new RuntimeException("Failed to find unbalanced!", ex);
 		}
 	}
 
-	public int findMisweightedTowerSimple(List<Tower> towers) {
-		List<Tower> mismatchedWeight = new ArrayList<>();
-		Map<String, Tower> towerMap = towers.stream().collect(Collectors.toMap(Tower::getName, t -> t));
+	public int findMisweightedTowerSimple(final List<Tower> towers) {
+		final List<Tower> mismatchedWeight = new ArrayList<>();
+		final Map<String, Tower> towerMap = towers.stream().collect(Collectors.toMap(Tower::getName, t -> t));
 
-		for (Tower tower : towers) {
+		for (final Tower tower : towers) {
 			if (!tower.getSubs().isEmpty()) {
-				List<Tower> subTowers = tower.getSubs().stream().map(t -> towerMap.get(t)).collect(Collectors.toList());
+				final List<Tower> subTowers = tower.getSubs().stream().map(towerMap::get).collect(Collectors.toList());
 
-				int weight = subTowers.get(0).getTotalWeight(towerMap);
+				final int weight = subTowers.get(0).getTotalWeight(towerMap);
 				for (int i = 1; i < subTowers.size(); i++) {
-					int newweight = subTowers.get(i).getTotalWeight(towerMap);
+					final int newweight = subTowers.get(i).getTotalWeight(towerMap);
 					if (newweight != weight) {
 						mismatchedWeight.add(tower);
 						break;
@@ -165,9 +165,9 @@ public class Day07 implements Solution<List<String>> {
 					}
 				}
 			}
-			if (hasChildren == false) {
-				Tower offBalance = mismatchedWeight.get(i);
-				List<Tower> children = offBalance.getSubs().stream().map(t -> towerMap.get(t)).collect(Collectors.toList());
+			if (!hasChildren) {
+				final Tower offBalance = mismatchedWeight.get(i);
+				final List<Tower> children = offBalance.getSubs().stream().map(towerMap::get).collect(Collectors.toList());
 //				System.out.println("\n\nUNBALANCED:\n"+ offBalance +"\n");
 //				for (Tower disc : children) {
 //					System.out.println(disc.getTotalWeight(towerMap) + ": " + disc);
@@ -180,21 +180,21 @@ public class Day07 implements Solution<List<String>> {
 		return -1;
 	}
 
-	public String findBottomTower(List<Tower> towers) {
-		List<String> rootNames = towers.stream()
-				.filter(t -> t.getSubs().size() > 0)
+	public String findBottomTower(final List<Tower> towers) {
+		final List<String> rootNames = towers.stream()
+				.filter(t -> t.getSubs().isEmpty())
 				.map(Tower::getName)
 				.collect(Collectors.toList());
-		towers.stream().forEach(tower -> rootNames.removeAll(tower.getSubs()));
+		towers.forEach(tower -> rootNames.removeAll(tower.getSubs()));
 		return rootNames.get(0);
 	}
 
-	public List<Tower> parseTowers(List<String> input) {
+	public List<Tower> parseTowers(final List<String> input) {
 		return input.stream().map(str -> {
-			String name = StringUtils.substringBefore(str, " (");
-			int weight = Integer.parseInt(StringUtils.substringBetween(str, "(", ")"));
-			Tower tower = new Tower(name, weight);
-			String after = StringUtils.substringAfter(str, " -> ");
+			final String name = StringUtils.substringBefore(str, " (");
+			final int weight = Integer.parseInt(StringUtils.substringBetween(str, "(", ")"));
+			final Tower tower = new Tower(name, weight);
+			final String after = StringUtils.substringAfter(str, " -> ");
 			if (StringUtils.isNotBlank(after)) {
 				tower.getSubs().addAll(Arrays.asList(after.split(", ")));
 			}
@@ -210,16 +210,16 @@ public class Day07 implements Solution<List<String>> {
 		private final int weight;
 		private final List<String> subs = new ArrayList<>();
 
-		public Tower(String nm, int wt) {
+		public Tower(final String nm, final int wt) {
 			name = nm;
 			weight = wt;
 		}
 
-		public int getTotalWeight(Map<String, Tower> towerMap) {
-			return getWeight() + getSubs().stream().map(nm -> towerMap.get(nm)).mapToInt(Tower::getWeight).sum();
+		public int getTotalWeight(final Map<String, Tower> towerMap) {
+			return getWeight() + getSubs().stream().map(towerMap::get).mapToInt(Tower::getWeight).sum();
 		}
 
-		public boolean hasChild(String name) {
+		public boolean hasChild(final String name) {
 			return getSubs().contains(name);
 		}
 	}
