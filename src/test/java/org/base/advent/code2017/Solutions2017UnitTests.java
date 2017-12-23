@@ -85,4 +85,11 @@ public class Solutions2017UnitTests {
 		assertEquals(1471, day11.solvePart2());
 	}
 
+	@Test
+	public void verifyDay12() throws Exception {
+		final Day12 day12 = new Day12();
+		assertEquals(152, day12.solvePart1());
+		assertEquals(186, day12.solvePart2());
+	}
+
 }

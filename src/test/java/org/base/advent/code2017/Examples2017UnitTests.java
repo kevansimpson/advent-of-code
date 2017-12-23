@@ -230,4 +230,14 @@ public class Examples2017UnitTests {
 		assertEquals(2, (int) day11.countSteps("ne,ne,s,s").getLeft());
 		assertEquals(3, (int) day11.countSteps("se,sw,se,sw,sw").getLeft());
 	}
+
+	@Test
+	public void testDay12Examples() {
+		final Day12 day12 = new Day12();
+		final List<String> pipes = Arrays.asList(
+				"0 <-> 2", "1 <-> 1", "2 <-> 0, 3, 4", "3 <-> 2, 4", "4 <-> 2, 3, 6", "5 <-> 6", "6 <-> 4, 5");
+		final Map<String, List<String>> map = day12.mapPrograms(pipes);
+		assertEquals(6, day12.countPrograms(map, "0").size());
+		assertEquals(2, day12.countProgramGroups(map));
+	}
 }
