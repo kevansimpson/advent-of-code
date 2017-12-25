@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import org.base.advent.Solution;
 import lombok.Getter;
@@ -95,42 +97,59 @@ public class Day13 implements Solution<List<String>> {
 
 	@Override
 	public Object solvePart2() throws Exception {
-		return 0;
+		return shortestDelay(getInput());
+	}
+
+
+	/**
+	 * &quot;For Part 2, I realized that I don't care where the scanners are when I get to their layer,
+	 * I just care that they're not at the top. Scanners reach the top of their layer every
+	 * (depth-1)*2 picoseconds. So, just init a delay counter and iterate the list of scanners,
+	 * checking for (delay + layerPosition) % ((depth-1)*2) == 0. If true, this delay is wrong,
+	 * break out of the loop, increment the delay and try again.&quot;
+	 *
+	 * Preceding is comment from: https://www.reddit.com/r/adventofcode/comments/7jgyrt/2017_day_13_solutions/
+	 */
+	public int shortestDelay(final List<String> input) {
+		final Map<Integer, Integer> firewall = input.stream()
+			.map(s -> s.split(": ")).collect(Collectors.toMap(ab -> Integer.parseInt(ab[0]), ab -> Integer.parseInt(ab[1])));
+
+		final AtomicInteger delay = new AtomicInteger(0);
+		// same logic, but the packet reaches layer N after N+delay steps
+		// if at least ONE layer catches the packet, then increment the delay
+		// and retest again
+		final Set<Map.Entry<Integer, Integer>> entrySet = firewall.entrySet();
+		while (entrySet.stream().anyMatch(e -> (delay.get() + e.getKey()) % (2 * (e.getValue() - 1)) == 0))
+			delay.incrementAndGet();
+
+		return delay.get();
+
 	}
 
 	public int traverseNetwork(final List<String> input) {
-		Map<Integer, Wall> firewalls = buildWalls(input);
+		final Map<Integer, Wall> firewalls = buildWalls(input);
 		final int duration  = firewalls.keySet().stream().max(Comparator.naturalOrder()).get();
 		int severity = 0;
 
 		for (int pico = 0; pico <= duration; pico++) {
-			System.out.println("pico = "+ pico);
-			firewalls.values().forEach(System.out::println);
-
 			// is scanner present
-			Wall wall = firewalls.get(pico);
-			if (wall != null) {
-				if (wall.getScanner() == 0) {    // caught
-					severity += wall.getLayer() * wall.getRange();
-					System.out.println("CAUGHT: " + pico);
-				}
+			final Wall wall = firewalls.get(pico);
+			if (wall != null && wall.getScanner() == 0) {    // caught
+				severity += wall.getLayer() * wall.getRange();
 			}
 
 			// move scanners
 			firewalls.values().forEach(Wall::move);
-			firewalls.values().forEach(System.out::println);
 		}
 
 		return severity;
 	}
 
 	public Map<Integer, Wall> buildWalls(final List<String> input) {
-		Map<Integer, Wall> firewalls = input.stream()
+		return input.stream()
 					 .map(s -> s.split(": "))
 					 .map(ab -> new Wall(Integer.parseInt(ab[0]), Integer.parseInt(ab[1])))
 					 .collect(Collectors.toMap(Wall::getLayer, w -> w));
-
-		return firewalls;
 	}
 
 	@Getter
@@ -151,12 +170,10 @@ public class Day13 implements Solution<List<String>> {
 			if (scanner >= (range - 1))
 				up = true;
 
-			int move = up ? -1 : 1;
-			scanner += move;
+			scanner += up ? -1 : 1;
 
 			if (scanner == 0)
 				up = false;
-
 		}
 	}
 }

@@ -240,4 +240,12 @@ public class Examples2017UnitTests {
 		assertEquals(6, day12.countPrograms(map, "0").size());
 		assertEquals(2, day12.countProgramGroups(map));
 	}
+
+	@Test
+	public void testDay13Examples() {
+		final Day13 day13 = new Day13();
+		final List<String> input = Arrays.asList("0: 3", "1: 2", "4: 4", "6: 4");
+		assertEquals(24, day13.traverseNetwork(input));
+		assertEquals(10, day13.shortestDelay(input));
+	}
 }
