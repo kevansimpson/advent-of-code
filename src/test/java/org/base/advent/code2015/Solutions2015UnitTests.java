@@ -7,6 +7,8 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Verify answers for all days of 2015 Advent of Code.
+ *
+ * Slow Days: 4, 13, 15, 24a
  */
 public class Solutions2015UnitTests {
     @Test
@@ -173,7 +175,7 @@ public class Solutions2015UnitTests {
     @Test
     public void verifyDay24() throws Exception {
         final Day24 day24 = new Day24();
-        assertEquals(11846773891L, day24.solvePart1());
+//        assertEquals(11846773891L, day24.solvePart1());           // takes 20s
         assertEquals(80393059L, day24.solvePart2());
     }
 
@@ -183,5 +185,4 @@ public class Solutions2015UnitTests {
 //        assertEquals(2650453L, day25.solvePart1());
         assertEquals(2650453L, day25.solvePart2());
     }
-
 }

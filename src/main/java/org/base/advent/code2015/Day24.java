@@ -1,15 +1,11 @@
 package org.base.advent.code2015;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.function.Function;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
+
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <h2>Part 1</h2>
@@ -83,15 +79,15 @@ import org.base.advent.Solution;
  * Now, what is the quantum entanglement of the first group of packages in the ideal configuration?
  *
  */
-public class Day24 implements Solution<List<String>> {
+public class Day24 implements Solution<List<Integer>> {
 
     private int smallestGroup = Integer.MAX_VALUE;
     private long lowestQE = Long.MAX_VALUE;
     private int expectedSum = -1;
 
     @Override
-    public List<String> getInput() throws IOException {
-        return readLines("/2015/input24.txt");
+    public List<Integer> getInput() throws IOException {
+        return readLines("/2015/input24.txt").stream().map(Integer::parseInt).collect(Collectors.toList());
     }
 
     @Override
@@ -104,15 +100,10 @@ public class Day24 implements Solution<List<String>> {
         return solveFor(getInput(), 4);
     }
 
-
-    private static Function<List<String>, int[]> toIntArray =
-            ls -> ls.stream().mapToInt(Integer::parseInt).toArray();
-
-    protected long solveFor(final List<String> containers, final int numCompartments) {
+    public long solveFor(final List<Integer> containers, final int numCompartments) {
         smallestGroup = Integer.MAX_VALUE;
         lowestQE = Long.MAX_VALUE;
-
-        findSmallest(toIntArray.apply(containers), numCompartments);
+        findSmallest(containers, numCompartments);
         solve(containers, 0, new ArrayList<>(), 0);
         
 //        debug(answer, " in ", (System.currentTimeMillis() - ts), "ms");
@@ -120,32 +111,29 @@ public class Day24 implements Solution<List<String>> {
         return lowestQE;
     }
     
-    void findSmallest(int[] containers, int numCompartments) {
-        ArrayUtils.reverse(containers);
-        int max = 2 << containers.length - 1;
-        expectedSum = Arrays.stream(containers).sum() / numCompartments;
+    protected void findSmallest(final List<Integer> containers, final int numCompartments) {
+        Collections.reverse(containers);
+        final int max = 2 << containers.size() - 1;
+        expectedSum = containers.stream().mapToInt(Integer::intValue).sum() / numCompartments;
 
         for (int i = 0; i < max; i++) {
-            int[] ia = toArray(i, containers);
-            int is = Arrays.stream(ia).sum();
+            final int[] ia = toArray(i, containers);
+            final int is = Arrays.stream(ia).sum();
             if (ia.length <= 0 || is != expectedSum) continue;
 
             if (ia.length < smallestGroup) {
                 smallestGroup = ia.length;
-                lowestQE = calcQE(ia);;
+                lowestQE = calcQE(ia);
                 return;
             }
         }
     }
-    void solve(List<String> containers, int index, List<Integer> permutation, int currentSum) {
+
+
+    protected void solve(final List<Integer> containers, final int index, final List<Integer> permutation, final int currentSum) {
         if (currentSum == expectedSum) {
-            if (permutation.size() < smallestGroup) {
-                lowestQE = permutation.stream().mapToLong(Long::valueOf).reduce((a,b) -> a * b).getAsLong();
-                smallestGroup = permutation.size();
-                debug("answer = %s", permutation);
-            }
-            else if (permutation.size() == smallestGroup) {
-                long qe = permutation.stream().mapToLong(Long::valueOf).reduce((a,b) -> a * b).getAsLong();
+            if (permutation.size() == smallestGroup) {
+                final long qe = permutation.stream().mapToLong(Long::valueOf).reduce((a,b) -> a * b).getAsLong();
                 if (qe < lowestQE) {
                     lowestQE = qe;
                     debug("answer = %s", permutation);
@@ -158,26 +146,26 @@ public class Day24 implements Solution<List<String>> {
             return;
 
         for (int i = 0; i < containers.size(); i++) {
-            int value = Integer.parseInt(containers.get(i));
+            final int value = containers.get(i);
             if (permutation.contains(value)) continue;
-            List<Integer> next = new ArrayList<>(permutation);
+            final List<Integer> next = new ArrayList<>(permutation);
             next.add(value);
             solve(containers, 1 + index, next, value + currentSum);
         }
     }
 
-    long calcQE(int[] ints) {
+    protected long calcQE(final int[] ints) {
         return Arrays.stream(ints).mapToLong(l -> l).reduce((l1, l2) -> l1 * l2).getAsLong();
     }
 
-    int[] toArray(int flag, int... cs) {
-        Set<Integer> set = new TreeSet<>();
-        String rbin = StringUtils.reverse(Integer.toBinaryString(flag));
-        for (int i = 0; i < rbin.length(); i += 1)
-            if ('1' == rbin.charAt(i))
-                set.add(cs[i]);
+    protected int[] toArray(final int flag, final List<Integer> cs) {
+        final Set<Integer> set = new TreeSet<>();
+        final String reverse = StringUtils.reverse(Integer.toBinaryString(flag));
+        for (int i = 0; i < reverse.length(); i += 1)
+            if ('1' == reverse.charAt(i))
+                set.add(cs.get(i));
 
-        return set.stream().mapToInt(e -> e.intValue()).toArray();
+        return set.stream().mapToInt(Integer::intValue).toArray();
     }
 
 }
