@@ -1,6 +1,5 @@
 package org.base.advent.code2015;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -150,38 +149,39 @@ public class Solutions2015UnitTests {
         assertEquals(831600, day20.solvePart2());
     }
 
-//    @Ignore @Test
-//    public void verifyDay21() throws Exception {
-//        final Day21 day21 = new Day21();
-//        assertEquals(74, day21.solvePart1());
-//        assertEquals(1795, day21.solvePart2());
-//    }
-//
-//    @Ignore @Test
-//    public void verifyDay22() throws Exception {
-//        final Day22 day22 = new Day22();
-//        assertEquals(1588178, day22.solvePart1());
-//        assertEquals(3783758, day22.solvePart2());
-//    }
-//
-//    @Ignore @Test
-//    public void verifyDay23() throws Exception {
-//        final Day23 day23 = new Day23();
-//        assertEquals(2281, day23.solvePart1());
-//        assertEquals(2341, day23.solvePart2());
-//    }
-//    @Ignore @Test
-//    public void verifyDay24() throws Exception {
-//        final Day21 day21 = new Day21();
-//        assertEquals(74, day21.solvePart1());
-//        assertEquals(1795, day21.solvePart2());
-//    }
-//
-//    @Ignore @Test
-//    public void verifyDay25() throws Exception {
-//        final Day22 day22 = new Day22();
-//        assertEquals(1588178, day22.solvePart1());
-//        assertEquals(3783758, day22.solvePart2());
-//    }
+    @Test
+    public void verifyDay21() throws Exception {
+        final Day21 day21 = new Day21();
+        assertEquals(111, day21.solvePart1());
+        assertEquals(188, day21.solvePart2());
+    }
+
+    @Test
+    public void verifyDay22() throws Exception {
+        final Day22 day22 = new Day22();
+        assertEquals(1824, day22.solvePart1());
+        assertEquals(1937, day22.solvePart2());
+    }
+
+    @Test
+    public void verifyDay23() throws Exception {
+        final Day23 day23 = new Day23();
+        assertEquals(307, day23.solvePart1());
+        assertEquals(160, day23.solvePart2());
+    }
+
+    @Test
+    public void verifyDay24() throws Exception {
+        final Day24 day24 = new Day24();
+        assertEquals(11846773891L, day24.solvePart1());
+        assertEquals(80393059L, day24.solvePart2());
+    }
+
+    @Test
+    public void verifyDay25() throws Exception {
+        final Day25 day25 = new Day25();
+//        assertEquals(2650453L, day25.solvePart1());
+        assertEquals(2650453L, day25.solvePart2());
+    }
 
 }
