@@ -94,7 +94,7 @@ public class Day13 implements Solution<List<String>> {
         
         final List<String> permutation = new ArrayList<>();
         final List<String> peopleList = new ArrayList<>(this.people);
-        recurse(peopleList, permutation, perm -> distanceMap.put(perm, calculateDistance(perm)));
+        buildAllPaths(peopleList, permutation, perm -> distanceMap.put(perm, calculateDistance(perm)));
         
         int longest = Integer.MIN_VALUE;
         List<String> optimal = null;

@@ -1,5 +1,7 @@
 package org.base.advent;
 
+import org.apache.commons.lang3.BooleanUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +21,7 @@ public interface Helpers {
      * @param noneAvailable The consumer to apply when there are no available items.
      * @param <I> The type of item.
      */
-    default <I> void recurse(final List<I> available, final List<I> permutation, final Consumer<List<I>> noneAvailable) {
+    default <I> void buildAllPaths(final List<I> available, final List<I> permutation, final Consumer<List<I>> noneAvailable) {
         if (available.isEmpty()) {
             noneAvailable.accept(permutation);
             return;
@@ -33,7 +35,7 @@ public interface Helpers {
 
             final List<I> newPerm = new ArrayList<>(permutation);
             newPerm.add(loc);
-            recurse(remaining, newPerm, noneAvailable);
+            buildAllPaths(remaining, newPerm, noneAvailable);
         }
     }
 
@@ -44,8 +46,12 @@ public interface Helpers {
         return new String(tempArray);
     }
 
+    default boolean cache() {
+        return BooleanUtils.toBoolean(System.getProperty("aoc.cache", "true"));
+    }
+
     default boolean debug() {
-        return false;
+        return BooleanUtils.toBoolean(System.getProperty("aoc.debug", "false"));
     }
 
     default void debug(final String message, final Object... args) {

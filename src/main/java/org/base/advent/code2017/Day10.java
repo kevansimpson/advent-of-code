@@ -76,7 +76,7 @@ import lombok.ToString;
  * For example, if the first sixteen elements of your sparse hash are as shown below, and the XOR operator is ^, you would
  * calculate the first output number like this:
  *
- * 		65 ^ 27 ^ 9 ^ 1 ^ 4 ^ 3 ^ 40 ^ 50 ^ 91 ^ 7 ^ 6 ^ 0 ^ 2 ^ 5 ^ 68 ^ 22 = 64
+ *         65 ^ 27 ^ 9 ^ 1 ^ 4 ^ 3 ^ 40 ^ 50 ^ 91 ^ 7 ^ 6 ^ 0 ^ 2 ^ 5 ^ 68 ^ 22 = 64
  *
  * Perform this operation on each of the sixteen blocks of sixteen numbers in your sparse hash to determine the sixteen numbers
  * in your dense hash.
@@ -99,171 +99,176 @@ import lombok.ToString;
  */
 public class Day10 implements Solution<String> {
 
-	@Override
-	public String getInput() throws IOException {
-		return readInput("/2017/input10.txt");
-	}
+    @Override
+    public String getInput() throws IOException {
+        return readInput("/2017/input10.txt");
+    }
 
 
-	@Override
-	public Object solvePart1() throws Exception {
-		return singleTwist(getInput(), 256);
-	}
+    @Override
+    public Object solvePart1() throws Exception {
+        return singleTwist(getInput(), 256);
+    }
 
-	@Override
-	public Object solvePart2() throws Exception {
-		return toHexidecimal(fullKnot(getInput(), 256));
-	}
+    @Override
+    public Object solvePart2() throws Exception {
+        return toHexidecimal(fullKnot(getInput(), 256));
+    }
 
-	public String toHexidecimal(final int[] denseHash) {
-		return Arrays.stream(denseHash)
-					 .mapToObj(Integer::toHexString)
-					 .map(s -> StringUtils.leftPad(s, 2, "0"))
-					 .collect(Collectors.joining());
-	}
+    /** @see Day14 */
+    public String fullHexKnot(final String input) {
+        return toHexidecimal(fullKnot(input, 256));
+    }
 
-	public int[] fullKnot(final String input, final int size) {
-		Result result;
-		int position = 0;
-		int skipSize = 0;
+    public String toHexidecimal(final int[] denseHash) {
+        return Arrays.stream(denseHash)
+                     .mapToObj(Integer::toHexString)
+                     .map(s -> StringUtils.leftPad(s, 2, "0"))
+                     .collect(Collectors.joining());
+    }
 
-		final int[] lengthSequence = concoctMagicSequence(convertToASCII(input));
-		List<Integer> circularList = circularList(size);
+    public int[] fullKnot(final String input, final int size) {
+        Result result;
+        int position = 0;
+        int skipSize = 0;
 
-		for (int i = 0; i < 64; i++) {
-			result = twist(circularList, lengthSequence, size, position, skipSize);
-			debug("\n\n"+ i +"\t"+ result);
-			circularList = result.getCircularList();
-			position = result.getPosition();
-			skipSize = result.getSkipSize();
-		}
+        final int[] lengthSequence = concoctMagicSequence(convertToASCII(input));
+        List<Integer> circularList = circularList(size);
 
-		return toDenseHash(circularList.stream().mapToInt(Integer::valueOf).toArray());
-	}
+        for (int i = 0; i < 64; i++) {
+            result = twist(circularList, lengthSequence, size, position, skipSize);
+            debug("\n\n"+ i +"\t"+ result);
+            circularList = result.getCircularList();
+            position = result.getPosition();
+            skipSize = result.getSkipSize();
+        }
 
-	public int[] toDenseHash(final int[] sparseHash) {
-		final int[] denseHash = new int[16];
+        return toDenseHash(circularList.stream().mapToInt(Integer::valueOf).toArray());
+    }
 
-		for (int count = 0; count < 16; count++) {
-			final int offset = (count * 16);
-			int xor = 0;
+    public int[] toDenseHash(final int[] sparseHash) {
+        final int[] denseHash = new int[16];
 
-			for (int i = 0; i < 16; i++) {
-				xor ^= sparseHash[offset + i];
-			}
+        for (int count = 0; count < 16; count++) {
+            final int offset = (count * 16);
+            int xor = 0;
 
-			denseHash[count] = xor;
-		}
+            for (int i = 0; i < 16; i++) {
+                xor ^= sparseHash[offset + i];
+            }
 
-		debug(ArrayUtils.toString(denseHash));
-		return denseHash;
-	}
+            denseHash[count] = xor;
+        }
 
-	public String convertToASCII(final String input) {
-		final StringBuilder bldr = new StringBuilder();
-		for (final char ch : input.toCharArray()) {
-			bldr.append((int) ch).append(",");
-		}
+        debug(ArrayUtils.toString(denseHash));
+        return denseHash;
+    }
 
-		return StringUtils.removeEnd(bldr.toString(), ",");
-	}
+    public String convertToASCII(final String input) {
+        final StringBuilder bldr = new StringBuilder();
+        for (final char ch : input.toCharArray()) {
+            bldr.append((int) ch).append(",");
+        }
 
-	public static final int[] MAGIC = { 17, 31, 73, 47, 23 };
+        return StringUtils.removeEnd(bldr.toString(), ",");
+    }
 
-	public int[] concoctMagicSequence(final String input) {
-		final int[] ascii = StringUtils.isNotBlank(input)
-				? Stream.of(input.split(",")).mapToInt(Integer::parseInt).toArray()
-				: new int[0];
-		final int[] sequence = new int[ascii.length + MAGIC.length];
-		System.arraycopy(ascii, 0, sequence, 0, ascii.length);
-		System.arraycopy(MAGIC, 0, sequence, ascii.length, MAGIC.length);
+    public static final int[] MAGIC = { 17, 31, 73, 47, 23 };
 
-		return sequence;
-	}
+    public int[] concoctMagicSequence(final String input) {
+        final int[] ascii = StringUtils.isNotBlank(input)
+                ? Stream.of(input.split(",")).mapToInt(Integer::parseInt).toArray()
+                : new int[0];
+        final int[] sequence = new int[ascii.length + MAGIC.length];
+        System.arraycopy(ascii, 0, sequence, 0, ascii.length);
+        System.arraycopy(MAGIC, 0, sequence, ascii.length, MAGIC.length);
 
-	public int singleTwist(final String input, final int size) {
-		final Result result = twist(circularList(size),
-									Stream.of(input.split(",")).mapToInt(Integer::parseInt).toArray(),
-									size, 0, 0);
-		return result.getCircularList().get(0) * result.getCircularList().get(1);
-	}
+        return sequence;
+    }
 
-	/**
-	 * Suppose we instead only had a circular list containing five elements, 0, 1, 2, 3, 4, and
-	 * were given input lengths of 3, 4, 1, 5.
-	 *
-	 * The list begins as [0] 1 2 3 4 (where square brackets indicate the current position).
-	 * The first length, 3, selects ([0] 1 2) 3 4 (where parentheses indicate the sublist to be reversed).
-	 * After reversing that section (0 1 2 into 2 1 0), we get ([2] 1 0) 3 4.
-	 * Then, the current position moves forward by the length, 3, plus the skip size, 0: 2 1 0 [3] 4.
-	 * Finally, the skip size increases to 1.
-	 *
-	 * The second length, 4, selects a section which wraps: 2 1) 0 ([3] 4.
-	 * The sublist 3 4 2 1 is reversed to form 1 2 4 3: 4 3) 0 ([1] 2.
-	 * The current position moves forward by the length plus the skip size, a total of 5,
-	 * causing it not to move because it wraps around: 4 3 0 [1] 2. The skip size increases to 2.
-	 *
-	 * The third length, 1, selects a sublist of a single element, and so reversing it has no effect.
-	 * The current position moves forward by the length (1) plus the skip size (2): 4 [3] 0 1 2. The skip size increases to 3.
-	 *
-	 * The fourth length, 5, selects every element starting with the second: 4) ([3] 0 1 2.
-	 * Reversing this sublist (3 0 1 2 4 into 4 2 1 0 3) produces: 3) ([4] 2 1 0.
-	 * Finally, the current position moves forward by 8: 3 4 2 1 [0]. The skip size increases to 4.
-	 *
-	 * In this example, the first two numbers in the list end up being 3 and 4; to check the process,
-	 * you can multiply them together to produce 12.
-	 */
-	public Result twist(final List<Integer> circularList, final int[] lengths, final int size, int position, int skipSize) {
-		for (final int length : lengths) {
-			if (length + position >= size) {		// wrap
-				final List<Integer> tail = circularList.subList(position, circularList.size());
-				final List<Integer> head = circularList.subList(0, length - tail.size());
-				final List<Integer> subList = new ArrayList<>(tail);
-				subList.addAll(head);
-				Collections.reverse(subList);
+    public int singleTwist(final String input, final int size) {
+        final Result result = twist(circularList(size),
+                                    Stream.of(input.split(",")).mapToInt(Integer::parseInt).toArray(),
+                                    size, 0, 0);
+        return result.getCircularList().get(0) * result.getCircularList().get(1);
+    }
 
-				for (int i = 0; i < length; i++) {
-					circularList.set(position + i, subList.get(i));
+    /**
+     * Suppose we instead only had a circular list containing five elements, 0, 1, 2, 3, 4, and
+     * were given input lengths of 3, 4, 1, 5.
+     *
+     * The list begins as [0] 1 2 3 4 (where square brackets indicate the current position).
+     * The first length, 3, selects ([0] 1 2) 3 4 (where parentheses indicate the sublist to be reversed).
+     * After reversing that section (0 1 2 into 2 1 0), we get ([2] 1 0) 3 4.
+     * Then, the current position moves forward by the length, 3, plus the skip size, 0: 2 1 0 [3] 4.
+     * Finally, the skip size increases to 1.
+     *
+     * The second length, 4, selects a section which wraps: 2 1) 0 ([3] 4.
+     * The sublist 3 4 2 1 is reversed to form 1 2 4 3: 4 3) 0 ([1] 2.
+     * The current position moves forward by the length plus the skip size, a total of 5,
+     * causing it not to move because it wraps around: 4 3 0 [1] 2. The skip size increases to 2.
+     *
+     * The third length, 1, selects a sublist of a single element, and so reversing it has no effect.
+     * The current position moves forward by the length (1) plus the skip size (2): 4 [3] 0 1 2. The skip size increases to 3.
+     *
+     * The fourth length, 5, selects every element starting with the second: 4) ([3] 0 1 2.
+     * Reversing this sublist (3 0 1 2 4 into 4 2 1 0 3) produces: 3) ([4] 2 1 0.
+     * Finally, the current position moves forward by 8: 3 4 2 1 [0]. The skip size increases to 4.
+     *
+     * In this example, the first two numbers in the list end up being 3 and 4; to check the process,
+     * you can multiply them together to produce 12.
+     */
+    public Result twist(final List<Integer> circularList, final int[] lengths, final int size, int position, int skipSize) {
+        for (final int length : lengths) {
+            if (length + position >= size) {        // wrap
+                final List<Integer> tail = circularList.subList(position, circularList.size());
+                final List<Integer> head = circularList.subList(0, length - tail.size());
+                final List<Integer> subList = new ArrayList<>(tail);
+                subList.addAll(head);
+                Collections.reverse(subList);
 
-					if ((1 + position + i) >= size) {
-						position = -i - 1;
-					}
-				}
-			}
-			else if (length > 1) {
-				final List<Integer> subList = circularList.subList(position, position + length);
-				Collections.reverse(subList);
-				for (int i = 0; i < subList.size(); i++) {
-					circularList.set(position + i, subList.get(i));
-				}
-			}
+                for (int i = 0; i < length; i++) {
+                    circularList.set(position + i, subList.get(i));
 
-			position += length + skipSize;
-			position %= size;
-			++skipSize;
-		}
+                    if ((1 + position + i) >= size) {
+                        position = -i - 1;
+                    }
+                }
+            }
+            else if (length > 1) {
+                final List<Integer> subList = circularList.subList(position, position + length);
+                Collections.reverse(subList);
+                for (int i = 0; i < subList.size(); i++) {
+                    circularList.set(position + i, subList.get(i));
+                }
+            }
 
-		return new Result(circularList, position, skipSize);
-	}
+            position += length + skipSize;
+            position %= size;
+            ++skipSize;
+        }
 
-	protected List<Integer> circularList(final int size) {
-		final List<Integer> circularList = new LinkedList<>();
-		for (int i = 0; i < size; i++)
-			circularList.add(i);
-		return circularList;
-	}
+        return new Result(circularList, position, skipSize);
+    }
 
-	@Getter
-	@ToString
-	public static class Result {
-		private final List<Integer> circularList;
-		private final int position;
-		private final int skipSize;
+    protected List<Integer> circularList(final int size) {
+        final List<Integer> circularList = new LinkedList<>();
+        for (int i = 0; i < size; i++)
+            circularList.add(i);
+        return circularList;
+    }
 
-		public Result(final List<Integer> list, final int pos, final int skip) {
-			circularList = list;
-			position = pos;
-			skipSize = skip;
-		}
-	}
+    @Getter
+    @ToString
+    public static class Result {
+        private final List<Integer> circularList;
+        private final int position;
+        private final int skipSize;
+
+        public Result(final List<Integer> list, final int pos, final int skip) {
+            circularList = list;
+            position = pos;
+            skipSize = skip;
+        }
+    }
 }

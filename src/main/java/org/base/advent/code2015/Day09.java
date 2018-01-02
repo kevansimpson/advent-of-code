@@ -72,7 +72,7 @@ public class Day09 implements Solution<List<String>> {
         final List<String> permutation = new ArrayList<>();
         final List<String> locationList = new ArrayList<>(this.locations);
 
-        recurse(locationList, permutation, perm -> distanceMap.put(perm, calculateDistance(perm)));
+        buildAllPaths(locationList, permutation, perm -> distanceMap.put(perm, calculateDistance(perm)));
 
         return distanceMap.values().stream().min(Comparator.naturalOrder()).get();
     }
