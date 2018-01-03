@@ -288,9 +288,11 @@ public class Examples2017UnitTests {
             assertEquals(expectedBitsMatch[i], day15.lowBitsMatch(nextA, nextB));
         }
 
-        genA = Day15.Generator.A(65);
-        genB = Day15.Generator.B(8921);
-        assertEquals(588, day15.countLowBitMatches(40000000, Pair.of(genA, genB)));
+        if (!day15.cache()) {
+            genA = Day15.Generator.A(65);
+            genB = Day15.Generator.B(8921);
+            assertEquals(588, day15.countLowBitMatches(40000000, Pair.of(genA, genB)));
+        }
 
         // part 2
         genA = Day15.Generator.A(65, i -> (i % 4) == 0);
@@ -312,9 +314,22 @@ public class Examples2017UnitTests {
             assertFalse(day15.lowBitsMatch(nextA, nextB));
         }
 
-        genA = Day15.Generator.A(65, i -> (i % 4) == 0);
-        genB = Day15.Generator.B(8921, i -> (i % 8) == 0);
-        assertEquals(309, day15.countLowBitMatches(5000000, Pair.of(genA, genB)));
+        if (!day15.cache()) {
+            genA = Day15.Generator.A(65, i -> (i % 4) == 0);
+            genB = Day15.Generator.B(8921, i -> (i % 8) == 0);
+            assertEquals(309, day15.countLowBitMatches(5000000, Pair.of(genA, genB)));
+        }
+    }
 
+    @Test
+    public void testDay16Examples() {
+        final Day16 day16 = new Day16();
+        // s1, a spin of size 1: eabcd.
+        // *  - x3/4, swapping the last two programs: eabdc.
+        // *  - pe/b, swapping programs e and b: baedc.
+        final String danced = day16.doALittleDance("abcde", Arrays.asList("s1", "x3/4", "pe/b"));
+        assertEquals("baedc", danced);
+        final String dancedAgain = day16.doALittleDance(danced, Arrays.asList("s1", "x3/4", "pe/b"));
+        assertEquals("ceadb", dancedAgain);
     }
 }

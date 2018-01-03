@@ -115,4 +115,11 @@ public class Solutions2017UnitTests {
         }
     }
 
+    @Test
+    public void verifyDay16() throws Exception {
+        final Day16 day16 = new Day16();
+        assertEquals("namdgkbhifpceloj", day16.solvePart1());
+        assertEquals("ibmchklnofjpdeag", day16.solvePart2());
+    }
+
 }
