@@ -106,4 +106,13 @@ public class Solutions2017UnitTests {
         assertEquals(1141, day14.solvePart2());
     }
 
+    @Test
+    public void verifyDay15() throws Exception {
+        final Day15 day15 = new Day15();
+        if (!day15.cache()) {
+            assertEquals(650, day15.solvePart1());
+            assertEquals(336, day15.solvePart2());
+        }
+    }
+
 }

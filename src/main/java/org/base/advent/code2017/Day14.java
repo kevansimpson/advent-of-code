@@ -73,7 +73,7 @@ import java.util.stream.Collectors;
  * are present.
  *
  * How many regions are present given your key string?
- * 
+ *
  */
 public class Day14 implements Solution<List<String>> {
 

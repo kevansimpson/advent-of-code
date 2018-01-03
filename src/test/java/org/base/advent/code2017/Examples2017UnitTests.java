@@ -1,6 +1,7 @@
 package org.base.advent.code2017;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.Point;
 import org.junit.Test;
 
@@ -262,5 +263,58 @@ public class Examples2017UnitTests {
             assertEquals(8108, day14.countUsedSquares(day14.listBits("flqrgnkx")));
             assertEquals(1242, day14.countRegions(day14.listBits("flqrgnkx")));
         }
+    }
+
+    @Test
+    public void testDay15Examples() {
+        final Day15 day15 = new Day15();
+        Day15.Generator genA = Day15.Generator.A(65);
+        Day15.Generator genB = Day15.Generator.B(8921);
+        long[] expectedA = {    1092455L, 1181022009L,  245556042L, 1744312007L, 1352636452L };
+        long[] expectedB = {  430625591L, 1233683848L, 1431495498L,  137874439L,  285222916L };
+        String[] genAbits = { "00000000000100001010101101100111", "01000110011001001111011100111001",
+                "00001110101000101110001101001010", "01100111111110000001011011000111", "01010000100111111001100000100100"};
+        String[] genBbits = { "00011001101010101101001100110111", "01001001100010001000010110001000",
+                "01010101010100101110001101001010", "00001000001101111100110000000111", "00010001000000000010100000000100"};
+        final boolean[] expectedBitsMatch = { false, false, true, false, false };
+
+        for (int i = 0; i < 5; i++) {
+            final long nextA = genA.next();
+            final long nextB = genB.next();
+            assertEquals(expectedA[i], nextA);
+            assertEquals(expectedB[i], nextB);
+            assertEquals(genAbits[i], day15.toBits(nextA));
+            assertEquals(genBbits[i], day15.toBits(nextB));
+            assertEquals(expectedBitsMatch[i], day15.lowBitsMatch(nextA, nextB));
+        }
+
+        genA = Day15.Generator.A(65);
+        genB = Day15.Generator.B(8921);
+        assertEquals(588, day15.countLowBitMatches(40000000, Pair.of(genA, genB)));
+
+        // part 2
+        genA = Day15.Generator.A(65, i -> (i % 4) == 0);
+        genB = Day15.Generator.B(8921, i -> (i % 8) == 0);
+        expectedA = new long[] { 1352636452L, 1992081072L,  530830436L, 1980017072L, 740335192L };
+        expectedB = new long[] { 1233683848L,  862516352L, 1159784568L, 1616057672L, 412269392L };
+        genAbits = new String[] { "01010000100111111001100000100100", "01110110101111001011111010110000",
+                "00011111101000111101010001100100", "01110110000001001010100110110000", "00101100001000001001111001011000"};
+        genBbits = new String[] { "01001001100010001000010110001000", "00110011011010001111010010000000",
+                "01000101001000001110100001111000", "01100000010100110001010101001000", "00011000100100101011101101010000"};
+
+        for (int i = 0; i < 5; i++) {
+            final long nextA = genA.next();
+            final long nextB = genB.next();
+            assertEquals(expectedA[i], nextA);
+            assertEquals(expectedB[i], nextB);
+            assertEquals(genAbits[i], day15.toBits(nextA));
+            assertEquals(genBbits[i], day15.toBits(nextB));
+            assertFalse(day15.lowBitsMatch(nextA, nextB));
+        }
+
+        genA = Day15.Generator.A(65, i -> (i % 4) == 0);
+        genB = Day15.Generator.B(8921, i -> (i % 8) == 0);
+        assertEquals(309, day15.countLowBitMatches(5000000, Pair.of(genA, genB)));
+
     }
 }
