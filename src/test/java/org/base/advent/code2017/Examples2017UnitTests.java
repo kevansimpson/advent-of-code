@@ -5,10 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.Point;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -331,5 +328,29 @@ public class Examples2017UnitTests {
         assertEquals("baedc", danced);
         final String dancedAgain = day16.doALittleDance(danced, Arrays.asList("s1", "x3/4", "pe/b"));
         assertEquals("ceadb", dancedAgain);
+    }
+
+    @Test
+    public void testDay17Examples() {
+        final Day17 day17 = new Day17();
+        final List<Integer> buffer = day17.newBuffer();
+
+        int position = day17.stepForward(buffer, 3, 0, 1);
+        assertEquals(1, position);
+        position = day17.stepForward(buffer, 3, position, 2);
+        assertEquals(1, position);
+        position = day17.stepForward(buffer, 3, position, 3);
+        assertEquals(2, position);
+        final int value = day17.shortCircuitSpinLock(3);
+        assertEquals(638, value);
+    }
+
+    @Test
+    public void testDay18Examples() {
+        final Day18 day18 = new Day18();
+        final List<String> instructions = Arrays.asList(
+                "set a 1", "add a 2", "mul a a", "mod a 5", "snd a",
+                "set a 0", "rcv a", "jgz a -1", "set a 1", "jgz a -2");
+        assertEquals(4, day18.applyInstructions(instructions));
     }
 }
