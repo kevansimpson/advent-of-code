@@ -3,6 +3,7 @@ package org.base.advent.code2017;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.Point;
+import org.base.advent.code2017.day18.Tablet;
 import org.junit.Test;
 
 import java.util.*;
@@ -346,11 +347,15 @@ public class Examples2017UnitTests {
     }
 
     @Test
-    public void testDay18Examples() {
+    public void testDay18Examples() throws Exception {
         final Day18 day18 = new Day18();
         final List<String> instructions = Arrays.asList(
                 "set a 1", "add a 2", "mul a a", "mod a 5", "snd a",
                 "set a 0", "rcv a", "jgz a -1", "set a 1", "jgz a -2");
-        assertEquals(4, day18.applyInstructions(instructions));
+        assertEquals(4, (new Tablet()).applyInstructions(instructions));
+        // part 2
+        final List<String> deadlock = Arrays.asList(
+                "snd 1", "snd 2", "snd p", "rcv a", "rcv b", "rcv c", "rcv d");
+        assertEquals(3, day18.pairTablets(deadlock));
     }
 }

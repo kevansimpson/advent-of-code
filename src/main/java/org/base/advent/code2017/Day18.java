@@ -1,11 +1,11 @@
 package org.base.advent.code2017;
 
-import lombok.Getter;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.base.advent.Solution;
+import org.base.advent.code2017.day18.PairedTablet;
+import org.base.advent.code2017.day18.Tablet;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
 
 
 /**
@@ -119,130 +119,43 @@ public class Day18 implements Solution<List<String>> {
 
     @Override
     public Object solvePart1() throws Exception {
-        return applyInstructions(getInput());
+        return (new Tablet()).applyInstructions(getInput());
     }
 
     @Override
     public Object solvePart2() throws Exception {
-        return getInput();
+        return pairTablets(getInput());
     }
 
-    /*
-     *     - snd X plays a sound with a frequency equal to the value of X.
-     *     - set X Y sets register X to the value of Y.
-     *     - add X Y increases register X by the value of Y.
-     *     - mul X Y sets register X to the result of multiplying the value contained in register X by the value of Y.
-     *     - mod X Y sets register X to the remainder of dividing the value contained in register X by the value of Y
-     *              (that is, it sets X to the result of X modulo Y).
-     *     - rcv X recovers the frequency of the last sound played, but only when the value of X is not zero.
-     *              (If it is zero, the command does nothing.)
-     *     - jgz X Y jumps with an offset of the value of Y, but only if the value of X is greater than zero.
-     *              (An offset of 2 skips the next instruction, an offset of -1 jumps to the previous instruction, and so on.)
-     */
-    public long applyInstructions(final List<String> instructions) {
-        final Tablet tablet = new Tablet();
-        int i = 0;
-        for (;i < instructions.size();) {
-            if (!tablet.getRecoveredSounds().isEmpty()) break;  // we've recovered a sound, stop!
-            final String step = instructions.get(i);
-//            System.out.println(step);
-            final String[] strings = step.split("\\s");
-            final String X = strings[1];
-            switch (strings[0]) {
-                case "snd":
-                    tablet.getSoundsPlayed().push(tablet.getRegisters().get(X));
-                    break;
-                case "set":
-                    tablet.setValue(X, strings[2]);
-                    break;
-                case "add":
-                    tablet.addValue(X, strings[2]);
-                    break;
-                case "mul":
-                    tablet.multiplyValue(X, strings[2]);
-                    break;
-                case "mod":
-                    tablet.moduloValue(X, strings[2]);
-                    break;
-                case "rcv":
-                    tablet.receiveValue(X);
-                    break;
-                case "jgz":
-                    if ((!NumberUtils.isDigits(X) && tablet.getRegisters().getOrDefault(X, 0L) > 0)
-                        ||
-                        NumberUtils.toLong(X, 0) > 0) {
-                        // do jump b/c X > 0
-                        final long offset = Long.parseLong(strings[2]);
-                        if (offset + i < 0 || offset + i >= instructions.size())
-                            break;
-                        else
-                            i += offset;
+    public int pairTablets(final List<String> instructions) {
+        PairedTablet one = new PairedTablet(0L);
+        PairedTablet two = new PairedTablet(1L);
+        one.setPair(two);
+        two.setPair(one);
 
-                        continue;
-                    }
-                    break;
-                default:
+        Thread p0 = new Thread(() -> this.runPair(one, instructions));
+        Thread p1 = new Thread(() -> this.runPair(two, instructions));
 
-                    break;
-            }
-            ++i;
+        p0.start();
+        p1.start();
+
+        try {
+            p0.join();
+            p1.join();
+        }
+        catch (Exception ex) {
+            System.err.println("Failed: "+ ex.getMessage());
         }
 
-        debug("%s", tablet.getRecoveredSounds());
-        debug("%s", tablet.getSoundsPlayed());
-        return tablet.getRecoveredSounds().get(0);
+        return two.getSentCount();
     }
 
-    @Getter
-    private static class Tablet {
-        private final Map<String, Long> registers = new TreeMap<>();
-        private final Stack<Long> soundsPlayed = new Stack<>();
-        private final List<Long> recoveredSounds = new ArrayList<>();
-
-        public void addValue(final String register, final String value) {
-            final long val = getRegisters().getOrDefault(register, 0L);
-            setValue(register, val + Long.parseLong(value));
+    protected void runPair(final PairedTablet tablet, final List<String> instructions) {
+        try {
+            tablet.applyInstructions(instructions);
         }
-
-        public void moduloValue(final String register, final String value) {
-            final long val = getRegisters().getOrDefault(register, 0L);
-
-            try {
-                setValue(register, val % Long.parseLong(value));
-            }
-            catch (final NumberFormatException nfex) {
-                setValue(register, val % getRegisters().getOrDefault(value, 0L));
-            }
-        }
-
-        public void multiplyValue(final String register, final String value) {
-            final long val = getRegisters().getOrDefault(register, 0L);
-
-            try {
-                setValue(register, val * Long.parseLong(value));
-            }
-            catch (final NumberFormatException nfex) {
-                setValue(register, val * getRegisters().getOrDefault(value, 0L));
-            }
-        }
-
-        public void receiveValue(final String register) {
-            final long val = getRegisters().getOrDefault(register, 0L);
-            if (val != 0)
-                getRecoveredSounds().add(getSoundsPlayed().peek());
-        }
-
-        public void setValue(final String register, final long value) {
-            getRegisters().put(register, value);
-        }
-        public void setValue(final String register, final String value) {
-            try {
-                setValue(register, Integer.parseInt(value));
-            }
-            catch (final NumberFormatException nfex) {
-                setValue(register, getRegisters().getOrDefault(value, 0L));
-            }
-
+        catch (Exception ex) {
+            debug("Deadlock achieved: %d", tablet.get("p"));
         }
     }
 }
