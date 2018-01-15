@@ -10,11 +10,8 @@ import java.util.concurrent.TimeUnit;
 public class PairedTablet extends Tablet {
     @Getter @Setter
     private PairedTablet pair;
-    @Getter @Setter(AccessLevel.PRIVATE)
-    private boolean waiting;
     @Getter
     private int sentCount;
-
     @Getter(AccessLevel.PRIVATE)
     private final LinkedBlockingQueue<Long> queue = new LinkedBlockingQueue<>();
 
@@ -44,14 +41,10 @@ public class PairedTablet extends Tablet {
     @Override
     public void receive(final String register) {
         try {
-            setWaiting(true);
             set(register, getQueue().poll(50, TimeUnit.MILLISECONDS));
         }
         catch (final InterruptedException ex) {
             throw new RuntimeException("Interrupted: "+ register +" ~ "+ getQueue());
-        }
-        finally {
-            setWaiting(false);
         }
     }
 }
