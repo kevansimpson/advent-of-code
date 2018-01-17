@@ -1,6 +1,6 @@
 package org.base.advent.code2015;
 
-import org.base.advent.Point;
+import org.base.advent.util.Point;
 import org.base.advent.Solution;
 
 import java.io.IOException;

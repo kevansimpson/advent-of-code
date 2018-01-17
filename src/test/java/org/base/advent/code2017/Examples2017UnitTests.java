@@ -2,7 +2,7 @@ package org.base.advent.code2017;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.base.advent.Point;
+import org.base.advent.util.Point;
 import org.base.advent.code2017.day18.Tablet;
 import org.junit.Test;
 

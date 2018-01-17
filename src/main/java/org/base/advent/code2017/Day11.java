@@ -2,7 +2,7 @@ package org.base.advent.code2017;
 
 import java.io.IOException;
 import org.apache.commons.lang3.tuple.Pair;
-import org.base.advent.HexPoint;
+import org.base.advent.util.HexPoint;
 import org.base.advent.Solution;
 
 

@@ -1,7 +1,7 @@
 package org.base.advent.code2017;
 
 import org.apache.commons.lang3.StringUtils;
-import org.base.advent.Point;
+import org.base.advent.util.Point;
 import org.base.advent.Solution;
 
 import java.io.IOException;
