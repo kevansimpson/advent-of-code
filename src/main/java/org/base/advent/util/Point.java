@@ -1,4 +1,4 @@
-package org.base.advent;
+package org.base.advent.util;
 
 import lombok.EqualsAndHashCode;
 
