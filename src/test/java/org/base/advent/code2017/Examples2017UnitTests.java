@@ -6,7 +6,10 @@ import org.base.advent.Point;
 import org.base.advent.code2017.day18.Tablet;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -357,5 +360,23 @@ public class Examples2017UnitTests {
         final List<String> deadlock = Arrays.asList(
                 "snd 1", "snd 2", "snd p", "rcv a", "rcv b", "rcv c", "rcv d");
         assertEquals(3, day18.pairTablets(deadlock));
+    }
+
+    @Test
+    public void testDay19Examples() {
+        final Day19 day19 = new Day19();
+        final List<String> points = Arrays.asList(
+                "    |",
+                "    |  +--+",
+                "    A  |  C",
+                "F---|----E|--+",
+                "    |  |  |  D",
+                "    +B-+  +--+");
+        final Map<Point, String> grid = day19.buildGrid(points);
+        assertEquals(new Point(4, 0), day19.findStart(grid));
+        final List<Point> path = day19.followPath(grid);
+        assertEquals("ABCDEF", day19.toLetters(path, grid));
+        // part 2
+        assertEquals(38, path.size());
     }
 }
