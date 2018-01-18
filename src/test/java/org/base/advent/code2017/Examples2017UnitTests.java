@@ -379,4 +379,20 @@ public class Examples2017UnitTests {
         // part 2
         assertEquals(38, path.size());
     }
+
+    @Test
+    public void testDay20Examples() {
+        final Day20 day20 = new Day20();
+        final List<String> input = Arrays.asList(
+                "p=< 3,0,0>, v=< 2,0,0>, a=<-1,0,0>", "p=< 4,0,0>, v=< 0,0,0>, a=<-2,0,0>");
+        final List<Day20.Particle> list = day20.toParticles(input);
+
+        assertEquals(0, day20.findClosest(day20.simulateParticles(list, 25)));
+        // part 2
+        final List<String> input2 = Arrays.asList(
+                "p=<-6,0,0>, v=< 3,0,0>, a=< 0,0,0>", "p=<-4,0,0>, v=< 2,0,0>, a=< 0,0,0>",
+                "p=<-2,0,0>, v=< 1,0,0>, a=< 0,0,0>", "p=< 3,0,0>, v=<-1,0,0>, a=< 0,0,0>");
+        final List<Day20.Particle> list2 = day20.toParticles(input2);    // un-ticked
+        assertEquals(1, day20.removeCollisions(list2));
+    }
 }

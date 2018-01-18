@@ -1,9 +1,12 @@
 package org.base.advent.util;
 
+import lombok.EqualsAndHashCode;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
+@EqualsAndHashCode
 public class HexPoint extends Point {
 
 	public static final HexPoint CENTER = new HexPoint(0, 0);
