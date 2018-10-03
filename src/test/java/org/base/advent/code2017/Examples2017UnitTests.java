@@ -1,5 +1,6 @@
 package org.base.advent.code2017;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.util.Point;
@@ -394,5 +395,44 @@ public class Examples2017UnitTests {
                 "p=<-2,0,0>, v=< 1,0,0>, a=< 0,0,0>", "p=< 3,0,0>, v=<-1,0,0>, a=< 0,0,0>");
         final List<Day20.Particle> list2 = day20.toParticles(input2);    // un-ticked
         assertEquals(1, day20.removeCollisions(list2));
+    }
+
+    @Test
+    public void testDay21Examples() {
+        final Day21 day21 = new Day21();
+        final List<String> rules = Arrays.asList(
+                "../.# => ##./#../...", ".#./..#/### => #..#/..../..../#..#");
+        final Map<String, String> ruleMap = day21.toMap(rules);
+        assertEquals(2, ruleMap.size());
+        assertEquals("../#.", day21.rotate("../.#"));
+        assertEquals("#./..", day21.rotate("../#."));
+        assertEquals(".#/..", day21.rotate("#./.."));
+        assertEquals("#../#.#/##.", day21.rotate(".#./..#/###"));
+        assertEquals("###/#../.#.", day21.rotate("#../#.#/##."));
+        assertEquals(".##/#.#/..#", day21.rotate("###/#../.#."));
+
+        assertEquals(".#./#../###", day21.flip(".#./..#/###"));
+
+        final Map<String, String> allRules = day21.rotateFlipKeys(ruleMap);
+        assertEquals(12, allRules.size());
+
+        final String before1 = "#..#/....";
+        final String[] after1 = { "#./..", ".#/.." };
+        final String before2 = "..../#..#";
+        final String[] after2 = { "../#.", "../.#" };
+
+//        assertEquals(before1 +"/"+ before2, day21.generateArt(day21.START, 1, allRules));
+//        assertEquals(ArrayUtils.toString(after1), ArrayUtils.toString(day21.splitGrid(2, before1)));
+//        assertEquals(ArrayUtils.toString(after2), ArrayUtils.toString(day21.splitGrid(2, before2)));
+        final String expected = "##./##./#../#../.../.../##./##./#../#../.../...";
+//        System.out.println("grid ---------------");
+//        System.out.println(day21.toGrid(expected));
+//        final String art2 = day21.generateArt(day21.START, 2, allRules);
+//        assertEquals("##.##./#..#../....../##.##./#..#../......".replaceAll("/", "\n"), art2);
+//        assertEquals(12, day21.countLightsOn(art2));
+
+        final String art3 = day21.generateArt(day21.START, 3, allRules);
+        System.out.println("art3\n"+ art3);
+        // part 2
     }
 }
