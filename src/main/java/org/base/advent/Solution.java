@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 
 /**
@@ -32,5 +33,9 @@ public interface Solution<T> extends Helpers {
 
     default List<String> readLines(final String filename) throws IOException {
         return IOUtils.readLines(getClass().getResourceAsStream(filename), Charset.defaultCharset());
+    }
+
+    default List<Integer> readNumbers(final String filename) throws IOException {
+        return readLines(filename).stream().map(Integer::parseInt).collect(Collectors.toList());
     }
 }
