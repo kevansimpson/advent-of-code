@@ -32,6 +32,18 @@ public class Examples2018UnitTests {
 
     @Test
     public void testDay02Examples() {
-//        final Day02 day02 = new Day02();
+        final Day02 day02 = new Day02();
+        assertEquals(Day02.Match.none, day02.countPairsAndTriples("abcdef"));
+        assertEquals(Day02.Match.both, day02.countPairsAndTriples("bababc"));
+        assertEquals(Day02.Match.two, day02.countPairsAndTriples("abbcde"));
+        assertEquals(Day02.Match.three, day02.countPairsAndTriples("abcccd"));
+        assertEquals(Day02.Match.two, day02.countPairsAndTriples("aabcdd"));
+        assertEquals(Day02.Match.two, day02.countPairsAndTriples("abcdee"));
+        assertEquals(Day02.Match.three, day02.countPairsAndTriples("ababab"));
+        assertEquals(12, day02.checksum(Arrays.asList(
+                "abcdef", "bababc", "abbcde", "abcccd", "aabcdd", "abcdee", "ababab")));
+        // part 2
+        assertEquals("fgij", day02.findPrototype(Arrays.asList(
+                "abcde", "fghij", "klmno", "pqrst", "fguij", "axcye", "wvxyz")));
     }
 }
