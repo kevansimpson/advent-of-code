@@ -46,4 +46,21 @@ public class Examples2018UnitTests {
         assertEquals("fgij", day02.findPrototype(Arrays.asList(
                 "abcde", "fghij", "klmno", "pqrst", "fguij", "axcye", "wvxyz")));
     }
+
+    @Test
+    public void testDay03Examples() throws Exception {
+        final Day03 day03 = new Day03();
+        final Day03.Claim claim = day03.toClaim("#123 @ 3,2: 5x4");
+        assertEquals(123, claim.getId());
+        assertEquals(3, claim.getLeft());
+        assertEquals(2, claim.getTop());
+        assertEquals(5, claim.getWidth());
+        assertEquals(4, claim.getHeight());
+
+        final List<String> input = Arrays.asList("#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4", "#3 @ 5,5: 2x2");
+        day03.setClaims(day03.toClaims(input));
+        final Map<Point, List<Integer>> grid = day03.buildGrid(day03.getClaims());
+        assertEquals(4, day03.calculateOverlap(grid));
+        assertEquals(3, day03.findAdjacentClaimId(grid));
+    }
 }
