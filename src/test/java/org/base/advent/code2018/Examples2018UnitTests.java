@@ -1,12 +1,9 @@
 package org.base.advent.code2018;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.util.Point;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -62,5 +59,33 @@ public class Examples2018UnitTests {
         final Map<Point, List<Integer>> grid = day03.buildGrid(day03.getClaims());
         assertEquals(4, day03.calculateOverlap(grid));
         assertEquals(3, day03.findAdjacentClaimId(grid));
+    }
+
+    @Test
+    public void testDay04Examples() throws Exception {
+        final Day04 day04 = new Day04();
+        final List<String> input = Arrays.asList(
+                "[1518-11-01 00:00] Guard #10 begins shift",
+                "[1518-11-01 00:05] falls asleep",
+                "[1518-11-01 00:25] wakes up",
+                "[1518-11-01 00:30] falls asleep",
+                "[1518-11-01 00:55] wakes up",
+                "[1518-11-01 23:58] Guard #99 begins shift",
+                "[1518-11-02 00:40] falls asleep",
+                "[1518-11-02 00:50] wakes up",
+                "[1518-11-03 00:05] Guard #10 begins shift",
+                "[1518-11-03 00:24] falls asleep",
+                "[1518-11-03 00:29] wakes up",
+                "[1518-11-04 00:02] Guard #99 begins shift",
+                "[1518-11-04 00:36] falls asleep",
+                "[1518-11-04 00:46] wakes up",
+                "[1518-11-05 00:03] Guard #99 begins shift",
+                "[1518-11-05 00:45] falls asleep",
+                "[1518-11-05 00:55] wakes up");
+        final Day04.Guard guard = day04.findSleepiestGuard(input);
+        assertEquals(10, guard.getId());
+        assertEquals(24, guard.getSleepiestMinute());
+        assertEquals(240, day04.strategy1(input));
+        assertEquals(4455, day04.strategy2(input));
     }
 }

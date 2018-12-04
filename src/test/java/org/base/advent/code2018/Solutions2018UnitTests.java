@@ -29,13 +29,13 @@ public class Solutions2018UnitTests {
         assertEquals(1097, day03.solvePart2());
     }
 
-//    @Test
-//    public void verifyDay04() throws Exception {
-//        final Day04 day04 = new Day04();
-//        assertEquals(337L, day04.solvePart1());
-//        assertEquals(231L, day04.solvePart2());
-//    }
-//
+    @Test
+    public void verifyDay04() throws Exception {
+        final Day04 day04 = new Day04();
+        assertEquals(19025, day04.solvePart1());
+        assertEquals(23776, day04.solvePart2());
+    }
+
 //    @Test
 //    public void verifyDay05() throws Exception {
 //        final Day05 day05 = new Day05();
