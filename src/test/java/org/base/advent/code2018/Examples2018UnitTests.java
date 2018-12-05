@@ -88,4 +88,15 @@ public class Examples2018UnitTests {
         assertEquals(240, day04.strategy1(input));
         assertEquals(4455, day04.strategy2(input));
     }
+
+    @Test
+    public void testDay05Examples() throws Exception {
+        final Day05 day05 = new Day05();
+        assertEquals("", day05.formPolymer("aA"));
+        assertEquals("", day05.formPolymer("abBA"));
+        assertEquals("abAB", day05.formPolymer("abAB"));
+        assertEquals("aabAAB", day05.formPolymer("aabAAB"));
+        assertEquals("dabCBAcaDA", day05.formPolymer("dabAcCaCBAcCcaDA"));
+        assertEquals("daDA", day05.improvePolymer("dabAcCaCBAcCcaDA"));
+    }
 }

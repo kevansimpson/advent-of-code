@@ -36,13 +36,13 @@ public class Solutions2018UnitTests {
         assertEquals(23776, day04.solvePart2());
     }
 
-//    @Test
-//    public void verifyDay05() throws Exception {
-//        final Day05 day05 = new Day05();
-//        assertEquals(318883L, day05.solvePart1());
-//        assertEquals(23948711L, day05.solvePart2());
-//    }
-//
+    @Test
+    public void verifyDay05() throws Exception {
+        final Day05 day05 = new Day05();
+        assertEquals(10584, day05.solvePart1());
+        assertEquals(6968, day05.solvePart2());
+    }
+
 //    @Test
 //    public void verifyDay06() throws Exception {
 //        final Day06 day06 = new Day06();
