@@ -32,7 +32,7 @@ import java.util.List;
  * </pre>
  *
  * How many blocks away is Easter Bunny HQ?
-
+ *
  * <h2>Part 2</h2>
  * Then, you notice the instructions continue on the back of the Recruiting Document.
  * Easter Bunny HQ is actually at the first location you visit twice.
