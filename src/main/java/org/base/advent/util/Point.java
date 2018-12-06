@@ -41,6 +41,9 @@ public class Point {
     public Point right(final int move) {
         return new Point(x + move, y);
     }
+    public Point move(final int deltaX, final int deltaY) {
+        return new Point(x + deltaX, y + deltaY);
+    }
 
     public int getManhattanDistance() {
         return MANHATTAN_DISTANCE.apply(this, ORIGIN);
