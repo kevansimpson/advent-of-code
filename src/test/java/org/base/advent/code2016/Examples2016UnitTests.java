@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Unit tests for 2016 daily puzzle examples.
@@ -31,11 +32,12 @@ public class Examples2016UnitTests {
         assertEquals("5DB3", day02.followInstructions(input, day02.diamondPad()));
     }
 
-//    @Test
-//    public void testDay03Examples() throws Exception {
-//        final Day03 day03 = new Day03();
-//    }
-//
+    @Test
+    public void testDay03Examples() throws Exception {
+        final Day03 day03 = new Day03();
+        assertFalse(day03.validTriangle(5, 10, 25));
+    }
+
 //    @Test
 //    public void testDay04Examples() throws Exception {
 //        final Day04 day04 = new Day04();
