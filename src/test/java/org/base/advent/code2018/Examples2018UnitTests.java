@@ -97,6 +97,17 @@ public class Examples2018UnitTests {
         assertEquals("abAB", day05.formPolymer("abAB"));
         assertEquals("aabAAB", day05.formPolymer("aabAAB"));
         assertEquals("dabCBAcaDA", day05.formPolymer("dabAcCaCBAcCcaDA"));
+        // part 2
         assertEquals("daDA", day05.improvePolymer("dabAcCaCBAcCcaDA"));
+    }
+
+    @Test
+    public void testDay06Examples() throws Exception {
+        final Day06 day06 = new Day06();
+        final List<String> input = Arrays.asList("1, 1", "1, 6", "8, 3", "3, 4", "5, 5", "8, 9");
+        final List<Point> points = day06.toPoints(input);
+        assertEquals(17, day06.findLargestArea(points));
+        // part 2
+        assertEquals(16, day06.findSafestArea(points, 32));
     }
 }
