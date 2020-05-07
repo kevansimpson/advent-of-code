@@ -1,13 +1,13 @@
 package org.base.advent.code2018;
 
 import org.base.advent.util.Point;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for daily puzzle examples.

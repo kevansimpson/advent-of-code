@@ -4,14 +4,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.util.Point;
 import org.base.advent.code2017.day18.Tablet;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for daily puzzle examples.
@@ -62,9 +62,9 @@ public class Examples2017UnitTests {
          * 351   11   23   25   26
          * 362  747  806--->   ...
          */
-        final int[] expected = { -1, 1, 1, 2, 4, 5, 10, 11, 23, 25, 26, 54, 57, 59, 122, 133, 142, 147, 304, 330, 351, 362, 747, 806 };
+        final long[] expected = { -1, 1, 1, 2, 4, 5, 10, 11, 23, 25, 26, 54, 57, 59, 122, 133, 142, 147, 304, 330, 351, 362, 747, 806 };
         for (int i = 1; i < 24; i++)
-            assertEquals("Expected: "+ i, expected[i], day03.spiralSum(day03.toPoint(i)));
+            assertEquals(expected[i], day03.spiralSum(day03.toPoint(i)));
 
         assertEquals(11, day03.firstLargerValue(10));
         assertEquals(54, day03.firstLargerValue(28));
