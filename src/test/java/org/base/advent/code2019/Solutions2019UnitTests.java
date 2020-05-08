@@ -15,14 +15,14 @@ public class Solutions2019UnitTests {
         assertEquals(4896582, day01.solvePart2());
     }
 
-    /*
     @Test
     public void verifyDay02() throws Exception {
         final Day02 day02 = new Day02();
-        assertEquals(3952, day02.solvePart1());
-        assertEquals("vtnikorkulbfejvyznqgdxpaw", day02.solvePart2());
+        assertEquals(4570637, ((int[]) day02.solvePart1())[0]);
+        assertEquals(5485, day02.solvePart2());
     }
 
+    /*
     @Test
     public void verifyDay03() throws Exception {
         final Day03 day03 = new Day03();

@@ -1,12 +1,8 @@
 package org.base.advent.code2019;
 
-import org.base.advent.util.Point;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -32,24 +28,18 @@ public class Examples2019UnitTests {
         assertEquals(50346, day01.accumulate(100756));
     }
 
-    /*
     @Test
     public void testDay02Examples() {
         final Day02 day02 = new Day02();
-        assertEquals(Day02.Match.none, day02.countPairsAndTriples("abcdef"));
-        assertEquals(Day02.Match.both, day02.countPairsAndTriples("bababc"));
-        assertEquals(Day02.Match.two, day02.countPairsAndTriples("abbcde"));
-        assertEquals(Day02.Match.three, day02.countPairsAndTriples("abcccd"));
-        assertEquals(Day02.Match.two, day02.countPairsAndTriples("aabcdd"));
-        assertEquals(Day02.Match.two, day02.countPairsAndTriples("abcdee"));
-        assertEquals(Day02.Match.three, day02.countPairsAndTriples("ababab"));
-        assertEquals(12, day02.checksum(Arrays.asList(
-                "abcdef", "bababc", "abbcde", "abcccd", "aabcdd", "abcdee", "ababab")));
-        // part 2
-        assertEquals("fgij", day02.findPrototype(Arrays.asList(
-                "abcde", "fghij", "klmno", "pqrst", "fguij", "axcye", "wvxyz")));
+        assertArrayEquals(new int[] { 3500,9,10,70,2,3,11,0,99,30,40,50 },
+                day02.runProgram(1,9,10,3,2,3,11,0,99,30,40,50));
+        assertArrayEquals(new int[] { 2,0,0,0,99 }, day02.runProgram(1,0,0,0,99));
+        assertArrayEquals(new int[] { 2,3,0,6,99 }, day02.runProgram(2,3,0,3,99));
+        assertArrayEquals(new int[] { 2,4,4,5,99,9801 }, day02.runProgram(2,4,4,5,99,0));
+        assertArrayEquals(new int[] { 30,1,1,4,2,5,6,0,99 }, day02.runProgram(1,1,1,4,99,5,6,0,99));
     }
 
+    /*
     @Test
     public void testDay03Examples() throws Exception {
         final Day03 day03 = new Day03();
