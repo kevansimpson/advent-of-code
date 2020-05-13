@@ -22,14 +22,14 @@ public class Solutions2019UnitTests {
         assertEquals(5485, day02.solvePart2());
     }
 
-    /*
     @Test
     public void verifyDay03() throws Exception {
         final Day03 day03 = new Day03();
-        assertEquals(124850L, day03.solvePart1());
-        assertEquals(1097, day03.solvePart2());
+        assertEquals(352, day03.solvePart1());
+        assertEquals(43848, day03.solvePart2());
     }
 
+    /*
     @Test
     public void verifyDay04() throws Exception {
         final Day04 day04 = new Day04();

@@ -4,7 +4,9 @@ import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 
 /**
@@ -15,6 +17,12 @@ public class Point {
     public static final Point ORIGIN = new Point(0, 0);
     public static final BiFunction<Point, Point, Integer> MANHATTAN_DISTANCE =
             (a, b) -> Math.abs(b.x - a.x) + Math.abs(b.y - a.y);
+
+    public static Map<String, Function<Point, Point>> MOVE_MAP = Map.of(
+        "U", pt -> pt.up(1),
+        "D", pt -> pt.down(1),
+        "L", pt -> pt.left(1),
+        "R", pt -> pt.right(1));
 
     public final int x;
     public final int y;

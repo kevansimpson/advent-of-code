@@ -40,6 +40,10 @@ public interface Solution<T> extends Helpers {
         return readLines(filename).stream().map(Integer::parseInt).collect(Collectors.toList());
     }
 
+    default List<String[]> readCSVLines(final String filename) throws IOException {
+        return readLines(filename).stream().map(line -> line.split("\\s*,\\s*")).collect(Collectors.toList());
+    }
+
     default int[] readNumbersCSV(final String filename) throws IOException {
         return Stream.of(readInput(filename).split("\\s*,\\s*")).mapToInt(Integer::parseInt).toArray();
     }

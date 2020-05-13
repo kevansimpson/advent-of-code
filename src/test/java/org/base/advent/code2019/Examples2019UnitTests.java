@@ -2,6 +2,10 @@ package org.base.advent.code2019;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -39,24 +43,30 @@ public class Examples2019UnitTests {
         assertArrayEquals(new int[] { 30,1,1,4,2,5,6,0,99 }, day02.runProgram(1,1,1,4,99,5,6,0,99));
     }
 
-    /*
     @Test
-    public void testDay03Examples() throws Exception {
+    public void testDay03Examples() {
         final Day03 day03 = new Day03();
-        final Day03.Claim claim = day03.toClaim("#123 @ 3,2: 5x4");
-        assertEquals(123, claim.getId());
-        assertEquals(3, claim.getLeft());
-        assertEquals(2, claim.getTop());
-        assertEquals(5, claim.getWidth());
-        assertEquals(4, claim.getHeight());
-
-        final List<String> input = Arrays.asList("#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4", "#3 @ 5,5: 2x2");
-        day03.setClaims(day03.toClaims(input));
-        final Map<Point, List<Integer>> grid = day03.buildGrid(day03.getClaims());
-        assertEquals(4, day03.calculateOverlap(grid));
-        assertEquals(3, day03.findAdjacentClaimId(grid));
+        assertEquals(6, day03.closestIntersection(split("R8,U5,L5,D3", "U7,R6,D4,L4")));
+        assertEquals(159, day03.closestIntersection(split(
+                "R75,D30,R83,U83,L12,D49,R71,U7,L72", "U62,R66,U55,R34,D71,R55,D58,R83")));
+        assertEquals(135, day03.closestIntersection(split(
+                "R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51", "U98,R91,D20,R16,D67,R40,U7,R15,U6,R7")));
+        // part 2
+        assertEquals(30, day03.fewestSteps(split("R8,U5,L5,D3", "U7,R6,D4,L4")));
+        assertEquals(610, day03.fewestSteps(split(
+                "R75,D30,R83,U83,L12,D49,R71,U7,L72", "U62,R66,U55,R34,D71,R55,D58,R83")));
+        assertEquals(410, day03.fewestSteps(split(
+                "R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51", "U98,R91,D20,R16,D67,R40,U7,R15,U6,R7")));
+//        R75,D30,R83,U83,L12,D49,R71,U7,L72
+//        U62,R66,U55,R34,D71,R55,D58,R83 = 610 steps
+//                R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51
+//        U98,R91,D20,R16,D67,R40,U7,R15,U6,R7 = 410 steps
     }
 
+    private List<String[]> split(final String... input) {
+        return Stream.of(input).map(str -> str.split(",")).collect(Collectors.toList());
+    }
+    /*
     @Test
     public void testDay04Examples() throws Exception {
         final Day04 day04 = new Day04();

@@ -101,9 +101,10 @@ public class Day02 implements Solution<int[]> {
     }
 
     public int targetOutput(final int target, final int... codes) {
+        final int[] copy = Arrays.copyOf(codes, codes.length);
         for (int n = 0; n < 100; n++)
             for (int v = 0; v < 100; v++)
-                if (target == gravityAssist(n, v, Arrays.copyOf(codes, codes.length))[0]) return 100 * n + v;
+                if (target == gravityAssist(n, v, copy)[0]) return 100 * n + v;
         return -1;
     }
 
