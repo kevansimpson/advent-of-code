@@ -2,12 +2,8 @@ package org.base.advent.code2019;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.base.advent.util.Util.split;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for daily puzzle examples.
@@ -57,44 +53,21 @@ public class Examples2019UnitTests {
                 "R75,D30,R83,U83,L12,D49,R71,U7,L72", "U62,R66,U55,R34,D71,R55,D58,R83")));
         assertEquals(410, day03.fewestSteps(split(
                 "R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51", "U98,R91,D20,R16,D67,R40,U7,R15,U6,R7")));
-//        R75,D30,R83,U83,L12,D49,R71,U7,L72
-//        U62,R66,U55,R34,D71,R55,D58,R83 = 610 steps
-//                R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51
-//        U98,R91,D20,R16,D67,R40,U7,R15,U6,R7 = 410 steps
     }
 
-    private List<String[]> split(final String... input) {
-        return Stream.of(input).map(str -> str.split(",")).collect(Collectors.toList());
-    }
-    /*
     @Test
-    public void testDay04Examples() throws Exception {
+    public void testDay04Examples() {
         final Day04 day04 = new Day04();
-        final List<String> input = Arrays.asList(
-                "[1518-11-01 00:00] Guard #10 begins shift",
-                "[1518-11-01 00:05] falls asleep",
-                "[1518-11-01 00:25] wakes up",
-                "[1518-11-01 00:30] falls asleep",
-                "[1518-11-01 00:55] wakes up",
-                "[1518-11-01 23:58] Guard #99 begins shift",
-                "[1518-11-02 00:40] falls asleep",
-                "[1518-11-02 00:50] wakes up",
-                "[1518-11-03 00:05] Guard #10 begins shift",
-                "[1518-11-03 00:24] falls asleep",
-                "[1518-11-03 00:29] wakes up",
-                "[1518-11-04 00:02] Guard #99 begins shift",
-                "[1518-11-04 00:36] falls asleep",
-                "[1518-11-04 00:46] wakes up",
-                "[1518-11-05 00:03] Guard #99 begins shift",
-                "[1518-11-05 00:45] falls asleep",
-                "[1518-11-05 00:55] wakes up");
-        final Day04.Guard guard = day04.findSleepiestGuard(input);
-        assertEquals(10, guard.getId());
-        assertEquals(24, guard.getSleepiestMinute());
-        assertEquals(240, day04.strategy1(input));
-        assertEquals(4455, day04.strategy2(input));
+        assertFalse(day04.simple(223450)); // (decreasing pair of digits 50)
+        assertFalse(day04.simple(123789)); // (no double)
+        assertTrue(day04.simple(111111)); // (double 11, never decreases)
+
+        assertTrue(day04.complex(112233)); // (digits never decrease and all repeated digits are exactly two digits long)
+        assertFalse(day04.complex(123444)); // (the repeated 44 is part of a larger group of 444)
+        assertTrue(day04.complex(111122)); // (even though 1 is repeated more than twice, it still contains a double 22)
     }
 
+    /*
     @Test
     public void testDay05Examples() throws Exception {
         final Day05 day05 = new Day05();

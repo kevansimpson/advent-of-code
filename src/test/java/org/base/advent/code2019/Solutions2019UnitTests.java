@@ -29,14 +29,14 @@ public class Solutions2019UnitTests {
         assertEquals(43848, day03.solvePart2());
     }
 
-    /*
     @Test
     public void verifyDay04() throws Exception {
         final Day04 day04 = new Day04();
-        assertEquals(19025, day04.solvePart1());
-        assertEquals(23776, day04.solvePart2());
+        assertEquals(1178L, day04.solvePart1());
+        assertEquals(763L, day04.solvePart2());
     }
 
+    /*
     @Test
     public void verifyDay05() throws Exception {
         final Day05 day05 = new Day05();
