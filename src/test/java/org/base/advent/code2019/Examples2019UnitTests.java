@@ -1,5 +1,6 @@
 package org.base.advent.code2019;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.base.advent.code2019.intCode.Program;
 import org.junit.jupiter.api.Test;
 
@@ -69,9 +70,16 @@ public class Examples2019UnitTests {
 
     @Test
     public void testDay05Examples() {
-//        assertEquals(1138, Program.runProgram(() -> 1138,3,0,4,0,99).getOutput());
+        assertEquals(1138, Program.runProgram(() -> 1138,3,0,4,0,99).getOutput());
         assertEquals(0, Program.runProgram(() -> 1138,1002,4,3,4,33).getOutput());
         // part 2
+        final int[] codes = new int[] {
+                3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,
+                1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,
+                999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99 };
+        assertEquals(999, Program.runProgram(() -> 1, codes).getOutput());
+        assertEquals(1000, Program.runProgram(() -> 8, codes).getOutput());
+        assertEquals(1001, Program.runProgram(() -> 1138, codes).getOutput());
     }
 
     /*

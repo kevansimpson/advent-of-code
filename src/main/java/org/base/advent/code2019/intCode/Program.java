@@ -30,19 +30,12 @@ public class Program {
         input = userInput;
     }
 
-//    static int FOO = 0;
     int param(final int offset, final String fullOpCode, final int opCodeIndex) {
-//        if (++FOO > 50) throw new RuntimeException("STOP");
-//        System.out.printf("FOO => fullOpCode=%s, opCodeIndex=%d%n", fullOpCode, opCodeIndex);
-//        System.out.printf("BAR => index=%d, offset=%d, rlen=%d%n", index, offset, result.length);
-
         try {
             return ('0' == fullOpCode.charAt(opCodeIndex)) ? result[result[index + offset]] : result[index + offset];
         }
         catch (Exception ex) {
-            System.out.printf("FOOX => fullOpCode=%s, opCodeIndex=%d%n", fullOpCode, opCodeIndex);
-            System.out.printf("BARX => index=%d, offset=%d, rlen=%d%n", index, offset, result.length);
-            return 0;
+            return opCodeIndex;
         }
     }
     public void run() {
@@ -50,32 +43,42 @@ public class Program {
             final int baseOpCode = result[index];
             final String fullOpCode = StringUtils.leftPad(String.valueOf(result[index]), 5, '0');
             final int param1 = param(1, fullOpCode, 2);
-//            System.out.println("PARAM1 => "+ param1);
+            final int param2 = param(2, fullOpCode, 1);
             switch (baseOpCode % 100) {
-                case 1:
-                    result[result[index + 3]] = param1 + param(2, fullOpCode, 1);
+                case 1: // add
+                    result[result[index + 3]] = param1 + param2;
                     index += 4;
                     break;
-                case 2:
-                    final int param2 = param(2, fullOpCode, 1);
-//                    System.out.println("PARAM2 => "+ param2);
+                case 2: // multiply
                     result[result[index + 3]] = param1 * param2;
                     index += 4;
                     break;
-                case 3:
-                    System.out.println("INPUT => "+ param1);
-                    System.out.println("INPUTX=> "+ result[index + 1]);
-//                    result[param1] = getInput();
+                case 3: // input
                     if ('0' == fullOpCode.charAt(2))
                         result[result[index + 1]] = getInput();
-                    else
-                        result[index + 1] = getInput();
+                    else result[index + 1] = getInput();
                     index += 2;
                     break;
-                case 4:
-                    final int output = result[result[index + 1]];
+                case 4: // output
+                    final int output = param1; //result[result[index + 1]];
                     setOutput(output);
                     index += 2;
+                    break;
+                case 5: // jump-if-true
+                    if (param1 != 0) index = param2;
+                    else index += 3;
+                    break;
+                case 6: // jump-if-false
+                    if (param1 == 0) index = param2;
+                    else index += 3;
+                    break;
+                case 7: // less-than
+                    result[result[index + 3]] = param1 < param2 ? 1 : 0;
+                    index += 4;
+                    break;
+                case 8: // equals
+                    result[result[index + 3]] = param1 == param2 ? 1 : 0;
+                    index += 4;
                     break;
                 case 99:
                     return;

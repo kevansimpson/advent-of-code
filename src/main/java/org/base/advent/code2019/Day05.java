@@ -129,8 +129,8 @@ public class Day05 implements Solution<int[]> {
     }
 
     @Override
-    public Object solvePart2() throws Exception {
-        return getInput();
+    public Program solvePart2() throws Exception {
+        return Program.runProgram(() -> 5, getInput());
     }
 
 }

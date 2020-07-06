@@ -40,7 +40,7 @@ public class Solutions2019UnitTests {
     public void verifyDay05() throws Exception {
         final Day05 day05 = new Day05();
         assertEquals(13285749, day05.solvePart1().getOutput());
-//        assertEquals(5000972, day05.solvePart2());
+        assertEquals(5000972, day05.solvePart2().getOutput());
     }
 
     /*
