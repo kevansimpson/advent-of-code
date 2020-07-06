@@ -116,12 +116,6 @@ public class Day02 implements Solution<int[]> {
     public int[] gravityAssist(final int noun, final int verb, final int... codes) {
         codes[1] = noun;
         codes[2] = verb;
-        return runProgram(codes);
-    }
-
-    public int[] runProgram(final int... codes) {
-        final Program program = new Program(codes);
-        program.run();
-        return program.getResult();
+        return Program.runProgram(codes);
     }
 }

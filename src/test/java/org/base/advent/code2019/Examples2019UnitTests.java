@@ -1,5 +1,6 @@
 package org.base.advent.code2019;
 
+import org.base.advent.code2019.intCode.Program;
 import org.junit.jupiter.api.Test;
 
 import static org.base.advent.util.Util.split;
@@ -30,13 +31,12 @@ public class Examples2019UnitTests {
 
     @Test
     public void testDay02Examples() {
-        final Day02 day02 = new Day02();
         assertArrayEquals(new int[] { 3500,9,10,70,2,3,11,0,99,30,40,50 },
-                day02.runProgram(1,9,10,3,2,3,11,0,99,30,40,50));
-        assertArrayEquals(new int[] { 2,0,0,0,99 }, day02.runProgram(1,0,0,0,99));
-        assertArrayEquals(new int[] { 2,3,0,6,99 }, day02.runProgram(2,3,0,3,99));
-        assertArrayEquals(new int[] { 2,4,4,5,99,9801 }, day02.runProgram(2,4,4,5,99,0));
-        assertArrayEquals(new int[] { 30,1,1,4,2,5,6,0,99 }, day02.runProgram(1,1,1,4,99,5,6,0,99));
+                Program.runProgram(1,9,10,3,2,3,11,0,99,30,40,50));
+        assertArrayEquals(new int[] { 2,0,0,0,99 }, Program.runProgram(1,0,0,0,99));
+        assertArrayEquals(new int[] { 2,3,0,6,99 }, Program.runProgram(2,3,0,3,99));
+        assertArrayEquals(new int[] { 2,4,4,5,99,9801 }, Program.runProgram(2,4,4,5,99,0));
+        assertArrayEquals(new int[] { 30,1,1,4,2,5,6,0,99 }, Program.runProgram(1,1,1,4,99,5,6,0,99));
     }
 
     @Test
@@ -67,19 +67,14 @@ public class Examples2019UnitTests {
         assertTrue(day04.complex(111122)); // (even though 1 is repeated more than twice, it still contains a double 22)
     }
 
-    /*
     @Test
-    public void testDay05Examples() throws Exception {
-        final Day05 day05 = new Day05();
-        assertEquals("", day05.formPolymer("aA"));
-        assertEquals("", day05.formPolymer("abBA"));
-        assertEquals("abAB", day05.formPolymer("abAB"));
-        assertEquals("aabAAB", day05.formPolymer("aabAAB"));
-        assertEquals("dabCBAcaDA", day05.formPolymer("dabAcCaCBAcCcaDA"));
+    public void testDay05Examples() {
+//        assertEquals(1138, Program.runProgram(() -> 1138,3,0,4,0,99).getOutput());
+        assertEquals(0, Program.runProgram(() -> 1138,1002,4,3,4,33).getOutput());
         // part 2
-        assertEquals("daDA", day05.improvePolymer("dabAcCaCBAcCcaDA"));
     }
 
+    /*
     @Test
     public void testDay06Examples() throws Exception {
         final Day06 day06 = new Day06();
