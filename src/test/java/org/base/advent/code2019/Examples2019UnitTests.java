@@ -1,8 +1,10 @@
 package org.base.advent.code2019;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.base.advent.code2019.intCode.Program;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.base.advent.util.Util.split;
 import static org.junit.jupiter.api.Assertions.*;
@@ -82,15 +84,14 @@ public class Examples2019UnitTests {
         assertEquals(1001, Program.runProgram(() -> 1138, codes).getOutput());
     }
 
-    /*
     @Test
-    public void testDay06Examples() throws Exception {
+    public void testDay06Examples() {
         final Day06 day06 = new Day06();
-        final List<String> input = Arrays.asList("1, 1", "1, 6", "8, 3", "3, 4", "5, 5", "8, 9");
-        final List<Point> points = day06.toPoints(input);
-        assertEquals(17, day06.findLargestArea(points));
+        final List<String> input = Arrays.asList("COM)B", "B)C", "C)D", "D)E", "E)F", "B)G", "G)H", "D)I", "E)J", "J)K", "K)L");
+        assertEquals(42, day06.totalOrbits(input));
         // part 2
-        assertEquals(16, day06.findSafestArea(points, 32));
+        final List<String> input2 = Arrays.asList(
+                "COM)B", "B)C", "C)D", "D)E", "E)F", "B)G", "G)H", "D)I", "E)J", "J)K", "K)L", "K)YOU", "I)SAN");
+        assertEquals(4, day06.minimalTransfers("YOU", "SAN", input2));
     }
-     */
 }
