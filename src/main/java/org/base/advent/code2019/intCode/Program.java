@@ -6,38 +6,30 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
-import java.util.function.Supplier;
+import java.util.function.IntSupplier;
 
 /**
  * Represents an {@link org.base.advent.code2019.Day02 IntCode} program.
  */
 @Getter
-public class Program {
-    private final int[] codes;
+public class Program implements Runnable {
     private final int[] result;
     private int index = 0;
-    private int input = 0;
-    @Setter(AccessLevel.PRIVATE)
+    @Setter
+    private IntSupplier input;
+    @Setter(AccessLevel.PROTECTED)
     private int output = 0;
 
     public Program(final int... c) {
-        codes = c;
         result = Arrays.copyOf(c, c.length);
     }
 
-    public Program(final int userInput, final int... c) {
+    public Program(final IntSupplier userInput, final int... c) {
         this(c);
-        input = userInput;
+        setInput(userInput);
     }
 
-    int param(final int offset, final String fullOpCode, final int opCodeIndex) {
-        try {
-            return ('0' == fullOpCode.charAt(opCodeIndex)) ? result[result[index + offset]] : result[index + offset];
-        }
-        catch (Exception ex) {
-            return opCodeIndex;
-        }
-    }
+    @Override
     public void run() {
         while (index < result.length) {
             final int baseOpCode = result[index];
@@ -54,14 +46,12 @@ public class Program {
                     index += 4;
                     break;
                 case 3: // input
-                    if ('0' == fullOpCode.charAt(2))
-                        result[result[index + 1]] = getInput();
-                    else result[index + 1] = getInput();
+                    if ('0' == fullOpCode.charAt(2)) result[result[index + 1]] = getInput().getAsInt();
+                    else result[index + 1] = getInput().getAsInt();
                     index += 2;
                     break;
                 case 4: // output
-                    final int output = param1; //result[result[index + 1]];
-                    setOutput(output);
+                    setOutput(param1);
                     index += 2;
                     break;
                 case 5: // jump-if-true
@@ -86,6 +76,15 @@ public class Program {
         }
     }
 
+    int param(final int offset, final String fullOpCode, final int opCodeIndex) {
+        try {
+            return ('0' == fullOpCode.charAt(opCodeIndex)) ? result[result[index + offset]] : result[index + offset];
+        }
+        catch (Exception ex) {
+            return opCodeIndex;
+        }
+    }
+
     /** Runs the given codes and returns the result. */
     public static int[] runProgram(final int... codes) {
         final Program program = new Program(codes);
@@ -94,8 +93,8 @@ public class Program {
     }
 
     /** Runs the given codes with the specified input and returns the run Program. */
-    public static Program runProgram(final Supplier<Integer> input, final int... codes) {
-        final Program program = new Program(input.get(), codes);
+    public static Program runProgram(final IntSupplier input, final int... codes) {
+        final Program program = new Program(input, codes);
         program.run();
         return program;
     }
