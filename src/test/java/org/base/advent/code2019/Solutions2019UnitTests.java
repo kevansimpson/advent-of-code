@@ -58,13 +58,23 @@ public class Solutions2019UnitTests {
     }
 
     /*
+         ##  #### #    #  # #
+        #  # #    #    #  # #
+        #    ###  #    #  # #
+        #    #    #    #  # #
+        #  # #    #    #  # #
+         ##  #    ####  ##  ####
+     */
     @Test
     public void verifyDay08() throws Exception {
         final Day08 day08 = new Day08();
-        assertEquals(5075, day08.solvePart1());
-        assertEquals(7310, day08.solvePart2());
+        assertEquals(1935, day08.solvePart1());
+        assertEquals(
+                "011001111010000100101000010010100001000010010100001000011100100001001010000100001000010000100101000010010100001000010010100000110010000111100110011110",
+                day08.solvePart2());
     }
 
+    /*
     @Test
     public void verifyDay09() throws Exception {
         final Day09 day09 = new Day09();
