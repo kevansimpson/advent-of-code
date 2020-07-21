@@ -1,6 +1,7 @@
 package org.base.advent.code2019;
 
 import org.base.advent.code2019.intCode.Program;
+import org.base.advent.util.Point;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -95,7 +96,7 @@ public class Examples2019UnitTests {
         assertEquals(4, day06.minimalTransfers("YOU", "SAN", input2));
     }
 
-    @Test
+//    @Test
     public void testDay07Examples() {
         final Day07 day07 = new Day07();
         final int[] codes1a = new int[] { 3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0 };
@@ -120,4 +121,39 @@ public class Examples2019UnitTests {
         final Day08 day08 = new Day08();
         assertEquals("0110", day08.drawImage("0222112222120000", 2, 2));
     }
+
+    @Test
+    public void testDay10Examples() {
+        final Day10 day10 = new Day10();
+        assertEquals(8, day10.maxAsteroids(".#..#", ".....", "#####", "....#", "...##"));
+        assertEquals(33, day10.maxAsteroids(
+                "......#.#.", "#..#.#....", "..#######.", ".#.#.###..", ".#..#.....",
+                "..#....#.#", "#..#....#.", ".##.#..###", "##...#..#.", ".#....####"));
+        assertEquals(35, day10.maxAsteroids(
+                "#.#...#.#.", ".###....#.", ".#....#...", "##.#.#.#.#", "....#.#.#.",
+                ".##..###.#", "..#...##..", "..##....##", "......#...", ".####.###."));
+        assertEquals(41, day10.maxAsteroids(
+                ".#..#..###", "####.###.#", "....###.#.", "..###.##.#", "##.##.#.#.",
+                "....###..#", "..#.#..#.#", "#..#.#.###", ".##...##.#", ".....#.#.."));
+        final String[] input = {
+                ".#..##.###...#######", "##.############..##.", ".#.######.########.#", ".###.#######.####.#.",
+                "#####.##.#.##.###.##", "..#####..#.#########", "####################", "#.####....###.#.#.##",
+                "##.#################", "#####.##.###..####..", "..######..##.#######", "####.##.####...##..#",
+                ".#####..#.######.###", "##...#.##########...", "#.##########.#######", ".####.#.###.###.#.##",
+                "....##.##.###..#####", ".#.#.###########.###", "#.#.#.#####.####.###", "###.##.####.##.#..##"};
+        assertEquals(210, day10.maxAsteroids(input));
+        // part 2
+//        System.out.println(Point.of(11, 13).angle(Point.of(0, 12)));
+//
+//        System.out.println(Point.of(11, 13).angle(Point.of(10, 13)));
+//        System.out.println(Point.of(11, 13).angle(Point.of(12, 13)));
+//        System.out.println(Point.of(11, 13).angle(Point.of(11, 14)));
+//        System.out.println(Point.of(11, 13).angle(Point.of(11, 12)));
+//        System.out.println(Point.of(11, 13).angle(Point.of(12, 1)));
+//        System.out.println(Point.of(11, 13).angle(Point.of(12, 2)));
+//        System.out.println(Point.of(11, 13).angle(Point.of(12, 8)));
+
+        assertEquals(Point.of(8,2), day10.vaporize(input));
+    }
+
 }

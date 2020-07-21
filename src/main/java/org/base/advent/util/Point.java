@@ -2,9 +2,8 @@ package org.base.advent.util;
 
 import lombok.EqualsAndHashCode;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -14,7 +13,9 @@ import java.util.function.Function;
  */
 @EqualsAndHashCode
 public class Point {
-    public static final Point ORIGIN = new Point(0, 0);
+    private static final Map<Integer, Map<Integer, Point>> flyweightPool = Collections.synchronizedMap(new TreeMap<>());
+
+    public static final Point ORIGIN = Point.of(0, 0);
     public static final BiFunction<Point, Point, Integer> MANHATTAN_DISTANCE =
             (a, b) -> Math.abs(b.x - a.x) + Math.abs(b.y - a.y);
 
@@ -38,25 +39,39 @@ public class Point {
     }
 
     public Point up(final int move) {
-        return new Point(x, y + move);
+        return Point.of(x, y + move);
     }
     public Point down(final int move) {
-        return new Point(x, y - move);
+        return Point.of(x, y - move);
     }
     public Point left(final int move) {
-        return new Point(x - move, y);
+        return Point.of(x - move, y);
     }
     public Point right(final int move) {
-        return new Point(x + move, y);
+        return Point.of(x + move, y);
     }
     public Point move(final int deltaX, final int deltaY) {
-        return new Point(x + deltaX, y + deltaY);
+        return Point.of(x + deltaX, y + deltaY);
+    }
+
+    public double angle(Point target) { // starts pointing up when cartesian graph is upside down
+        double angle = Math.toDegrees(Math.atan2(target.y - y, target.x - x)) + 90.0d;
+        return (angle < 0) ? angle + 360 : angle;
+    }
+
+    public BigDecimal distance(final Point point) {
+        final double dist = Math.hypot(Math.abs(point.y - y), Math.abs(point.x - x));
+//        System.out.println(this +" - "+ point +" = "+ dist);
+        return BigDecimal.valueOf(dist);
     }
 
     public int getManhattanDistance() {
-        return MANHATTAN_DISTANCE.apply(this, ORIGIN);
+        return getManhattanDistance(ORIGIN);
     }
 
+    public int getManhattanDistance(final Point point) {
+        return MANHATTAN_DISTANCE.apply(this, point);
+    }
 
     /**
      * Cardinal directional points in clockwise order, starting from directly up (12 o'clock position).
@@ -88,6 +103,11 @@ public class Point {
         surrounding.add(up(1).left(1));
 
         return surrounding;
+    }
+
+    public static Point of(final int x, final int y) {
+        Map<Integer, Point> column = flyweightPool.computeIfAbsent(y, key -> Collections.synchronizedMap(new TreeMap<>()));
+        return column.computeIfAbsent(x, row -> new Point(x, y));
     }
 
     public static Point point(final String commaDelimitedValues) {
