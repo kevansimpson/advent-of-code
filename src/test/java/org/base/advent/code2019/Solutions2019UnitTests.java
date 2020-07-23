@@ -50,11 +50,11 @@ public class Solutions2019UnitTests {
         assertEquals(349, day06.solvePart2());
     }
 
-//    @Test
-    public void verifyDay07() throws Exception {
-        final Day07 day07 = new Day07();
-        assertEquals(75228, day07.solvePart1());
-        assertEquals(1853, day07.solvePart2());
+    @Test
+    public void verifyDay07() {
+//        final Day07 day07 = new Day07();
+//        assertEquals(75228, day07.solvePart1());
+//        assertEquals(1853, day07.solvePart2());
     }
 
     /*
@@ -97,14 +97,16 @@ public class Solutions2019UnitTests {
         assertEquals(643, day11.solvePart1());
         assertEquals(1471, day11.solvePart2());
     }
+    */
 
     @Test
     public void verifyDay12() throws Exception {
         final Day12 day12 = new Day12();
-        assertEquals(152, day12.solvePart1());
-        assertEquals(186, day12.solvePart2());
+        assertEquals(9743, day12.solvePart1());
+//        assertEquals(288684633706728L, day12.solvePart2()); // 4s
     }
 
+    /*
     @Test
     public void verifyDay13() throws Exception {
         final Day13 day13 = new Day13();

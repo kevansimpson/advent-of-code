@@ -96,7 +96,7 @@ public class Examples2019UnitTests {
         assertEquals(4, day06.minimalTransfers("YOU", "SAN", input2));
     }
 
-//    @Test
+    @Test
     public void testDay07Examples() {
         final Day07 day07 = new Day07();
         final int[] codes1a = new int[] { 3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0 };
@@ -107,13 +107,13 @@ public class Examples2019UnitTests {
                 3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0 };
         assertEquals(65210, day07.calcThrust(false, new int [] {1,0,4,3,2}, codes1c));
         // part 2
-        final int[] codes2a = new int[] {
-                3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5 };
-        assertEquals(139629729, day07.calcThrust(true, new int [] {9,8,7,6,5}, codes2a));
-        final int[] codes2b = new int[] {
-                3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,-5,54,1105,1,12,1,53,54,53,
-                1008,54,0,55,1001,55,1,55,2,53,55,53,4,53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10 };
-        assertEquals(18216, day07.calcThrust(true, new int [] {9,7,8,5,6}, codes2b));
+//        final int[] codes2a = new int[] {
+//                3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5 };
+//        assertEquals(139629729, day07.calcThrust(true, new int [] {9,8,7,6,5}, codes2a));
+//        final int[] codes2b = new int[] {
+//                3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,-5,54,1105,1,12,1,53,54,53,
+//                1008,54,0,55,1001,55,1,55,2,53,55,53,4,53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10 };
+//        assertEquals(18216, day07.calcThrust(true, new int [] {9,7,8,5,6}, codes2b));
     }
 
     @Test
@@ -143,17 +143,19 @@ public class Examples2019UnitTests {
                 "....##.##.###..#####", ".#.#.###########.###", "#.#.#.#####.####.###", "###.##.####.##.#..##"};
         assertEquals(210, day10.maxAsteroids(input));
         // part 2
-//        System.out.println(Point.of(11, 13).angle(Point.of(0, 12)));
-//
-//        System.out.println(Point.of(11, 13).angle(Point.of(10, 13)));
-//        System.out.println(Point.of(11, 13).angle(Point.of(12, 13)));
-//        System.out.println(Point.of(11, 13).angle(Point.of(11, 14)));
-//        System.out.println(Point.of(11, 13).angle(Point.of(11, 12)));
-//        System.out.println(Point.of(11, 13).angle(Point.of(12, 1)));
-//        System.out.println(Point.of(11, 13).angle(Point.of(12, 2)));
-//        System.out.println(Point.of(11, 13).angle(Point.of(12, 8)));
-
         assertEquals(Point.of(8,2), day10.vaporize(input));
     }
 
+    @Test
+    public void testDay12Examples() {
+        final Day12 day12 = new Day12();
+        final List<String> input = Arrays.asList(
+                "<x=-1, y=0, z=2>", "<x=2, y=-10, z=-7>", "<x=4, y=-8, z=8>", "<x=3, y=5, z=-1>");
+        assertEquals(179, day12.totalEnergy(input, 10));
+        final List<String> input2 = Arrays.asList(
+                "<x=-8, y=-10, z=0>", "<x=5, y=5, z=10>", "<x=2, y=-7, z=3>", "<x=9, y=-8, z=-3>");
+        assertEquals(1940, day12.totalEnergy(input2, 100));
+        // part 2
+        assertEquals(2772, day12.completeOrbit(input));
+    }
 }
