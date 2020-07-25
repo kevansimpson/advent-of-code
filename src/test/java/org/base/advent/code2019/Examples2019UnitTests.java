@@ -192,4 +192,22 @@ public class Examples2019UnitTests {
 //        assertEquals(5586022L, day14.maximumFuel(large2));
 //        assertEquals(460664L, day14.maximumFuel(large3));
     }
+
+    @Test
+    public void testDay16Examples() {
+        final Day16 day16 = new Day16();
+        assertEquals("48226158", day16.phase("12345678"));
+        assertEquals("34040438", day16.phase("48226158"));
+        assertEquals("03415518", day16.phase("34040438"));
+        assertEquals("01029498", day16.phase("03415518"));
+        assertEquals("01029498", day16.transmit("12345678", 4));
+        assertEquals("24176176", day16.transmit("80871224585914546619083218645595", 100));
+        assertEquals("73745418", day16.transmit("19617804207202209144916044189917", 100));
+        assertEquals("52432133", day16.transmit("69317163492948606335995924319873", 100));
+//        // part 2
+        assertEquals("84462026", day16.realSignal("03036732577212944063491565474664"));
+        assertEquals("78725270", day16.realSignal("02935109699940807407585447034323"));
+        assertEquals("53553731", day16.realSignal("03081770884921959731165446850517"));
+    }
+
 }
