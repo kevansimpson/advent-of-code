@@ -113,14 +113,16 @@ public class Solutions2019UnitTests {
         assertEquals(1504, day13.solvePart1());
         assertEquals(3823370, day13.solvePart2());
     }
+    */
 
     @Test
     public void verifyDay14() throws Exception {
         final Day14 day14 = new Day14();
-        assertEquals(8194, day14.solvePart1());
-        assertEquals(1141, day14.solvePart2());
+        assertEquals(857266, day14.solvePart1());
+//        assertEquals(2144702, day14.solvePart2()); // 7s
     }
 
+    /*
     @Test
     public void verifyDay15() throws Exception {
         final Day15 day15 = new Day15();
