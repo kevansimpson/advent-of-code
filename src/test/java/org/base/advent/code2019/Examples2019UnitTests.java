@@ -204,10 +204,31 @@ public class Examples2019UnitTests {
         assertEquals("24176176", day16.transmit("80871224585914546619083218645595", 100));
         assertEquals("73745418", day16.transmit("19617804207202209144916044189917", 100));
         assertEquals("52432133", day16.transmit("69317163492948606335995924319873", 100));
-//        // part 2
+        // part 2
         assertEquals("84462026", day16.realSignal("03036732577212944063491565474664"));
         assertEquals("78725270", day16.realSignal("02935109699940807407585447034323"));
         assertEquals("53553731", day16.realSignal("03081770884921959731165446850517"));
     }
 
+
+    @Test
+    public void testDay18Examples() {
+        final Day18 day18 = new Day18();
+        final List<String> input = Arrays.asList("#########", "#b.A.@.a#", "#########");
+        assertEquals(8, day18.collectKeys(input, 10 ).getLeft());
+        final List<String> input2 = Arrays.asList("########################", "#f.D.E.e.C.b.A.@.a.B.c.#",
+                "######################.#", "#d.....................#", "########################");
+        assertEquals(86, day18.collectKeys(input2, 90).getLeft());
+        final List<String> input3 = Arrays.asList("########################", "#...............b.C.D.f#",
+                "#.######################", "#.....@.a.B.c.d.A.e.F.g#", "########################");
+        assertEquals(132, day18.collectKeys(input3, 136).getLeft());
+//        final List<String> input4 = Arrays.asList("#################", "#i.G..c...e..H.p#", "########.########",
+//                "#j.A..b...f..D.o#", "########@########", "#k.E..a...g..B.n#",
+//                "########.########", "#l.F..d...h..C.m#", "#################");
+//        assertEquals(136, day18.collectKeys(input4, 150).getLeft());
+        final List<String> input5 = Arrays.asList("########################", "#@..............ac.GI.b#",
+                "###d#e#f################", "###A#B#C################", "###g#h#i################", "########################");
+        assertEquals(81, day18.collectKeys(input5, 85).getLeft());
+        // part 2
+    }
 }
