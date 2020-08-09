@@ -151,8 +151,8 @@ public class Solutions2019UnitTests {
 
     @Test
     public void verifyDay18() throws Exception {
-//        final Day18 day18 = new Day18();
-//        assertEquals(7071L, day18.solvePart1());
+        final Day18 day18 = new Day18();
+        assertEquals(7071L, day18.solvePart1());
 //        assertEquals(8001, day18.solvePart2());
     }
 

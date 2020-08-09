@@ -2,12 +2,14 @@ package org.base.advent.code2019;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.Solution;
 import org.base.advent.util.Node;
-import org.base.advent.util.NodeContext;
 import org.base.advent.util.Point;
+import org.base.advent.util.Util;
 
 import java.io.IOException;
 import java.util.*;
@@ -95,6 +97,7 @@ import java.util.stream.Collectors;
  * <h2>Part 2</h2>
  *
  */
+@Slf4j
 public class Day18 implements Solution<List<String>> {
 
     @Override
@@ -104,7 +107,7 @@ public class Day18 implements Solution<List<String>> {
 
     @Override
     public Long solvePart1() throws Exception {
-        return collectKeys(getInput(), Integer.MAX_VALUE).getLeft();
+        return collectKeys(getInput(), Integer.MAX_VALUE);
     }
 
     @Override
@@ -124,107 +127,88 @@ public class Day18 implements Solution<List<String>> {
         3    #d.....................#
         4    ########################
      */
-    public Pair<Long, String[]> collectKeys(final List<String> input, final int ceiling) {
+    public long collectKeys(final List<String> input, final int ceiling) {
+        return collectKeys2(input, ceiling).getLeft().getDepth() - 1L;
+    }
+
+    public Pair<Node, String[]> collectKeys2(final List<String> input, final int ceiling) {
         final Vault vault = mapVault(input);
         vault.display();
 
-        final VaultContext context = new VaultContext(vault.getEntrance(), vault, new ArrayList<>(), new TreeSet<>());
-        context.getRecentlyVisited().add(vault.getEntrance());
+        Pair<Node, String[]> result = Pair.of(Node.createMaxNode(), null);
+        final List<List<String>> permutations = //List.of(List.of("a","f","e","d","c","b")); // ("a","b","c","d","e","f")
+                Util.permute(vault.getKeysToFind().keySet().toArray(new String[0]));
 
-        final Node<Point, VaultContext> entrance = new Node().setContext(context);
-        List<Node<Point, VaultContext>> nodeList = new ArrayList<>();
-        nodeList.add(entrance);
-        Node<Point, VaultContext> shortest = null;
+        keyPerm: for (final List<String> perm : permutations) {
+            result = runMaze(perm, vault, result);
+        }
 
-        int foo = 0;
-        while (!nodeList.isEmpty() && ++foo < ceiling) {
-            List<Node<Point, VaultContext>> nextNodes = new ArrayList<>();
-            for (final Node<Point, VaultContext> node : nodeList) {
-//                System.out.println(node.getDepth());
-                final List<Point> surrounding = node.getContext().getNext();
-//                System.out.println(node.getContext().getLocation() +" ==> "+ surrounding);
+        log.info("RESULT => "+ result);
+        return result;
+    }
+
+    Pair<Node, String[]> runMaze(final List<String> perm, final Vault vault, Pair<Node, String[]> result) {
+        log.debug(perm.toString());
+//        System.out.println(perm.toString());
+        log.warn("{}", perm);
+        List<Node<Point>> nodeList = new ArrayList<>();
+        int index = 0;
+        final Point start = vault.getEntrance(); // : vault.getKeysToFind().get(perm.get(index - 1));
+        nodeList.add(Node.createRootNode(start));
+//                Node<Point> shortest = Node.createMaxNode(); // key2key segment
+
+        forever: while (!nodeList.isEmpty()) {
+            List<Node<Point>> nextNodes = new ArrayList<>();
+            for (final Node<Point> node : nodeList) {
+                log.debug("depth = "+ node.getDepth());
+//                if (nodeList.size() > 10 || node.getDepth() > 60) continue;
+                final Set<Point> surrounding = node.getData().cardinal().stream()
+                        .filter(pt -> vault.isSafeSpace(node, pt))
+                        .collect(Collectors.toSet());
+                log.debug(node.getData() + " ==> " + surrounding);
 
                 for (final Point neighbor : surrounding) {
-                    final VaultContext newContext = node.getContext().newContext(neighbor);
-                    final Node<Point, VaultContext> next = node.add(newContext);
-
-//                    final Path newPath = path.copy().add(neighbor);
-                    final String space = node.getContext().getVault().getVault().get(neighbor);
-                    if (StringUtils.isAllLowerCase(space) && !newContext.getOpenGates().contains(space.toUpperCase())) {
-//                        System.out.println("KEY => "+ space +" @ "+ neighbor);
-                        newContext.getOpenGates().add(space.toUpperCase());
-                        newContext.getRecentlyVisited().clear();
-                        newContext.getRecentlyVisited().add(neighbor);
-                    }
-
-                    if (newContext.getOpenGates().size() == vault.keysToFind()) {
-                        System.out.println(next);
-                        if (shortest == null || next.getDepth() < shortest.getDepth()) {
-                            shortest = next;
+//                        final Node<Point> next = node.addChild(neighbor);
+                    final String space = vault.getVault().get(neighbor);
+                    if (isKey(space)) {
+                        log.debug("found key {}: {}", space, neighbor);//node.contains(n -> Objects.equals(n.getContext().get("KEY"), space)));
+                        if (StringUtils.equals(space, perm.get(index))) {
+                            final Node<Point> next = node.addChild(neighbor);
+                            next.getContext().put("KEY", space);
+                            index += 1;
+                            if (index >= perm.size()) {
+                                log.debug("solution => " + next);
+                                if (next.getDepth() < result.getLeft().getDepth())
+                                    result = Pair.of(next, perm.toArray(new String[0]));
+                                return result;
+                            }
+                            else {
+                                nodeList.remove(node);
+                                nodeList.forEach(n -> n.detach("Found Key: "+ space));
+                                nodeList.clear();
+                                nodeList.add(next);
+                                continue forever;
+                            }
                         }
-                        else next.detach();
+                        else if (//node.contains(n -> Objects.equals(n.getContext().get("KEY"), space))) {
+                                    perm.indexOf(space) < index) { // already collected key
+                            log.debug("moving past found key: {}", space);
+                            nextNodes.add(node.addChild(neighbor));
+                        }
+                        else log.debug("Wrong Key: {} @ {}", space, neighbor); // wrong key, which would be a different permutation
                     }
-                    else if ((shortest == null || next.getDepth() < shortest.getDepth()) && next.getDepth() < ceiling) {
-                        nextNodes.add(next);
-//                        System.out.println("adding => "+ next);
+                    else if (isDoor(space)) {
+                        if (perm.indexOf(space.toLowerCase()) < index) nextNodes.add(node.addChild(neighbor));
+                        else log.debug("No Key For Door: {}", space); // no key for this door
                     }
-                    else
-                        next.detach();
+                    else nextNodes.add(node.addChild(neighbor));
                 }
 
                 nodeList = nextNodes;
             }
         }
 
-        System.out.println("RESULT => "+ shortest);
-        return Pair.of(shortest.getDepth() - 1, null);
-    }
-
-    @Accessors(chain = true)
-    @Data
-    private static class VaultContext implements NodeContext<Point> {
-        private final Point location;
-        private final Vault vault;
-        private final List<Point> recentlyVisited;
-        private final Set<String> openGates;
-
-        public boolean hasVisited(final Point point) {
-            if (getRecentlyVisited() != null)
-                if (getRecentlyVisited().contains(point)) return true;
-
-//            if (get)
-            getRecentlyVisited().clear();
-            getRecentlyVisited().add(getLocation());
-
-            return false;
-        }
-
-        @Override
-        public List<Point> getNext() {
-            return getLocation().cardinal().stream()
-                    .filter(pt -> isOpenSpace(pt) && !getRecentlyVisited().contains(pt))
-                    .collect(Collectors.toList());
-        }
-
-        @Override
-        public VaultContext newContext(Point next) {
-            final List<Point> newVisited = new ArrayList<>(getRecentlyVisited());
-            newVisited.add(next);
-            return new VaultContext(next, getVault(), newVisited, new TreeSet<>(getOpenGates()));
-        }
-
-        public boolean isOpenSpace(final Point location) {
-            final String space = getVault().getVault().get(location);
-            switch (space) {
-                case GATE:
-                case OPEN:
-                    return true;
-                case WALL:
-                    return false;
-                default:
-                    return StringUtils.isAllLowerCase(space) || getOpenGates().contains(space);
-            }
-        }
+        return result;
     }
 
     /*   012345678
@@ -234,6 +218,7 @@ public class Day18 implements Solution<List<String>> {
      */
     Vault mapVault(final List<String> input) {
         final Map<Point, String> vault = new HashMap<>();
+        final Map<String, Point> keysToFind = new TreeMap<>();
         Point entrance = null;
         final int height = input.size();
         int width = -1;
@@ -246,10 +231,11 @@ public class Day18 implements Solution<List<String>> {
                 final String square = String.valueOf(row.charAt(x));
                 vault.put(point, square);
                 if (GATE.equals(square)) entrance = point;
+                else if (isKey(square)) keysToFind.put(square, point);
             }
         }
 
-        return new Vault(entrance, vault, height, width);
+        return new Vault(entrance, vault, height, width, keysToFind);
     }
 
     @Data
@@ -257,7 +243,7 @@ public class Day18 implements Solution<List<String>> {
         private final Point entrance;
         private final Map<Point, String> vault;
         private final int height, width;
-        private long keysToFind = 0L;
+        private final Map<String, Point> keysToFind;
 
         public void display() {
             for (int y = 0; y < height; y++) {
@@ -270,10 +256,40 @@ public class Day18 implements Solution<List<String>> {
             System.out.println();
         }
 
-        public long keysToFind() {
-            if (keysToFind == 0L)
-                keysToFind = getVault().values().stream().filter(StringUtils::isAllLowerCase).count();
-            return keysToFind;
+        public boolean isSafeSpace(final Node<Point> node, final Point neighbor) {
+            final String space = getVault().get(neighbor);
+            switch (space) {
+                case WALL: return false;
+                case GATE:
+                case OPEN: {
+                    if (node.getContext().get("KEY") != null) return true;
+//                    Node parent = node.getParent();
+//                    if (parent != null) {
+////                        final String ps = getVault().get(parent.getData());
+////                        if (isKey(ps)) return true;
+//                        log.debug("isSafeSpace => {} ==? {} ::: {}",
+//                                neighbor, parent.getData(), Objects.equals(neighbor, parent.getData()));
+//                        if (Objects.equals(neighbor, parent.getData())) return false;
+////                        parent = parent.getParent();
+//                    }
+////                    if (isKey(getVault().get(node.getData()))) return true;
+                } // fall through
+                default: // key | door
+                    boolean foo = !node.contains(
+                            n -> Objects.equals(n.getData(), neighbor), new Node.EarlyExit<>(
+                            n -> n.getContext().get("KEY") != null, () -> false
+                    ));
+                    log.debug("isSafeSpace for {} @ {}: {}", node.getData(), neighbor, foo);
+                    return foo;
+            }
         }
+    }
+
+    public static boolean isDoor(final String square) {
+        return StringUtils.isAllUpperCase(square);
+    }
+
+    public static boolean isKey(final String square) {
+        return StringUtils.isAllLowerCase(square);
     }
 }

@@ -215,20 +215,20 @@ public class Examples2019UnitTests {
     public void testDay18Examples() {
         final Day18 day18 = new Day18();
         final List<String> input = Arrays.asList("#########", "#b.A.@.a#", "#########");
-        assertEquals(8, day18.collectKeys(input, 10 ).getLeft());
+        assertEquals(8, day18.collectKeys(input, 10 ));
         final List<String> input2 = Arrays.asList("########################", "#f.D.E.e.C.b.A.@.a.B.c.#",
                 "######################.#", "#d.....................#", "########################");
-        assertEquals(86, day18.collectKeys(input2, 90).getLeft());
+        assertEquals(86, day18.collectKeys(input2, 90));
         final List<String> input3 = Arrays.asList("########################", "#...............b.C.D.f#",
                 "#.######################", "#.....@.a.B.c.d.A.e.F.g#", "########################");
-        assertEquals(132, day18.collectKeys(input3, 136).getLeft());
-//        final List<String> input4 = Arrays.asList("#################", "#i.G..c...e..H.p#", "########.########",
-//                "#j.A..b...f..D.o#", "########@########", "#k.E..a...g..B.n#",
-//                "########.########", "#l.F..d...h..C.m#", "#################");
-//        assertEquals(136, day18.collectKeys(input4, 150).getLeft());
+        assertEquals(132, day18.collectKeys(input3, 136));
+        final List<String> input4 = Arrays.asList("#################", "#i.G..c...e..H.p#", "########.########",
+                "#j.A..b...f..D.o#", "########@########", "#k.E..a...g..B.n#",
+                "########.########", "#l.F..d...h..C.m#", "#################");
+        assertEquals(136, day18.collectKeys(input4, 150));
         final List<String> input5 = Arrays.asList("########################", "#@..............ac.GI.b#",
                 "###d#e#f################", "###A#B#C################", "###g#h#i################", "########################");
-        assertEquals(81, day18.collectKeys(input5, 85).getLeft());
+        assertEquals(81, day18.collectKeys(input5, 85));
         // part 2
     }
 }
