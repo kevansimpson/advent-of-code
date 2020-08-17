@@ -1,5 +1,6 @@
 package org.base.advent.util;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.ToIntFunction;
@@ -16,6 +17,13 @@ public class Util {
 
     public static List<String[]> split(final String... input) {
         return Stream.of(input).map(str -> str.split(",")).collect(Collectors.toList());
+    }
+
+    public static BigInteger factorial(int n) {
+        BigInteger result = BigInteger.ONE;
+        for (int i = 2; i <= n; i++)
+            result = result.multiply(BigInteger.valueOf(i));
+        return result;
     }
 
     public static <T> List<List<T>> permute(T... set) {
