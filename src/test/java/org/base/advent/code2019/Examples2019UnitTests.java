@@ -225,10 +225,14 @@ public class Examples2019UnitTests {
         final List<String> input4 = Arrays.asList("#################", "#i.G..c...e..H.p#", "########.########",
                 "#j.A..b...f..D.o#", "########@########", "#k.E..a...g..B.n#",
                 "########.########", "#l.F..d...h..C.m#", "#################");
-        assertEquals(136, day18.collectKeys(input4, 150));
+//        assertEquals(136, day18.collectKeys(input4, 150));
+        assertEquals(136, day18.runSingleMaze(List.of(
+                "a","f","b","j","g","n","h","d","l","o","e","p","c","i","k","m"), input4));
         final List<String> input5 = Arrays.asList("########################", "#@..............ac.GI.b#",
                 "###d#e#f################", "###A#B#C################", "###g#h#i################", "########################");
-        assertEquals(81, day18.collectKeys(input5, 85));
+//        assertEquals(81, day18.collectKeys(input5, 85));
+        assertEquals(81, day18.runSingleMaze(List.of(
+                "a","c","f","i","d","g","b","e","h"), input5));
         // part 2
     }
 }

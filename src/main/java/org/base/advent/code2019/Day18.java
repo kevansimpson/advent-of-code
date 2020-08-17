@@ -8,12 +8,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.Solution;
 import org.base.advent.util.Node;
+import org.base.advent.util.PermIterator;
 import org.base.advent.util.Point;
 import org.base.advent.util.Util;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -119,96 +121,40 @@ public class Day18 implements Solution<List<String>> {
     private static final String OPEN = ".";
     private static final String WALL = "#";
 
-    /*                 11111111112222
-             012345678901234567890123
-        0    ########################
-        1    #f.D.E.e.C.b.A.@.a.B.c.#   Entrance @ (15,1)
-        2    ######################.#
-        3    #d.....................#
-        4    ########################
-     */
     public long collectKeys(final List<String> input, final int ceiling) {
         return collectKeys2(input, ceiling).getLeft().getDepth() - 1L;
     }
 
-    public Pair<Node, String[]> collectKeys2(final List<String> input, final int ceiling) {
+    public Pair<Node<Point>, String[]> collectKeys2(final List<String> input, final int ceiling) {
         final Vault vault = mapVault(input);
         vault.display();
 
-        Pair<Node, String[]> result = Pair.of(Node.createMaxNode(), null);
-        final List<List<String>> permutations = //List.of(List.of("a","f","e","d","c","b")); // ("a","b","c","d","e","f")
-                Util.permute(vault.getKeysToFind().keySet().toArray(new String[0]));
+        Pair<Node<Point>, String[]> result = Pair.of(Node.createMaxNode(), null);
+        final String[] keysToFind = vault.getKeysToFind().keySet().toArray(new String[0]);
 
-        keyPerm: for (final List<String> perm : permutations) {
-            result = runMaze(perm, vault, result);
+        final Set<String> unblockedKeys = Stream.of(keysToFind)
+                .map(key -> vault.runMaze(List.of(key), Pair.of(Node.createMaxNode(), null)))
+                .filter(nodePair -> !nodePair.getLeft().contains(n -> n.getContext().get("DOOR") != null))
+                .map(nodePair -> nodePair.getRight()[0])
+                .collect(Collectors.toSet());
+//        System.out.println(unblockedKeys);
+
+        final PermIterator<String> permIterator = new PermIterator<>(keysToFind);
+        for (final List<String> perm : permIterator) {
+//            System.out.println(perm);
+            if (unblockedKeys.contains(perm.get(0)))
+//            if (StringUtils.startsWith(perm.toString(), "[r, s, e, y, l, "))
+                result = vault.runMaze(perm, result);
         }
 
         log.info("RESULT => "+ result);
         return result;
     }
 
-    Pair<Node, String[]> runMaze(final List<String> perm, final Vault vault, Pair<Node, String[]> result) {
-        log.debug(perm.toString());
-//        System.out.println(perm.toString());
-        log.warn("{}", perm);
-        List<Node<Point>> nodeList = new ArrayList<>();
-        int index = 0;
-        final Point start = vault.getEntrance(); // : vault.getKeysToFind().get(perm.get(index - 1));
-        nodeList.add(Node.createRootNode(start));
-//                Node<Point> shortest = Node.createMaxNode(); // key2key segment
-
-        forever: while (!nodeList.isEmpty()) {
-            List<Node<Point>> nextNodes = new ArrayList<>();
-            for (final Node<Point> node : nodeList) {
-                log.debug("depth = "+ node.getDepth());
-//                if (nodeList.size() > 10 || node.getDepth() > 60) continue;
-                final Set<Point> surrounding = node.getData().cardinal().stream()
-                        .filter(pt -> vault.isSafeSpace(node, pt))
-                        .collect(Collectors.toSet());
-                log.debug(node.getData() + " ==> " + surrounding);
-
-                for (final Point neighbor : surrounding) {
-//                        final Node<Point> next = node.addChild(neighbor);
-                    final String space = vault.getVault().get(neighbor);
-                    if (isKey(space)) {
-                        log.debug("found key {}: {}", space, neighbor);//node.contains(n -> Objects.equals(n.getContext().get("KEY"), space)));
-                        if (StringUtils.equals(space, perm.get(index))) {
-                            final Node<Point> next = node.addChild(neighbor);
-                            next.getContext().put("KEY", space);
-                            index += 1;
-                            if (index >= perm.size()) {
-                                log.debug("solution => " + next);
-                                if (next.getDepth() < result.getLeft().getDepth())
-                                    result = Pair.of(next, perm.toArray(new String[0]));
-                                return result;
-                            }
-                            else {
-                                nodeList.remove(node);
-                                nodeList.forEach(n -> n.detach("Found Key: "+ space));
-                                nodeList.clear();
-                                nodeList.add(next);
-                                continue forever;
-                            }
-                        }
-                        else if (//node.contains(n -> Objects.equals(n.getContext().get("KEY"), space))) {
-                                    perm.indexOf(space) < index) { // already collected key
-                            log.debug("moving past found key: {}", space);
-                            nextNodes.add(node.addChild(neighbor));
-                        }
-                        else log.debug("Wrong Key: {} @ {}", space, neighbor); // wrong key, which would be a different permutation
-                    }
-                    else if (isDoor(space)) {
-                        if (perm.indexOf(space.toLowerCase()) < index) nextNodes.add(node.addChild(neighbor));
-                        else log.debug("No Key For Door: {}", space); // no key for this door
-                    }
-                    else nextNodes.add(node.addChild(neighbor));
-                }
-
-                nodeList = nextNodes;
-            }
-        }
-
-        return result;
+    public long runSingleMaze(final List<String> perm, final List<String> input) {
+        final Vault vault = mapVault(input);
+        vault.display();
+        return vault.runMaze(perm, Pair.of(Node.createMaxNode(), null)).getLeft().getDepth() - 1;
     }
 
     /*   012345678
@@ -256,7 +202,72 @@ public class Day18 implements Solution<List<String>> {
             System.out.println();
         }
 
-        public boolean isSafeSpace(final Node<Point> node, final Point neighbor) {
+        Pair<Node<Point>, String[]> runMaze(final List<String> perm, Pair<Node<Point>, String[]> result) {
+            log.debug(perm.toString());
+//        System.out.println(perm.toString());
+            log.warn("{}", perm);
+            List<Node<Point>> nodeList = new ArrayList<>();
+            int index = 0;
+            final Point start = getEntrance(); // : vault.getKeysToFind().get(perm.get(index - 1));
+            nodeList.add(Node.createRootNode(start));
+//                Node<Point> shortest = Node.createMaxNode(); // key2key segment
+
+            forever: while (!nodeList.isEmpty()) {
+                List<Node<Point>> nextNodes = new ArrayList<>();
+                for (final Node<Point> node : nodeList) {
+                    log.debug("depth = "+ node.getDepth());
+                    if (node.getDepth() < result.getLeft().getDepth()) {
+                        final Set<Point> surrounding = node.getData().cardinal().stream()
+                                .filter(pt -> isSafeSpace(node, pt))
+                                .collect(Collectors.toSet());
+                        log.debug(node.getData() + " ==> " + surrounding);
+
+                        for (final Point neighbor : surrounding) {
+                            final String space = getVault().get(neighbor);
+                            if (isKey(space)) {
+                                log.debug("found key {}: {}", space, neighbor);
+                                if (StringUtils.equals(space, perm.get(index))) {
+                                    final Node<Point> next = node.addChild(neighbor);
+                                    next.getContext().put("KEY", space);
+                                    index += 1;
+                                    if (index >= perm.size()) {
+                                        if (next.getDepth() < result.getLeft().getDepth()) {
+                                            log.debug("solution => {} @ {}", next, perm);
+                                            result = Pair.of(next, perm.toArray(new String[0]));
+                                            System.out.println("SOLUTION => " + result.getLeft()
+                                                    +" @ "+ ArrayUtils.toString(result.getRight()));
+
+                                        }
+                                        return result;
+                                    } else {
+                                        nodeList.remove(node);
+                                        nodeList.forEach(n -> n.detach("Found Key: " + space));
+                                        nodeList.clear();
+                                        nodeList.add(next);
+                                        continue forever;
+                                    }
+                                } else if (perm.indexOf(space) < index) { // already collected key
+                                    log.debug("moving past found key: {}", space);
+                                    nextNodes.add(node.addChild(neighbor));
+                                } else
+                                    log.debug("Wrong Key: {} @ {}", space, neighbor); // wrong key, which would be a different permutation
+                            } else if (isDoor(space)) {
+                                if (perm.indexOf(space.toLowerCase()) < index) {
+                                    final Node<Point> next = node.addChild(neighbor);
+                                    next.getContext().put("DOOR", space);
+                                    nextNodes.add(next);
+                                } else log.debug("No Key For Door: {}", space); // no key for this door
+                            } else nextNodes.add(node.addChild(neighbor));
+                        }
+                    }
+                }
+                nodeList = nextNodes;
+            }
+
+            return result;
+        }
+
+        boolean isSafeSpace(final Node<Point> node, final Point neighbor) {
             final String space = getVault().get(neighbor);
             switch (space) {
                 case WALL: return false;
