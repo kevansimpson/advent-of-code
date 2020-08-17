@@ -64,6 +64,11 @@ public class Node<T> {
     }
 
     @Override
+    public boolean equals(Object foo) {
+        return super.equals(foo);
+    }
+
+    @Override
     public String toString() {
         return String.format("Node[%s @ %d w/ %d kids]", getData(), getDepth(), getChildren().size());
     }
