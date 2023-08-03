@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -17,6 +18,17 @@ public class Util {
 
     public static List<String[]> split(final String... input) {
         return Stream.of(input).map(str -> str.split(",")).collect(Collectors.toList());
+    }
+
+    // h/t https://www.baeldung.com/java-list-split
+    public static List<List<String>> splitByBlankLine(List<String> lines) {
+        int[] indexes = // of blank lines
+                Stream.of(IntStream.of(-1), IntStream.range(0, lines.size())
+                                .filter(i -> lines.get(i).isBlank()), IntStream.of(lines.size()))
+                        .flatMapToInt(s -> s).toArray();
+        return IntStream.range(0, indexes.length - 1)
+                .mapToObj(i -> lines.subList(indexes[i] + 1, indexes[i + 1]))
+                .collect(Collectors.toList());
     }
 
     public static BigInteger factorial(int n) {
