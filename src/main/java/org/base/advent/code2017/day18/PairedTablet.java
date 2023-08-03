@@ -26,9 +26,14 @@ public class PairedTablet extends Tablet {
      * @param register The register of X
      */
     @Override
-    public void listen(final String register) throws Exception {
-        ++sentCount;
-        getPair().getQueue().put(get(register));
+    public void listen(final String register) {
+        try {
+            ++sentCount;
+            getPair().getQueue().put(get(register));
+        }
+        catch (InterruptedException ex) {
+            throw new RuntimeException("Listen interrupted @ "+ register, ex);
+        }
     }
 
     /**
@@ -41,10 +46,11 @@ public class PairedTablet extends Tablet {
     @Override
     public void receive(final String register) {
         try {
+            //noinspection DataFlowIssue
             set(register, getQueue().poll(50, TimeUnit.MILLISECONDS));
         }
         catch (final InterruptedException ex) {
-            throw new RuntimeException("Interrupted: "+ register +" ~ "+ getQueue());
+            throw new RuntimeException("Receive interrupted @ "+ register +" ~ "+ getQueue());
         }
     }
 }

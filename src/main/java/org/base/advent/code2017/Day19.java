@@ -1,69 +1,36 @@
 package org.base.advent.code2017;
 
 import org.apache.commons.lang3.StringUtils;
-import org.base.advent.util.Point;
 import org.base.advent.Solution;
+import org.base.advent.util.Point;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-
 /**
- * <h2>Part 1</h2>
- * Somehow, a network packet got lost and ended up here. It's trying to follow a routing diagram (your puzzle input),
- * but it's confused about where to go.
- *
- * Its starting point is just off the top of the diagram. Lines (drawn with |, -, and +) show the path it needs to
- * take, starting by going down onto the only line connected to the top of the diagram. It needs to follow this path
- * until it reaches the end (located somewhere within the diagram) and stop there.
- *
- * Sometimes, the lines cross over each other; in these cases, it needs to continue going the same direction, and only
- * turn left or right when there's no other option. In addition, someone has left letters on the line; these also don't
- * change its direction, but it can use them to keep track of where it's been. For example:
- * <pre>
- *     |
- *     |  +--+
- *     A  |  C
- * F---|----E|--+
- *     |  |  |  D
- *     +B-+  +--+
- * </pre>
- *
- * Given this diagram, the packet needs to take the following path:
- *
- *  - Starting at the only line touching the top of the diagram, it must go down, pass through A, and continue
- *          onward to the first +.
- *  - Travel right, up, and right, passing through B in the process.
- *  - Continue down (collecting C), right, and up (collecting D).
- *  - Finally, go all the way left through E and stopping at F.
- *
- * Following the path to the end, the letters it sees on its path are ABCDEF.
- *
- * The little packet looks up at you, hoping you can help it find the way. What letters will it see (in the order it would
- * see them) if it follows the path? (The routing diagram is very wide; make sure you view it without line wrapping.)
- *
- * <h2>Part 2</h2>
- *
+ * <a href="https://adventofcode.com/2017/day/19">Day 19</a>
  */
 public class Day19 implements Solution<List<Point>> {
 
     private Map<Point, String> grid;
 
     @Override
-    public List<Point> getInput() throws IOException {
+    public List<Point> getInput(){
         final List<String> input = readLines("/2017/input19.txt");
         grid = buildGrid(input);
         return followPath(grid);
     }
 
     @Override
-    public Object solvePart1() throws Exception {
+    public Object solvePart1() {
         return toLetters(getInput(), grid);
     }
 
     @Override
-    public Object solvePart2() throws Exception {
+    public Object solvePart2() {
         return getInput().size();
     }
 
@@ -117,6 +84,7 @@ public class Day19 implements Solution<List<Point>> {
                 .replaceAll("\\+", "");
     }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public Point findStart(final Map<Point, String> grid) {
         return grid.entrySet().stream().filter(e -> e.getKey().y == 0).findFirst().get().getKey();
     }

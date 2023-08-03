@@ -5,56 +5,28 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * <h2>Part 1</h2>
- * Santa's Accounting-Elves need help balancing the books after a recent order. Unfortunately, their accounting
- * software uses a peculiar storage format. That's where you come in.
- *
- * They have a JSON document which contains a variety of things: arrays ([1,2,3]), objects ({"a":1, "b":2}), numbers,
- * and strings. Your first job is to simply find all of the numbers throughout the document and add them together.
- *
- * For example:
- *  - [1,2,3] and {"a":2,"b":4} both have a sum of 6.
- *  - [[[3]]] and {"a":{"b":4},"c":-1} both have a sum of 3.
- *  - {"a":[-1,1]} and [-1,{"a":1}] both have a sum of 0.
- *  - [] and {} both have a sum of 0.
- *
- * You will not encounter any strings containing numbers.
- *
- * What is the sum of all numbers in the document?
- *
- * <h2>Part 2</h2>
- * Uh oh - the Accounting-Elves have realized that they double-counted everything red.
- *
- * Ignore any object (and all of its children) which has any property with the value "red". Do this only for
- * objects ({...}), not arrays ([...]).
- *
- *  - [1,2,3] still has a sum of 6.
- *  - [1,{"c":"red","b":2},3] now has a sum of 4, because the middle object is ignored.
- *  - {"d":"red","e":[1,2,3,4],"f":5} now has a sum of 0, because the entire structure is ignored.
- *  - [1,"red",5] has a sum of 6, because "red" in an array has no effect.
- *
+ * <a href="https://adventofcode.com/2015/day/12">Day 12</a>
  */
 public class Day12 implements Solution<String> {
 
-    private static Pattern numbers = Pattern.compile("([-\\d]+)");
+    private static final Pattern numbers = Pattern.compile("([-\\d]+)");
 
     @Override
-    public String getInput() throws IOException {
+    public String getInput(){
         return readInput("/2015/input12.txt");
     }
 
     @Override
-    public Object solvePart1() throws Exception {
+    public Object solvePart1() {
         return sumNumbers(getInput());
     }
 
     @Override
-    public Object solvePart2() throws Exception {
+    public Object solvePart2() {
         return sumJson(getInput());
     }
 
@@ -69,9 +41,14 @@ public class Day12 implements Solution<String> {
         return sum;
     }
 
-    public int sumJson(final String input) throws Exception {
-        final JSONParser parser = new JSONParser();
-        return sum((JSONObject) parser.parse(input));
+    public int sumJson(final String input) {
+        try {
+            final JSONParser parser = new JSONParser();
+            return sum((JSONObject) parser.parse(input));
+        }
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     protected int sum(final JSONObject obj) {

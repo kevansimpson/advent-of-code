@@ -350,7 +350,7 @@ public class Examples2017UnitTests {
     }
 
     @Test
-    public void testDay18Examples() throws Exception {
+    public void testDay18Examples() {
         final Day18 day18 = new Day18();
         final List<String> instructions = Arrays.asList(
                 "set a 1", "add a 2", "mul a a", "mod a 5", "snd a",

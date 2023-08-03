@@ -33,18 +33,18 @@ public class Examples2016UnitTests {
     }
 
     @Test
-    public void testDay03Examples() throws Exception {
+    public void testDay03Examples() {
         final Day03 day03 = new Day03();
         assertFalse(day03.validTriangle(5, 10, 25));
     }
 
 //    @Test
-//    public void testDay04Examples() throws Exception {
+//    public void testDay04Examples() {
 //        final Day04 day04 = new Day04();
 //    }
 //
 //    @Test
-//    public void testDay05Examples() throws Exception {
+//    public void testDay05Examples() {
 //        final Day05 day05 = new Day05();
 //    }
 }

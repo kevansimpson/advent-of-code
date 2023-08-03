@@ -41,7 +41,7 @@ public interface Helpers {
 
     /** Sorts characters in specified string. */
     default String sortString(final String input) {
-        final char tempArray[] = input.toCharArray();
+        final char[] tempArray = input.toCharArray();
         Arrays.sort(tempArray);
         return new String(tempArray);
     }
@@ -57,6 +57,6 @@ public interface Helpers {
     default void debug(final String message, final Object... args) {
         if (debug())
             //noinspection UseOfSystemOutOrSystemErr
-            System.out.println(String.format(message, args));
+            System.out.printf(message + "%n", args);
     }
 }

@@ -45,7 +45,7 @@ public class Examples2018UnitTests {
     }
 
     @Test
-    public void testDay03Examples() throws Exception {
+    public void testDay03Examples() {
         final Day03 day03 = new Day03();
         final Day03.Claim claim = day03.toClaim("#123 @ 3,2: 5x4");
         assertEquals(123, claim.getId());
@@ -62,7 +62,7 @@ public class Examples2018UnitTests {
     }
 
     @Test
-    public void testDay04Examples() throws Exception {
+    public void testDay04Examples() {
         final Day04 day04 = new Day04();
         final List<String> input = Arrays.asList(
                 "[1518-11-01 00:00] Guard #10 begins shift",

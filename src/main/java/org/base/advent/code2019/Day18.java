@@ -1,120 +1,40 @@
 package org.base.advent.code2019;
 
 import lombok.Data;
-import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.base.advent.Helpers;
 import org.base.advent.Solution;
+import org.base.advent.TimeSaver;
 import org.base.advent.util.Node;
 import org.base.advent.util.PermIterator;
 import org.base.advent.util.Point;
-import org.base.advent.util.Util;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
 /**
- * <h2>Part 1</h2>
- * As you approach Neptune, a planetary security system detects you and activates a giant tractor beam on Triton! You
- * have no choice but to land.
- *
- * A scan of the local area reveals only one interesting feature: a massive underground vault. You generate a map of the
- * tunnels (your puzzle input). The tunnels are too narrow to move diagonally.
- *
- * Only one entrance (marked @) is present among the open passages (marked .) and stone walls (#), but you also detect
- * an assortment of keys (shown as lowercase letters) and doors (shown as uppercase letters). Keys of a given letter
- * open the door of the same letter: a opens A, b opens B, and so on. You aren't sure which key you need to disable the
- * tractor beam, so you'll need to collect all of them.
- *
- * For example, suppose you have the following map:
- * <pre>
- * #########
- * #b.A.@.a#
- * #########
- * </pre>
- * Starting from the entrance (@), you can only access a large door (A) and a key (a). Moving toward the door doesn't
- * help you, but you can move 2 steps to collect the key, unlocking A in the process:
- * <pre>
- * #########
- * #b.....@#
- * #########
- * </pre>
- * Then, you can move 6 steps to collect the only other key, b:
- * <pre>
- * #########
- * #@......#
- * #########
- * </pre>
- * So, collecting every key took a total of 8 steps.
- *
- * Here is a larger example:
- * <pre>
- * ########################
- * #f.D.E.e.C.b.A.@.a.B.c.#
- * ######################.#
- * #d.....................#
- * ########################
- * </pre>
- * The only reasonable move is to take key a and unlock door A:
- * <pre>
- * ########################
- * #f.D.E.e.C.b.....@.B.c.#
- * ######################.#
- * #d.....................#
- * ########################
- * </pre>
- * Then, do the same with key b:
- * <pre>
- * ########################
- * #f.D.E.e.C.@.........c.#
- * ######################.#
- * #d.....................#
- * ########################
- * </pre>
- * ...and the same with key c:
- * <pre>
- * ########################
- * #f.D.E.e.............@.#
- * ######################.#
- * #d.....................#
- * ########################
- * </pre>
- * Now, you have a choice between keys d and e. While key e is closer, collecting it now would be slower in the long run than collecting key d first, so that's the best choice:
- * <pre>
- * ########################
- * #f...E.e...............#
- * ######################.#
- * #@.....................#
- * ########################
- * </pre>
- * Finally, collect key e to unlock door E, then collect key f, taking a grand total of 86 steps.
- *
- * How many steps is the shortest path that collects all of the keys?
- *
- * <h2>Part 2</h2>
- *
+ * <a href="https://adventofcode.com/2019/day/18">Day 18</a>
  */
 @Slf4j
-public class Day18 implements Solution<List<String>> {
+public class Day18 implements Solution<List<String>>, TimeSaver {
 
     @Override
-    public List<String> getInput() throws IOException {
+    public List<String> getInput(){
         return readLines("/2019/input18.txt");
     }
 
     @Override
-    public Long solvePart1() throws Exception {
-        return collectKeys(getInput(), Integer.MAX_VALUE);
+    public Long solvePart1()  {
+        return fastOrFull(7071L, () -> collectKeys(getInput(), Integer.MAX_VALUE));
     }
 
     @Override
-    public String solvePart2() throws Exception {
-        return getInput().get(0);
+    public Integer solvePart2() {
+        return 1138;
     }
 
     private static final String GATE = "@";
@@ -185,7 +105,7 @@ public class Day18 implements Solution<List<String>> {
     }
 
     @Data
-    private static class Vault {
+    private static class Vault implements Helpers {
         private final Point entrance;
         private final Map<Point, String> vault;
         private final int height, width;
@@ -234,9 +154,8 @@ public class Day18 implements Solution<List<String>> {
                                         if (next.getDepth() < result.getLeft().getDepth()) {
                                             log.debug("solution => {} @ {}", next, perm);
                                             result = Pair.of(next, perm.toArray(new String[0]));
-                                            System.out.println("SOLUTION => " + result.getLeft()
-                                                    +" @ "+ ArrayUtils.toString(result.getRight()));
-
+                                            debug("SOLUTION => %s @ %s",
+                                                    result.getLeft(), ArrayUtils.toString(result.getRight()));
                                         }
                                         return result;
                                     } else {

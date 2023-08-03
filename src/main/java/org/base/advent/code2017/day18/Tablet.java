@@ -14,7 +14,7 @@ public class Tablet {
     private final Stack<Long> soundsPlayed = new Stack<>();
     private final List<Long> recoveredSounds = new ArrayList<>();
 
-    public long applyInstructions(final List<String> instructions) throws Exception {
+    public long applyInstructions(final List<String> instructions) {
         int i = 0;
         for (;i < instructions.size();) {
             if (!getRecoveredSounds().isEmpty())
@@ -72,7 +72,7 @@ public class Tablet {
         return getRegisters().getOrDefault(register, 0L);
     }
 
-    public void listen(final String register) throws Exception {
+    public void listen(final String register) {
         getSoundsPlayed().push(get(register));
     }
 
