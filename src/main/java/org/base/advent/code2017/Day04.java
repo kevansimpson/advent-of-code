@@ -1,5 +1,6 @@
 package org.base.advent.code2017;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.List;
@@ -11,11 +12,8 @@ import java.util.stream.Stream;
  * <a href="https://adventofcode.com/2017/day/04">Day 04</a>
  */
 public class Day04 implements Solution<List<String>> {
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2017/input04.txt");
-    }
+    @Getter
+    private final List<String> input =  readLines("/2017/input04.txt");
 
     @Override
     public Object solvePart1() {

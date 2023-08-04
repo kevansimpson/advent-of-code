@@ -8,17 +8,13 @@ import org.base.advent.util.Point;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * <a href="https://adventofcode.com/2019/day/03">Day 03</a>
  */
 public class Day03 implements Solution<List<String[]>> {
-
-    @Override
-    public List<String[]> getInput(){
-        return readCSVLines("/2019/input03.txt");
-    }
+    @Getter
+    private final List<String[]> input =  readCSVLines("/2019/input03.txt");
 
     @Override
     public Object solvePart1() {
@@ -55,7 +51,7 @@ public class Day03 implements Solution<List<String[]>> {
     }
 
     protected Pair<WirePath, WirePath> untangle(final List<String[]> jumbles) {
-        final List<WirePath> untangled = jumbles.stream().map(this::runWires).collect(Collectors.toList());
+        final List<WirePath> untangled = jumbles.stream().map(this::runWires).toList();
         return Pair.of(untangled.get(0), untangled.get(1));
     }
 

@@ -1,23 +1,21 @@
 package org.base.advent.code2017;
 
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
 import org.base.advent.util.Point;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * <a href="https://adventofcode.com/2017/day/14">Day 14</a>
  */
 public class Day14 implements Solution<List<String>> {
-
     private final Day10 day10 = new Day10();
 
-    @Override
-    public List<String> getInput(){
-        return readCachedLines("/2017/day14-bit-grid.txt",() -> listBits("uugsqrei"));
-    }
+    @Getter
+    private final List<String> input =
+            readCachedLines("/2017/day14-bit-grid.txt",() -> listBits("uugsqrei"));
 
     @Override
     public Object solvePart1() {
@@ -46,7 +44,7 @@ public class Day14 implements Solution<List<String>> {
     protected void buildRegion(final Point start, final Set<Point> grid) {
         if (grid.contains(start)) {
             grid.remove(start);
-            final List<Point> litKids = start.cardinal().stream().filter(grid::contains).collect(Collectors.toList());
+            final List<Point> litKids = start.cardinal().stream().filter(grid::contains).toList();
             for (final Point cardinal : litKids)
                 buildRegion(cardinal, grid);
         }

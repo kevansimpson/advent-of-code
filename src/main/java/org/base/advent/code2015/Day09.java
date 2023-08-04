@@ -1,5 +1,6 @@
 package org.base.advent.code2015;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.*;
@@ -17,11 +18,8 @@ public class Day09 implements Solution<List<String>> {
     private final Map<List<String>, Integer> distanceMap = new HashMap<>();
     private Map<String, Integer> jumpDistanceMap;
 
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2015/input09.txt");
-    }
+    @Getter
+    private final List<String> input = readLines("/2015/input09.txt");
 
     @Override
     public Object solvePart1() {
@@ -63,7 +61,7 @@ public class Day09 implements Solution<List<String>> {
     }
 
     private String key(final String loc1, final String loc2) {
-        return "JUMP-"+ Arrays.asList(loc1, loc2).toString();
+        return "JUMP-"+ Arrays.asList(loc1, loc2);
     }
 
     protected Map<String, Integer> buildDistanceMap(final List<String> directions) {

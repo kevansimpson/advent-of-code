@@ -1,5 +1,6 @@
 package org.base.advent.code2015;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.List;
@@ -14,10 +15,8 @@ public class Day17 implements Solution<List<String>> {
     private int fewestCans = Integer.MAX_VALUE;
     private int totalPermutationsWithFewest;
 
-    @Override
-    public List<String> getInput(){
-        return readLines("/2015/input17.txt");
-    }
+    @Getter
+    private final List<String> input = readLines("/2015/input17.txt");
 
     @Override
     public Object solvePart1() {

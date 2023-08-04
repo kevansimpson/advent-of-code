@@ -1,5 +1,6 @@
 package org.base.advent.code2015;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.*;
@@ -10,11 +11,8 @@ import java.util.regex.Pattern;
  * <a href="https://adventofcode.com/2015/day/14">Day 14</a>
  */
 public class Day14 implements Solution<List<String>> {
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2015/input14.txt");
-    }
+    @Getter
+    private final List<String> input = readLines("/2015/input14.txt");
 
     @Override
     public Object solvePart1() {
@@ -25,7 +23,6 @@ public class Day14 implements Solution<List<String>> {
     public Object solvePart2() {
         return winningPoints(getInput());
     }
-
 
     public int distanceTraveled(final List<String> input) {
         final Map<String, ReindeerSpeed> speedMap = buildSpeedMap(input);
@@ -85,7 +82,6 @@ public class Day14 implements Solution<List<String>> {
                 (Math.min((seconds % totalTime), speed.goTime) * speed.kmPerSec));
     }
 
-    
     private static final Pattern parser = Pattern.compile(
             "(.+)\\scan.+\\s(\\d+)\\skm.+\\s(\\d+)\\sseconds.*\\s(\\d+)\\s.+", Pattern.DOTALL);
 

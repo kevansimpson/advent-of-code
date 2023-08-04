@@ -1,21 +1,18 @@
 package org.base.advent.code2017;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 import org.base.advent.code2017.day18.PairedTablet;
 import org.base.advent.code2017.day18.Tablet;
 
 import java.util.List;
 
-
 /**
  * <a href="https://adventofcode.com/2017/day/18">Day 18</a>
  */
 public class Day18 implements Solution<List<String>> {
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2017/input18.txt");
-    }
+    @Getter
+    private final List<String> input =  readLines("/2017/input18.txt");
 
     @Override
     public Object solvePart1() {

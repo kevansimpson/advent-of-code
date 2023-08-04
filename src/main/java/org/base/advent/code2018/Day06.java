@@ -1,5 +1,6 @@
 package org.base.advent.code2018;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 import org.base.advent.util.Point;
 
@@ -14,13 +15,10 @@ import java.util.stream.Collectors;
  * <a href="https://www.reddit.com/r/adventofcode/comments/a3kr4r/2018_day_6_solutions/">Reddit</a>.
  */
 public class Day06 implements Solution<List<Point>> {
-
     private static final int MAX_XY_ID = -1138;
 
-    @Override
-    public List<Point> getInput(){
-        return toPoints(readLines("/2018/input06.txt"));
-    }
+    @Getter
+    private final List<Point> input =  toPoints(readLines("/2018/input06.txt"));
 
     @Override
     public Object solvePart1() {

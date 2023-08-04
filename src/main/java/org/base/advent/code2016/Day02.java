@@ -1,5 +1,6 @@
 package org.base.advent.code2016;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 import org.base.advent.util.Point;
 
@@ -12,11 +13,8 @@ import java.util.Map;
  * <a href="https://adventofcode.com/2016/day/02">Day 02</a>
  */
 public class Day02 implements Solution<List<String>> {
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2016/input02.txt");
-    }
+    @Getter
+    private final List<String> input =  readLines("/2016/input02.txt");
 
     @Override
     public Object solvePart1() {
@@ -38,21 +36,13 @@ public class Day02 implements Solution<List<String>> {
         for (final String instruction : list) {
             Point start = point;
             for (char dir : instruction.toCharArray()) {
-                Point next = null;
-                switch (dir) {
-                    case 'U':
-                        next = start.up(1);
-                        break;
-                    case 'D':
-                        next = start.down(1);
-                        break;
-                    case 'L':
-                        next = start.left(1);
-                        break;
-                    case 'R':
-                        next = start.right(1);
-                        break;
-                }
+                Point next = switch (dir) {
+                    case 'U' -> start.up(1);
+                    case 'D' -> start.down(1);
+                    case 'L' -> start.left(1);
+                    case 'R' -> start.right(1);
+                    default -> null;
+                };
 
                 if (buttonPad.containsKey(next))
                     start = next;

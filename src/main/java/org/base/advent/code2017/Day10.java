@@ -14,12 +14,8 @@ import java.util.stream.Stream;
  * <a href="https://adventofcode.com/2017/day/10">Day 10</a>
  */
 public class Day10 implements Solution<String> {
-
-    @Override
-    public String getInput(){
-        return readInput("/2017/input10.txt");
-    }
-
+    @Getter
+    private final String input =  readInput("/2017/input10.txt");
 
     @Override
     public Object solvePart1() {

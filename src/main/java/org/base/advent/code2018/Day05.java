@@ -1,22 +1,17 @@
 package org.base.advent.code2018;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Stack;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * <a href="https://adventofcode.com/2018/day/05">Day 05</a>
  */
 public class Day05 implements Solution<String> {
-
-    @Override
-    public String getInput(){
-        return readInput("/2018/input05.txt");
-    }
+    @Getter
+    private final String input =  readInput("/2018/input05.txt");
 
     @Override
     public Object solvePart1() {
@@ -67,7 +62,7 @@ public class Day05 implements Solution<String> {
     Map<Character, Character> buildReactionMap() {
         Map<Character, Character> rxns = new TreeMap<>();
 
-        for (int i = (int) 'A'; i <= (int) 'Z'; i++) {
+        for (int i = 'A'; i <= (int) 'Z'; i++) {
             final Character ucase = (char) i, lcase = (char) (i + 32);
             rxns.put(ucase, lcase);
             rxns.put(lcase, ucase);

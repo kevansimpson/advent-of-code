@@ -1,6 +1,7 @@
 package org.base.advent.code2019;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
@@ -15,11 +16,8 @@ import java.util.stream.Collectors;
  * <a href="https://adventofcode.com/2019/day/12">Day 12</a>
  */
 public class Day12 implements Solution<List<String>>, TimeSaver {
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2019/input12.txt");
-    }
+    @Getter
+    private final List<String> input =  readLines("/2019/input12.txt");
 
     @Override
     public Integer solvePart1() {

@@ -1,5 +1,6 @@
 package org.base.advent.code2019;
 
+import lombok.Getter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.base.advent.Solution;
 import org.base.advent.code2019.intCode.Amplifier;
@@ -13,13 +14,10 @@ import java.util.stream.Stream;
  * <a href="https://adventofcode.com/2019/day/07">Day 07</a>
  */
 public class Day07 implements Solution<int[]> {
-
     private final ExecutorService threadPool = Executors.newFixedThreadPool(5);
 
-    @Override
-    public int[] getInput(){
-        return readNumbersCSV("/2019/input07.txt");
-    }
+    @Getter
+    private final int[] input =  readNumbersCSV("/2019/input07.txt");
 
     @Override
     public Integer solvePart1() {
@@ -85,6 +83,7 @@ public class Day07 implements Solution<int[]> {
                     current.add(temp);
 
                     // - remove num[i] add
+                    //noinspection SuspiciousListRemoveInLoop
                     l.remove(j);
                 }
             }

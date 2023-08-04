@@ -1,5 +1,6 @@
 package org.base.advent.code2015;
 
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
 import org.base.advent.TimeSaver;
@@ -17,10 +18,11 @@ public class Day24 implements Solution<List<Integer>>, TimeSaver {
     private long lowestQE = Long.MAX_VALUE;
     private int expectedSum = -1;
 
-    @Override
-    public List<Integer> getInput(){
-        return readLines("/2015/input24.txt").stream().map(Integer::parseInt).collect(Collectors.toList());
-    }
+    @Getter
+    private final List<Integer> input = readLines("/2015/input24.txt").stream().map(Integer::parseInt).toList();
+    @Getter
+    private final List<Integer> input2 = readLines("/2015/input24.txt")
+            .stream().map(Integer::parseInt).collect(Collectors.toList());
 
     @Override
     public Object solvePart1() {
@@ -29,7 +31,7 @@ public class Day24 implements Solution<List<Integer>>, TimeSaver {
 
     @Override
     public Object solvePart2() {
-        return solveFor(getInput(), 4);
+        return solveFor(input2, 4);
     }
 
     public long solveFor(final List<Integer> containers, final int numCompartments) {

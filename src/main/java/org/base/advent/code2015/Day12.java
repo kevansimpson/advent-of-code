@@ -1,5 +1,6 @@
 package org.base.advent.code2015;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,13 +13,10 @@ import java.util.regex.Pattern;
  * <a href="https://adventofcode.com/2015/day/12">Day 12</a>
  */
 public class Day12 implements Solution<String> {
-
     private static final Pattern numbers = Pattern.compile("([-\\d]+)");
 
-    @Override
-    public String getInput(){
-        return readInput("/2015/input12.txt");
-    }
+    @Getter
+    private final String input = readInput("/2015/input12.txt");
 
     @Override
     public Object solvePart1() {
@@ -29,7 +27,6 @@ public class Day12 implements Solution<String> {
     public Object solvePart2() {
         return sumJson(getInput());
     }
-
 
     public int sumNumbers(final String input) {
         int sum = 0;
@@ -65,8 +62,7 @@ public class Day12 implements Solution<String> {
             else if (val instanceof JSONArray) {
                 sum += sum((JSONArray) val);
             }
-            else if (val instanceof String) {
-                final String str = (String) val;
+            else if (val instanceof String str) {
                 if ("red".equalsIgnoreCase(str))
                     return 0;
             }

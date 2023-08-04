@@ -1,5 +1,6 @@
 package org.base.advent.code2017;
 
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
 
@@ -11,11 +12,8 @@ import java.util.regex.Pattern;
  * <a href="https://adventofcode.com/2017/day/09">Day 09</a>
  */
 public class Day09 implements Solution<String> {
-
-    @Override
-    public String getInput(){
-        return readInput("/2017/input09.txt");
-    }
+    @Getter
+    private final String input =  readInput("/2017/input09.txt");
 
     @Override
     public Object solvePart1() {
@@ -51,13 +49,11 @@ public class Day09 implements Solution<String> {
 
         for (final char ch : input.toCharArray()) {
             switch (ch) {
-                case '{':
-                    ++level;
-                    break;
-                case '}':
+                case '{' -> ++level;
+                case '}' -> {
                     score += level;
                     --level;
-                    break;
+                }
             }
         }
 

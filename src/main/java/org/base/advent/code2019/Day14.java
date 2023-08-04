@@ -1,6 +1,6 @@
 package org.base.advent.code2019;
 
-import lombok.Data;
+import lombok.Getter;
 import org.base.advent.Solution;
 import org.base.advent.TimeSaver;
 
@@ -17,11 +17,8 @@ import java.util.stream.Stream;
  * <a href="https://adventofcode.com/2019/day/14">Day 14</a>
  */
 public class Day14 implements Solution<List<String>>, TimeSaver {
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2019/input14.txt");
-    }
+    @Getter
+    private final List<String> input = readLines("/2019/input14.txt");
 
     @Override
     public Long solvePart1() {
@@ -44,7 +41,7 @@ public class Day14 implements Solution<List<String>>, TimeSaver {
     long minimumOre(final Chem fuel, final Map<String, Rxn> reactions) {
         final Rxn result = new Rxn(fuel, new HashMap<>());
         ore(fuel, result, reactions);
-        return result.getElements().get("ORE").getQty();
+        return result.elements().get("ORE").qty();
     }
 
     private static final long FREE_FUEL = 1000000000000L;
@@ -80,33 +77,33 @@ public class Day14 implements Solution<List<String>>, TimeSaver {
     void ore(final Chem target, final Rxn result, final Map<String, Rxn> reactions) {
         final List<Chem> next = new ArrayList<>();
         Chem chem = target.copy(1);
-        final Rxn rxn = reactions.get(chem.getName());
+        final Rxn rxn = reactions.get(chem.name());
         if (rxn == null) {
             result.plus(chem.copy(1));
             return;
         }
 
-        if (result.getElements().containsKey(chem.getName())) {
-            final long alreadyHas = result.getElements().get(chem.getName()).getQty();
-            if (alreadyHas > chem.getQty()) {
+        if (result.elements().containsKey(chem.name())) {
+            final long alreadyHas = result.elements().get(chem.name()).qty();
+            if (alreadyHas > chem.qty()) {
                 result.minus(chem);
                 return;
-            } else if (alreadyHas == chem.getQty()) {
-                result.getElements().remove(chem.getName());
+            } else if (alreadyHas == chem.qty()) {
+                result.elements().remove(chem.name());
                 return;
             } else {
-                result.getElements().remove(chem.getName());
-                chem = new Chem(chem.getQty() - alreadyHas, chem.getName());
+                result.elements().remove(chem.name());
+                chem = new Chem(chem.qty() - alreadyHas, chem.name());
             }
         }
 
-        long factor = 1, qty = rxn.getResult().getQty();
-        while ((factor * qty) < chem.getQty()) factor++;
+        long factor = 1, qty = rxn.result().qty();
+        while ((factor * qty) < chem.qty()) factor++;
 
-        final long leftover = (factor * qty) - chem.getQty();
-        if (leftover > 0) result.plus(new Chem(leftover, chem.getName()));
+        final long leftover = (factor * qty) - chem.qty();
+        if (leftover > 0) result.plus(new Chem(leftover, chem.name()));
 
-        for (final Chem c : rxn.getElements().values())
+        for (final Chem c : rxn.elements().values())
             next.add(c.copy(factor));
 
         if (!next.isEmpty()) next.forEach(n -> ore(n, result, reactions));
@@ -118,8 +115,8 @@ public class Day14 implements Solution<List<String>>, TimeSaver {
                 .map(io -> new Rxn(chem(io[1]),
                     Stream.of(io[0].trim().split(",\\s+"))
                             .map(this::chem)
-                            .collect(Collectors.toMap(Chem::getName, Function.identity()))))
-                .collect(Collectors.toMap((Rxn rxn) -> rxn.getResult().getName(), Function.identity()));
+                            .collect(Collectors.toMap(Chem::name, Function.identity()))))
+                .collect(Collectors.toMap((Rxn rxn) -> rxn.result().name(), Function.identity()));
     }
 
     Chem chem(final String chem) {
@@ -127,36 +124,28 @@ public class Day14 implements Solution<List<String>>, TimeSaver {
         return new Chem(Long.parseLong(io[0]), io[1]);
     }
 
-    @Data
-    private static class Chem {
-        private final long qty;
-        private final String name;
-
+    public record Chem(long qty, String name) {
         public Chem copy(final long times) {
-            return new Chem(getQty() * times, getName());
+            return new Chem(qty() * times, name());
         }
 
         @Override
         public String toString() {
-            return String.format("%d %s", getQty(), getName());
+            return String.format("%d %s", qty(), name());
         }
     }
 
-    @Data
-    private static class Rxn {
-        private final Chem result;
-        private final Map<String, Chem> elements;
-
+    public record Rxn(Chem result, Map<String, Chem> elements) {
         public void plus(final Chem chem) {
-            final Chem current = elements.get(chem.getName());
-            if (current == null) elements.put(chem.getName(), chem);
-            else elements.put(chem.getName(), new Chem(current.getQty() + chem.getQty(), chem.getName()));
+            final Chem current = elements.get(chem.name());
+            if (current == null) elements.put(chem.name(), chem);
+            else elements.put(chem.name(), new Chem(current.qty() + chem.qty(), chem.name()));
         }
 
         public void minus(final Chem chem) {
-            final Chem current = elements.get(chem.getName());
+            final Chem current = elements.get(chem.name());
             if (current == null) throw new RuntimeException("minus "+ chem);
-            else elements.put(chem.getName(), new Chem(current.getQty() - chem.getQty(), chem.getName()));
+            else elements.put(chem.name(), new Chem(current.qty() - chem.qty(), chem.name()));
         }
     }
 }

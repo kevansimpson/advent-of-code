@@ -1,5 +1,6 @@
 package org.base.advent.code2015;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.List;
@@ -8,13 +9,10 @@ import java.util.List;
  * <a href="https://adventofcode.com/2015/day/18">Day 18</a>
  */
 public class Day18 implements Solution<List<String>> {
-
     private boolean[][] currentGrid;
 
-    @Override
-    public List<String> getInput(){
-        return readLines("/2015/input18.txt");
-    }
+    @Getter
+    private final List<String> input = readLines("/2015/input18.txt");
 
     @Override
     public Object solvePart1() {
@@ -116,5 +114,4 @@ public class Day18 implements Solution<List<String>> {
 
         return on;
     }
-
 }

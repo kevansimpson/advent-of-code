@@ -17,11 +17,8 @@ import java.util.stream.Collectors;
  * <a href="https://adventofcode.com/2017/day/07">Day 07</a>
  */
 public class Day07 implements Solution<List<String>> {
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2017/input07.txt");
-    }
+    @Getter
+    private final List<String> input =  readLines("/2017/input07.txt");
 
     @Override
     public Object solvePart1() {
@@ -58,7 +55,7 @@ public class Day07 implements Solution<List<String>> {
 
         for (final Tower tower : towers) {
             if (!tower.getSubs().isEmpty()) {
-                final List<Tower> subTowers = tower.getSubs().stream().map(towerMap::get).collect(Collectors.toList());
+                final List<Tower> subTowers = tower.getSubs().stream().map(towerMap::get).toList();
 
                 final int weight = subTowers.get(0).getTotalWeight(towerMap);
                 for (int i = 1; i < subTowers.size(); i++) {
@@ -82,7 +79,7 @@ public class Day07 implements Solution<List<String>> {
             }
             if (!hasChildren) {
                 final Tower offBalance = mismatchedWeight.get(i);
-                final List<Tower> children = offBalance.getSubs().stream().map(towerMap::get).collect(Collectors.toList());
+                final List<Tower> children = offBalance.getSubs().stream().map(towerMap::get).toList();
 //                System.out.println("\n\nUNBALANCED:\n"+ offBalance +"\n");
 //                for (Tower disc : children) {
 //                    System.out.println(disc.getTotalWeight(towerMap) + ": " + disc);

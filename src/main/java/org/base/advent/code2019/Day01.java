@@ -1,21 +1,17 @@
 package org.base.advent.code2019;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 import org.base.advent.util.Util;
 
-import java.io.IOException;
 import java.util.List;
-
 
 /**
  * <a href="https://adventofcode.com/2019/day/01">Day 01</a>
  */
 public class Day01 implements Solution<List<Integer>> {
-
-    @Override
-    public List<Integer> getInput(){
-        return readNumbers("/2019/input01.txt");
-    }
+    @Getter
+    private final List<Integer> input =  readNumbers("/2019/input01.txt");
 
     @Override
     public Object solvePart1() {
@@ -36,9 +32,8 @@ public class Day01 implements Solution<List<Integer>> {
     }
 
     // to find the fuel required for a module, take its mass, divide by three, round down, and subtract 2.
-    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     protected int calculate(final int mass) {
-        return (int) Math.floor(mass / 3) - 2;
+        return (int) (double) (mass / 3) - 2;
     }
 
     protected int accumulate(final int mass) {

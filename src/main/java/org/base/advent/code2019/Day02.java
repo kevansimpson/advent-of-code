@@ -1,5 +1,6 @@
 package org.base.advent.code2019;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 import org.base.advent.code2019.intCode.Program;
 
@@ -9,11 +10,8 @@ import java.util.Arrays;
  * <a href="https://adventofcode.com/2019/day/02">Day 02</a>
  */
 public class Day02 implements Solution<int[]> {
-
-    @Override
-    public int[] getInput(){
-        return readNumbersCSV("/2019/input02.txt");
-    }
+    @Getter
+    private final int[] input =  readNumbersCSV("/2019/input02.txt");
 
     @Override
     public Object solvePart1() {

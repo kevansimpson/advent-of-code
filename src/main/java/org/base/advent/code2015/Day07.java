@@ -1,5 +1,6 @@
 package org.base.advent.code2015;
 
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.base.advent.Solution;
@@ -14,15 +15,12 @@ import java.util.regex.Pattern;
  * <a href="https://adventofcode.com/2015/day/07">Day 07</a>
  */
 public class Day07 implements Solution<List<String>> {
-
     private static final Pattern parser = Pattern.compile("(.+)\\s->\\s([a-z]+)", Pattern.DOTALL);
 
     private final Map<String, Integer> valueMap = new HashMap<>();
 
-    @Override
-    public List<String> getInput(){
-        return readLines("/2015/input07.txt");
-    }
+    @Getter
+    private final List<String> input = readLines("/2015/input07.txt");
 
     @Override
     public Object solvePart1() {
@@ -33,7 +31,6 @@ public class Day07 implements Solution<List<String>> {
     public Object solvePart2() {
         return overrideSignalA(getInput());
     }
-
 
     public int signalA(final List<String> directions) {
         return calculate(buildCircuitMap(directions), "a");
@@ -72,34 +69,32 @@ public class Day07 implements Solution<List<String>> {
             }
             else {
                 switch (logic.length) {
-                    case 1: // literal value OR undocumented variable
+                    case 1 -> { // literal value OR undocumented variable
                         if (NumberUtils.isDigits(logic[0]))
                             valueMap.put(wire, Integer.parseInt(logic[0]));
                         else
                             valueMap.put(wire, calculate(circuitMap, logic[0]));
-                        break;
-                    case 2: // bitwise complement, the ~ operator is NOT appropriate
+                    }
+                    case 2 -> { // bitwise complement, the ~ operator is NOT appropriate
                         if (StringUtils.equals("NOT", logic[0]))
                             valueMap.put(wire, (65535 - calculate(circuitMap, logic[1])));
-                        break;
-                    case 3: // equation
+                    }
+                    case 3 -> { // equation
                         switch (logic[1]) {
-                            case "AND":
+                            case "AND" -> {
                                 if (NumberUtils.isDigits(logic[2]))
                                     valueMap.put(wire, calculate(circuitMap, logic[0]) & NumberUtils.toInt(logic[2]));
                                 else
                                     valueMap.put(wire, calculate(circuitMap, logic[0]) & calculate(circuitMap, logic[2]));
-                                break;
-                            case "OR":
-                                valueMap.put(wire, calculate(circuitMap, logic[0]) | calculate(circuitMap, logic[2]));
-                                break;
-                            case "LSHIFT":
-                                valueMap.put(wire, calculate(circuitMap, logic[0]) << NumberUtils.toInt(logic[2]));
-                                break;
-                            case "RSHIFT":
-                                valueMap.put(wire, calculate(circuitMap, logic[0]) >>> NumberUtils.toInt(logic[2]));
-                                break;
+                            }
+                            case "OR" ->
+                                    valueMap.put(wire, calculate(circuitMap, logic[0]) | calculate(circuitMap, logic[2]));
+                            case "LSHIFT" ->
+                                    valueMap.put(wire, calculate(circuitMap, logic[0]) << NumberUtils.toInt(logic[2]));
+                            case "RSHIFT" ->
+                                    valueMap.put(wire, calculate(circuitMap, logic[0]) >>> NumberUtils.toInt(logic[2]));
                         }
+                    }
                 }
             }
         }

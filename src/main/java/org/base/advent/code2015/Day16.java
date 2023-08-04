@@ -1,5 +1,6 @@
 package org.base.advent.code2015;
 
+import lombok.Getter;
 import org.apache.commons.lang3.ObjectUtils;
 import org.base.advent.Solution;
 
@@ -14,10 +15,8 @@ public class Day16 implements Solution<List<String>> {
 
     private static final String INDEX = "INDEX";
 
-    @Override
-    public List<String> getInput(){
-        return readLines("/2015/input16.txt");
-    }
+    @Getter
+    private final List<String> input = readLines("/2015/input16.txt");
 
     @Override
     public Object solvePart1() {
@@ -65,24 +64,23 @@ public class Day16 implements Solution<List<String>> {
     protected boolean satisfiesTicker(final Map<String, Integer> tickerTape, final Map<String, Integer> attr) {
         for (final String key : tickerTape.keySet()) {
             switch (key) {
-                case INDEX:
-                    continue;
-                case "trees":
-                case "cats":
+                case INDEX -> {
+                }
+                case "trees", "cats" -> {
                     if (attr.containsKey(key) && ObjectUtils.compare(tickerTape.get(key), attr.get(key)) >= 0) {
                         return false;
                     }
-                    break;
-                case "pomeranians":
-                case "goldfish":
+                }
+                case "pomeranians", "goldfish" -> {
                     if (attr.containsKey(key) && ObjectUtils.compare(tickerTape.get(key), attr.get(key)) <= 0) {
                         return false;
                     }
-                    break;
-                default:
+                }
+                default -> {
                     if (attr.containsKey(key) && !Objects.equals(tickerTape.get(key), attr.get(key))) {
                         return false;
                     }
+                }
             }
         }
         
@@ -92,16 +90,13 @@ public class Day16 implements Solution<List<String>> {
     protected boolean reverseTicker(final Map<String, Integer> attr, final Map<String, Integer> tickerTape) {
         for (final String key : attr.keySet()) {
             switch (key) {
-                case INDEX:
-                case "trees":
-                case "cats":
-                case "pomeranians":
-                case "goldfish":
-                    continue;
-                default:
+                case INDEX, "trees", "cats", "pomeranians", "goldfish" -> {
+                }
+                default -> {
                     if (tickerTape.containsKey(key) && !Objects.equals(attr.get(key), tickerTape.get(key))) {
                         return false;
                     }
+                }
             }
         }
         

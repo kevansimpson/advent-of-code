@@ -1,6 +1,7 @@
 package org.base.advent.code2019;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -21,11 +22,8 @@ import java.util.stream.Stream;
  */
 @Slf4j
 public class Day18 implements Solution<List<String>>, TimeSaver {
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2019/input18.txt");
-    }
+    @Getter
+    private final List<String> input = readLines("/2019/input18.txt");
 
     @Override
     public Long solvePart1()  {

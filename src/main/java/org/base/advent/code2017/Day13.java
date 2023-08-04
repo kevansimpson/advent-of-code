@@ -11,17 +11,12 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-
 /**
  * <a href="https://adventofcode.com/2017/day/13">Day 13</a>
  */
 public class Day13 implements Solution<List<String>> {
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2017/input13.txt");
-    }
-
+    @Getter
+    private final List<String> input =  readLines("/2017/input13.txt");
 
     @Override
     public Object solvePart1() {
@@ -32,7 +27,6 @@ public class Day13 implements Solution<List<String>> {
     public Object solvePart2() {
         return shortestDelay(getInput());
     }
-
 
     /**
      * &quot;For Part 2, I realized that I don't care where the scanners are when I get to their layer,

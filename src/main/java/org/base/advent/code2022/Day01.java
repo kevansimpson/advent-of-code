@@ -1,5 +1,6 @@
 package org.base.advent.code2022;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.Comparator;
@@ -11,11 +12,8 @@ import static org.base.advent.util.Util.splitByBlankLine;
  * <a href="https://adventofcode.com/2022/day/01">Day 01</a>
  */
 public class Day01 implements Solution<List<String>> {
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2022/input01.txt");
-    }
+    @Getter
+    private final List<String> input = readLines("/2022/input01.txt");
 
     private final List<List<String>> parsed = splitByBlankLine(getInput());
     private final List<Integer> chunked =

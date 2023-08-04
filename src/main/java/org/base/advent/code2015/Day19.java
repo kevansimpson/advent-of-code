@@ -1,5 +1,6 @@
 package org.base.advent.code2015;
 
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
 
@@ -13,10 +14,10 @@ public class Day19 implements Solution<List<String>> {
     private final Set<String> molecules = new HashSet<>();
     private String medicine;
 
-    @Override
-    public List<String> getInput(){
-        return readLines("/2015/input19.txt");
-    }
+    @Getter
+    private final List<String> input = readLines("/2015/input19.txt");
+    @Getter
+    private final List<String> input2 = readLines("/2015/input19.txt");
 
     @Override
     public Object solvePart1() {
@@ -25,7 +26,7 @@ public class Day19 implements Solution<List<String>> {
 
     @Override
     public Object solvePart2() {
-        return shortestPath(getInput());
+        return shortestPath(input2);
     }
     
     public int totalMolecules(final List<String> replacements) {

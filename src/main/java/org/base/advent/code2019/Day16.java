@@ -1,5 +1,6 @@
 package org.base.advent.code2019;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.stream.Stream;
@@ -8,11 +9,8 @@ import java.util.stream.Stream;
  * <a href="https://adventofcode.com/2019/day/16">Day 16</a>
  */
 public class Day16 implements Solution<String> {
-
-    @Override
-    public String getInput(){
-        return readInput("/2019/input16.txt");
-    }
+    @Getter
+    private final String input = readInput("/2019/input16.txt");
 
     @Override
     public String solvePart1() {
@@ -72,10 +70,10 @@ public class Day16 implements Solution<String> {
         if (position < iteration) return 0L;
         final long index = (position - iteration) % (4 * (iteration + 1L));
         final long actual = Math.floorDiv(index, (iteration + 1L));
-        switch ((int) actual) {
-            case 0: return 1;
-            case 2: return -1;
-            default: return 0;
-        }
+        return switch ((int) actual) {
+            case 0 -> 1;
+            case 2 -> -1;
+            default -> 0;
+        };
     }
 }

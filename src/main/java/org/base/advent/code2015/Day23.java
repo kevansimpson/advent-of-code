@@ -1,5 +1,6 @@
 package org.base.advent.code2015;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.HashMap;
@@ -10,11 +11,8 @@ import java.util.Map;
  * <a href="https://adventofcode.com/2015/day/23">Day 23</a>
  */
 public class Day23 implements Solution<List<String>> {
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2015/input23.txt");
-    }
+    @Getter
+    private final List<String> input = readLines("/2015/input23.txt");
 
     @Override
     public Object solvePart1() {
@@ -40,38 +38,36 @@ public class Day23 implements Solution<List<String>> {
 
         final String[] tokens = instructions.get(index).replace(",", "").split("\\s");
         switch (tokens[0]) {
-            case "hlf":
+            case "hlf" -> {
                 final Integer hlf = registers.get(tokens[1]);
                 registers.put(tokens[1], hlf / 2);
                 followInstructions(registers, instructions, index + 1);
-                break;
-            case "tpl":
+            }
+            case "tpl" -> {
                 final Integer tpl = registers.get(tokens[1]);
                 registers.put(tokens[1], tpl * 3);
                 followInstructions(registers, instructions, index + 1);
-                break;
-            case "inc":
+            }
+            case "inc" -> {
                 final Integer inc = registers.get(tokens[1]);
                 registers.put(tokens[1], inc + 1);
                 followInstructions(registers, instructions, index + 1);
-                break;
-            case "jmp":
-                followInstructions(registers, instructions, index + Integer.parseInt(tokens[1]));
-                break;
-            case "jie":
+            }
+            case "jmp" -> followInstructions(registers, instructions, index + Integer.parseInt(tokens[1]));
+            case "jie" -> {
                 final Integer jie = registers.get(tokens[1]);
                 if ((jie % 2) == 0)
                     followInstructions(registers, instructions, index + Integer.parseInt(tokens[2]));
                 else
                     followInstructions(registers, instructions, index + 1);
-                break;
-            case "jio":
+            }
+            case "jio" -> {
                 final Integer jio = registers.get(tokens[1]);
                 if (jio == 1)
                     followInstructions(registers, instructions, index + Integer.parseInt(tokens[2]));
                 else
                     followInstructions(registers, instructions, index + 1);
-                break;
+            }
         }
     }
 }

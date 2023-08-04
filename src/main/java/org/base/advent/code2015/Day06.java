@@ -1,5 +1,6 @@
 package org.base.advent.code2015;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 import org.base.advent.util.Point;
 
@@ -11,11 +12,8 @@ import java.util.regex.Pattern;
  * <a href="https://adventofcode.com/2015/day/06">Day 06</a>
  */
 public class Day06 implements Solution<List<String>> {
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2015/input06.txt");
-    }
+    @Getter
+    private final List<String> input = readLines("/2015/input06.txt");
 
     @Override
     public Object solvePart1() {
@@ -45,15 +43,9 @@ public class Day06 implements Solution<List<String>> {
                 for (int x = start.x; x <= end.x; x++) {
                     for (int y = start.y; y <= end.y; y++) {
                         switch (cmd) {
-                            case on:
-                                lightGrid[x][y] = true;
-                                break;
-                            case off:
-                                lightGrid[x][y] = false;
-                                break;
-                            case toggle:
-                                lightGrid[x][y] = !lightGrid[x][y];
-                                break;
+                            case on -> lightGrid[x][y] = true;
+                            case off -> lightGrid[x][y] = false;
+                            case toggle -> lightGrid[x][y] = !lightGrid[x][y];
                         }
                     }
                 }
@@ -87,15 +79,9 @@ public class Day06 implements Solution<List<String>> {
                     for (int y = start.y; y <= end.y; y++) {
                         final int value = lightGrid[x][y];
                         switch (cmd) {
-                            case on:
-                                lightGrid[x][y] = value + 1;
-                                break;
-                            case off:
-                                lightGrid[x][y] = Math.max(value - 1, 0);
-                                break;
-                            case toggle:
-                                lightGrid[x][y] = value + 2;
-                                break;
+                            case on -> lightGrid[x][y] = value + 1;
+                            case off -> lightGrid[x][y] = Math.max(value - 1, 0);
+                            case toggle -> lightGrid[x][y] = value + 2;
                         }
                     }
                 }

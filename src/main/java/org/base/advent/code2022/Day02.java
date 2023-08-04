@@ -1,5 +1,6 @@
 package org.base.advent.code2022;
 
+import lombok.Getter;
 import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.Solution;
 
@@ -9,14 +10,11 @@ import java.util.List;
  * <a href="https://adventofcode.com/2022/day/02">Day 02</a>
  */
 public class Day02 implements Solution<List<String>> {
+    @Getter
+    private final List<String> input = readLines("/2022/input02.txt");
 
     private final List<Pair<Integer, Integer>> pairs =
             getInput().stream().map(Day02::score).toList();
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2022/input02.txt");
-    }
 
     @Override
     public Object solvePart1() {

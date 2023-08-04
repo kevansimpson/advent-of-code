@@ -1,5 +1,6 @@
 package org.base.advent.code2019;
 
+import lombok.Getter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
@@ -7,16 +8,12 @@ import org.base.advent.Solution;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-
 /**
  * <a href="https://adventofcode.com/2019/day/08">Day 08</a>
  */
 public class Day08 implements Solution<String> {
-
-    @Override
-    public String getInput(){
-        return readInput("/2019/input08.txt");
-    }
+    @Getter
+    private final String input =  readInput("/2019/input08.txt");
 
     @Override
     public Integer solvePart1() {

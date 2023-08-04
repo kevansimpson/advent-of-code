@@ -1,24 +1,21 @@
 package org.base.advent.code2017;
 
+import lombok.Getter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.base.advent.Solution;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * <a href="https://adventofcode.com/2017/day/16">Day 16</a>
  */
 public class Day16 implements Solution<List<String>> {
-
     private static final int BILLION = 1000000000;
 
-    @Override
-    public List<String> getInput(){
-        return Stream.of(readInput("/2017/input16.txt").split(",")).collect(Collectors.toList());
-    }
+    @Getter
+    private final List<String> input =  Stream.of(readInput("/2017/input16.txt").split(",")).toList();
 
     @Override
     public Object solvePart1() {
@@ -49,20 +46,17 @@ public class Day16 implements Solution<List<String>> {
         final int len = programs.length;
 
         for (final String step : steps) {
-            switch (step.substring(0, 1)) {
-                case "s":   // sX
-                    programs = spin(programs, len, Integer.parseInt(step.substring(1)));
-                    break;
-                case "x":   // xA/B
-                    programs = exchange(programs,
-                            Stream.of(step.substring(1).split("/")).mapToInt(Integer::parseInt).toArray());
-                    break;
-                case "p":   // pA/B
-                    programs = partner(programs, step.substring(1).split("/"));
-                    break;
-                default:
-                    throw new RuntimeException("Funky Step: "+ step);
-            }
+            programs = switch (step.substring(0, 1)) {
+                case "s" ->   // sX
+                        spin(programs, len, Integer.parseInt(step.substring(1)));
+                case "x" ->   // xA/B
+                        exchange(programs,
+                                Stream.of(step.substring(1).split("/"))
+                                        .mapToInt(Integer::parseInt).toArray());
+                case "p" ->   // pA/B
+                        partner(programs, step.substring(1).split("/"));
+                default -> throw new RuntimeException("Funky Step: " + step);
+            };
         }
 
         return new String(programs);

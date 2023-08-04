@@ -1,5 +1,6 @@
 package org.base.advent.code2018;
 
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.base.advent.Solution;
@@ -17,10 +18,8 @@ public class Day02 implements Solution<List<String>> {
         none, two, three, both
     }
 
-    @Override
-    public List<String> getInput(){
-        return readLines("/2018/input02.txt");
-    }
+    @Getter
+    private final List<String> input =  readLines("/2018/input02.txt");
 
     @Override
     public Object solvePart1() {
@@ -54,16 +53,15 @@ public class Day02 implements Solution<List<String>> {
         final int[] cksum = new int[2];
         input.stream().map(this::countPairsAndTriples).forEach(match -> {
             switch (match) {
-                case two:
-                    cksum[0] += 1; break;
-                case three:
-                    cksum[1] += 1; break;
-                case both:
+                case two -> cksum[0] += 1;
+                case three -> cksum[1] += 1;
+                case both -> {
                     cksum[0] += 1;
                     cksum[1] += 1;
-                    break;
-                default:
-                    // nothing
+                }
+                default -> {
+                }
+                // nothing
             }
         });
 

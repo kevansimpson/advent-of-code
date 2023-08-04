@@ -4,7 +4,6 @@ import lombok.Getter;
 import org.base.advent.Solution;
 import org.base.advent.util.Point;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,11 +13,8 @@ import java.util.List;
  * <a href="https://adventofcode.com/2016/day/01">Day 01</a>
  */
 public class Day01 implements Solution<List<String>> {
-
-    @Override
-    public List<String> getInput(){
-        return Arrays.asList(readInput("/2016/input01.txt").split("\\s*,\\s*"));
-    }
+    @Getter
+    private final List<String> input =  Arrays.asList(readInput("/2016/input01.txt").split("\\s*,\\s*"));
 
     @Override
     public Object solvePart1() {
@@ -51,14 +47,12 @@ public class Day01 implements Solution<List<String>> {
         }
 
         public Dir next(final boolean goLeft) {
-            switch (this) {
-                case up: return goLeft ? left : right;
-                case left: return goLeft ? down : up;
-                case down: return goLeft ? right : left;
-                case right: return goLeft ? up : down;
-                default:
-                    throw new IllegalArgumentException(this.toString());
-            }
+            return switch (this) {
+                case up -> goLeft ? left : right;
+                case left -> goLeft ? down : up;
+                case down -> goLeft ? right : left;
+                case right -> goLeft ? up : down;
+            };
         }
     }
 

@@ -1,5 +1,6 @@
 package org.base.advent.code2019;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 import org.base.advent.util.Point;
 
@@ -10,11 +11,8 @@ import java.util.stream.Collectors;
  * <a href="https://adventofcode.com/2019/day/10">Day 10</a>
  */
 public class Day10 implements Solution<String[]> {
-
-    @Override
-    public String[] getInput(){
-        return readLines("/2019/input10.txt").toArray(new String[36]);
-    }
+    @Getter
+    private final String[] input = readLines("/2019/input10.txt").toArray(new String[36]);
 
     @Override
     public Integer solvePart1() {

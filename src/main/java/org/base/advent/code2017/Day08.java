@@ -1,5 +1,6 @@
 package org.base.advent.code2017;
 
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
 
@@ -13,13 +14,10 @@ import java.util.Map;
  * <a href="https://adventofcode.com/2017/day/08">Day 08</a>
  */
 public class Day08 implements Solution<List<String>> {
-
     public static final String HIGHEST = "highestValueDuringInstructionProcessing";
 
-    @Override
-    public List<String> getInput(){
-        return readLines("/2017/input08.txt");
-    }
+    @Getter
+    private final List<String> input =  readLines("/2017/input08.txt");
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
 	@Override
@@ -41,30 +39,15 @@ public class Day08 implements Solution<List<String>> {
             // c dec -10 if a >= 1
             int value = Integer.parseInt(tokens[6]);
             int variable = register.getOrDefault(tokens[4], 0);
-            boolean predicate = false;
-
-            switch (tokens[5]) {
-                case ">":
-                    predicate = variable > value;
-                    break;
-                case "<":
-                    predicate = variable < value;
-                    break;
-                case "<=":
-                    predicate = variable <= value;
-                    break;
-                case ">=":
-                    predicate = variable >= value;
-                    break;
-                case "==":
-                    predicate = variable == value;
-                    break;
-                case "!=":
-                    predicate = variable != value;
-                    break;
-                default:
-                    throw new RuntimeException(tokens[5]);
-            }
+            boolean predicate = switch (tokens[5]) {
+                case ">" -> variable > value;
+                case "<" -> variable < value;
+                case "<=" -> variable <= value;
+                case ">=" -> variable >= value;
+                case "==" -> variable == value;
+                case "!=" -> variable != value;
+                default -> throw new RuntimeException(tokens[5]);
+            };
 
             if (predicate) {
                 int newValue = register.getOrDefault(tokens[0], 0) // current

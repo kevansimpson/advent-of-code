@@ -1,21 +1,18 @@
 package org.base.advent.code2016;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * <a href="https://adventofcode.com/2016/day/03">Day 03</a>
  */
 public class Day03 implements Solution<List<String>> {
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2016/input03.txt");
-    }
+    @Getter
+    private final List<String> input =  readLines("/2016/input03.txt");
 
     @Override
     public Object solvePart1() {
@@ -28,7 +25,7 @@ public class Day03 implements Solution<List<String>> {
     }
 
     public long countTrianglesByColumn(final List<String> input) {
-        final List<int[]> rows = toIntArray(input).collect(Collectors.toList());
+        final List<int[]> rows = toIntArray(input).toList();
         long valid = 0;
         for (int i = 0, max = input.size(); i < max; i += 3) {
             final int[] row1 = rows.get(i), row2 = rows.get(i + 1), row3 = rows.get(i + 2);

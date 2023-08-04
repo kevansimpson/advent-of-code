@@ -1,19 +1,16 @@
 package org.base.advent.code2019;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.*;
-
 
 /**
  * <a href="https://adventofcode.com/2019/day/06">Day 06</a>
  */
 public class Day06 implements Solution<List<String>> {
-
-    @Override
-    public List<String> getInput(){
-        return readLines("/2019/input06.txt");
-    }
+    @Getter
+    private final List<String> input =  readLines("/2019/input06.txt");
 
     @Override
     public Integer solvePart1() {

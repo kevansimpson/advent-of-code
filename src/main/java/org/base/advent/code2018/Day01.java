@@ -1,5 +1,6 @@
 package org.base.advent.code2018;
 
+import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.List;
@@ -10,11 +11,8 @@ import java.util.TreeSet;
  * <a href="https://adventofcode.com/2018/day/01">Day 01</a>
  */
 public class Day01 implements Solution<List<Integer>> {
-
-    @Override
-    public List<Integer> getInput(){
-        return readNumbers("/2018/input01.txt");
-    }
+    @Getter
+    private final List<Integer> input =  readNumbers("/2018/input01.txt");
 
     @Override
     public Object solvePart1() {
