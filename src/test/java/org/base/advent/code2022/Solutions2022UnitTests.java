@@ -21,7 +21,7 @@ public class Solutions2022UnitTests extends PuzzleTester {
 
     @Test
     public void verifyDay03() {
-//        testSolutions(new Day03(), 8088, 2522);
+        testSolutions(new Day03(), 8088, 2522);
     }
 
     @BeforeAll
