@@ -16,7 +16,7 @@ public class Solutions2022UnitTests extends PuzzleTester {
 
     @Test
     public void verifyDay02() {
-//        testSolutions(new Day02(), 13005, 11373);
+        testSolutions(new Day02(), 13005, 11373);
     }
 
     @Test
