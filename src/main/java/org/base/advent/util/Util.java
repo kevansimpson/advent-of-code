@@ -2,7 +2,9 @@ package org.base.advent.util;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -43,6 +45,10 @@ public class Util {
         return IntStream.range(0, indexes.length - 1)
                 .mapToObj(i -> lines.subList(indexes[i] + 1, indexes[i + 1]))
                 .collect(Collectors.toList());
+    }
+
+    public static Set<Character> stringToSet(String str) {
+        return new HashSet<>(str.chars().mapToObj(c -> (char) c).toList());
     }
 
     public static BigInteger factorial(int n) {

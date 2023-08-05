@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static org.apache.commons.collections4.SetUtils.intersection;
+import static org.base.advent.util.Util.stringToSet;
 
 /**
  * <a href="https://adventofcode.com/2022/day/03">Day 03</a>
@@ -60,9 +61,5 @@ public class Day03 implements Solution<List<String>> {
             return ch - 96;
         else
             return ch - 38;
-    }
-
-    private Set<Character> stringToSet(String str) {
-        return new HashSet<>(str.chars().mapToObj(c -> (char) c).toList());
     }
 }
