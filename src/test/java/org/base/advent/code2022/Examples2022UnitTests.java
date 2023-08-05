@@ -24,4 +24,27 @@ public class Examples2022UnitTests {
         assertEquals(157, day03.sumPriorities(testData));
         assertEquals(70, day03.sumThreeElves(testData));
     }
+
+    @Test
+    public void testDay05Examples() {
+        final List<String> testData = Arrays.asList(
+                "    [D]    ",
+                "[N] [C]    ",
+                "[Z] [M] [P]",
+                " 1   2   3",
+                "",
+                "move 1 from 2 to 1",
+                "move 3 from 1 to 3",
+                "move 2 from 2 to 1",
+                "move 1 from 1 to 2");
+        final Day05 day05 = new Day05() {
+            @Override
+            public List<String> getInput() {
+                return testData;
+            }
+        };
+        assertEquals("CMZ", day05.solvePart1());
+        assertEquals("MCD", day05.solvePart2());
+    }
+
 }

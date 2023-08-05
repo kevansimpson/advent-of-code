@@ -3,7 +3,8 @@ package org.base.advent.util;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.ToIntFunction;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -12,8 +13,21 @@ import java.util.stream.Stream;
  * Utility methods.
  */
 public class Util {
-    public static <T> int sum(final List<T> list, final ToIntFunction<T> function) {
-        return list.stream().mapToInt(function).sum();
+    private static final Pattern integerPattern = Pattern.compile("-?\\d+");
+
+    public static int[] extractInt(String str) {
+        return findAll(integerPattern, str).stream().mapToInt(Integer::valueOf).toArray();
+    }
+
+    public static List<String> findAll(Pattern pattern, String str) {
+        Matcher matcher = pattern.matcher(str);
+
+        List<String> list = new ArrayList<>();
+        while (matcher.find()) {
+            list.add(matcher.group());
+        }
+
+        return list;
     }
 
     public static List<String[]> split(final String... input) {

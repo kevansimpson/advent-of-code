@@ -2,9 +2,9 @@ package org.base.advent.code2019;
 
 import lombok.Getter;
 import org.base.advent.Solution;
-import org.base.advent.util.Util;
 
 import java.util.List;
+import java.util.function.ToIntFunction;
 
 /**
  * <a href="https://adventofcode.com/2019/day/01">Day 01</a>
@@ -24,11 +24,11 @@ public class Day01 implements Solution<List<Integer>> {
     }
 
     public int requiredFuel(final List<Integer> list) {
-        return Util.sum(list, this::calculate);
+        return sum(list, this::calculate);
     }
 
     public int accumulateFuel(final List<Integer> list) {
-        return Util.sum(list, this::accumulate);
+        return sum(list, this::accumulate);
     }
 
     // to find the fuel required for a module, take its mass, divide by three, round down, and subtract 2.
@@ -44,5 +44,9 @@ public class Day01 implements Solution<List<Integer>> {
         }
 
         return total;
+    }
+
+    private <T> int sum(final List<T> list, final ToIntFunction<T> function) {
+        return list.stream().mapToInt(function).sum();
     }
 }
