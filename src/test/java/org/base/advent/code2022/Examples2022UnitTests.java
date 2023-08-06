@@ -37,12 +37,8 @@ public class Examples2022UnitTests {
                 "move 3 from 1 to 3",
                 "move 2 from 2 to 1",
                 "move 1 from 1 to 2");
-        final Day05 day05 = new Day05() {
-            @Override
-            public List<String> getInput() {
-                return testData;
-            }
-        };
+        final Day05 day05 = new Day05();
+        day05.setInput(testData);
         assertEquals("CMZ", day05.solvePart1());
         assertEquals("MCD", day05.solvePart2());
     }
