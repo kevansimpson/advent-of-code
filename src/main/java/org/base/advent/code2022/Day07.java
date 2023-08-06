@@ -1,14 +1,11 @@
 package org.base.advent.code2022;
 
 import lombok.Getter;
-import org.apache.commons.lang3.concurrent.ConcurrentInitializer;
-import org.apache.commons.lang3.concurrent.LazyInitializer;
 import org.base.advent.Solution;
+import org.base.advent.util.SafeLazyInitializer;
 
 import java.util.*;
 import java.util.stream.Stream;
-
-import static org.base.advent.util.Util.safeGet;
 
 /**
  * <a href="https://adventofcode.com/2022/day/07">Day 07</a>
@@ -17,23 +14,20 @@ public class Day07 implements Solution<List<String>> {
     @Getter
     private final List<String> input = readLines("/2022/input07.txt");
 
-    private final ConcurrentInitializer<FileSys> fileSys = new LazyInitializer<>() {
-        @Override
-        protected FileSys initialize() {
-            Dir root = parseLogs(input.stream().map(it -> it.split(" ")).toList());
-            return new FileSys(root.flatten(), root.totalSize());
-        }
-    };
+    private final SafeLazyInitializer<FileSys> fileSys = new SafeLazyInitializer<>(() -> {
+        Dir root = parseLogs(input.stream().map(it -> it.split(" ")).toList());
+        return new FileSys(root.flatten(), root.totalSize());
+    });
 
     @Override
     public Object solvePart1() {
-        return safeGet(fileSys).allDirs.stream().mapToInt(Dir::totalSize).filter(it -> it < 100000).sum();
+        return fileSys.get().allDirs.stream().mapToInt(Dir::totalSize).filter(it -> it < 100000).sum();
     }
 
     @Override
     public Object solvePart2() {
-        int need = 30000000 - (70000000 - safeGet(fileSys).totalSize);
-        return safeGet(fileSys).allDirs.stream().mapToInt(Dir::totalSize).filter(it -> it >= need).min().orElse(1138);
+        int need = 30000000 - (70000000 - fileSys.get().totalSize);
+        return fileSys.get().allDirs.stream().mapToInt(Dir::totalSize).filter(it -> it >= need).min().orElse(1138);
     }
 
     protected Dir parseLogs(List<String[]> logs) {
