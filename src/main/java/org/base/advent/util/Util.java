@@ -1,5 +1,8 @@
 package org.base.advent.util;
 
+import org.apache.commons.lang3.concurrent.ConcurrentException;
+import org.apache.commons.lang3.concurrent.ConcurrentInitializer;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -49,6 +52,15 @@ public class Util {
 
     public static Set<Character> stringToSet(String str) {
         return new HashSet<>(str.chars().mapToObj(c -> (char) c).toList());
+    }
+
+    public static <T> T safeGet(ConcurrentInitializer<T> initializer) {
+        try {
+            return initializer.get();
+        }
+        catch (ConcurrentException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     public static BigInteger factorial(int n) {
