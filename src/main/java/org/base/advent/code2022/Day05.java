@@ -2,7 +2,6 @@ package org.base.advent.code2022;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.concurrent.ConcurrentException;
 import org.apache.commons.lang3.concurrent.ConcurrentInitializer;
 import org.apache.commons.lang3.concurrent.LazyInitializer;
 import org.base.advent.Solution;
@@ -15,6 +14,7 @@ import java.util.Stack;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static org.base.advent.util.Util.safeGet;
 import static org.base.advent.util.Util.splitByBlankLine;
 
 /**
@@ -61,29 +61,25 @@ public class Day05 implements Solution<List<String>> {
     }
 
     protected String moveCrates(CrateMover mover) {
-        try {
-            List<Stack<Character>> crates = scanCrates();
-            puzzle.get().moves.forEach(crate -> mover.accept(
-                    new Crate(crate[0], crates.get(crate[1] - 1), crates.get(crate[2] - 1))));
-            return crates.stream()
-                    .map(s -> {
-                        if (s.isEmpty()) return "-";
-                        else return String.valueOf(s.peek());
-                    })
-                    .collect(Collectors.joining());
-        }
-        catch (ConcurrentException ex) {
-            return ex.getMessage();
-        }
+        List<Stack<Character>> crates = scanCrates();
+        safeGet(puzzle).moves.forEach(crate -> mover.accept(
+                new Crate(crate[0], crates.get(crate[1] - 1), crates.get(crate[2] - 1))));
+        return crates.stream()
+                .map(s -> {
+                    if (s.isEmpty()) return "-";
+                    else return String.valueOf(s.peek());
+                })
+                .collect(Collectors.joining());
     }
 
-    private List<Stack<Character>> scanCrates() throws ConcurrentException {
+    private List<Stack<Character>> scanCrates() {
         List<Stack<Character>> list = new ArrayList<>();
-        for (int i = 0, max = puzzle.get().numStacks - 1; i <= max; i++) {
+        Puzzle p = safeGet(puzzle);
+        for (int i = 0, max = p.numStacks - 1; i <= max; i++) {
             Stack<Character> stack = new Stack<>();
             int column = 1 + i * 4;
-            for (int c = puzzle.get().stacks.size() - 1; c >= 0; c--) {
-                String line = puzzle.get().stacks.get(c);
+            for (int c = p.stacks.size() - 1; c >= 0; c--) {
+                String line = p.stacks.get(c);
                 if (line.length() >= column && line.charAt(column) != ' ')
                     stack.push(line.charAt(column));
             }
