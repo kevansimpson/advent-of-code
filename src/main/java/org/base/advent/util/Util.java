@@ -1,10 +1,7 @@
 package org.base.advent.util;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -49,6 +46,17 @@ public class Util {
 
     public static Set<Character> stringToSet(String str) {
         return new HashSet<>(str.chars().mapToObj(c -> (char) c).toList());
+    }
+
+    public static List<String> columns(List<String> rows) {
+        return rows.stream().reduce(new ArrayList<>(Collections.nCopies(rows.size(), "")),
+                (columns, row) -> {
+                    for (int it = 0, max = rows.get(0).length(); it < max; it++)
+                        columns.set(it, columns.get(it) + row.charAt(it));
+                    return columns;
+                },
+                (col1, col2) -> new ArrayList<>( // lame!
+                        Stream.concat(col1.stream(), col2.stream()).collect(Collectors.toList())));
     }
 
     public static BigInteger factorial(int n) {
