@@ -43,4 +43,17 @@ public class Examples2022UnitTests {
         assertEquals("MCD", day05.solvePart2());
     }
 
+    @Test
+    public void testDay08Examples() {
+        final List<String> testData = Arrays.asList(
+                "30373",
+                "25512",
+                "65332",
+                "33549",
+                "35390");
+        final Day08 day08 = new Day08();
+        day08.setInput(testData);
+        assertEquals(21, day08.solvePart1());
+        assertEquals(8, day08.solvePart2());
+    }
 }
