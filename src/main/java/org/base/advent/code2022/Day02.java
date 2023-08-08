@@ -5,6 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.Solution;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <a href="https://adventofcode.com/2022/day/02">Day 02</a>
@@ -26,18 +27,12 @@ public class Day02 implements Solution<List<String>> {
         return pairs.stream().mapToInt(Pair::getRight).sum();
     }
 
+    private static final Map<String, Pair<Integer, Integer>> SCORE_MAP = Map.of(
+            "A X", Pair.of(4, 3), "B X", Pair.of(1, 1), "C X", Pair.of(7, 2),
+            "A Y", Pair.of(8, 4), "B Y", Pair.of(5, 5), "C Y", Pair.of(2, 6),
+            "A Z", Pair.of(3, 8), "B Z", Pair.of(9, 9), "C Z", Pair.of(6, 7));
+
     private static Pair<Integer, Integer> score(String key) {
-        return switch (key) {
-            case "A X" -> Pair.of(4, 3);
-            case "B X" -> Pair.of(1, 1);
-            case "C X" -> Pair.of(7, 2);
-            case "A Y" -> Pair.of(8, 4);
-            case "B Y" -> Pair.of(5, 5);
-            case "C Y" -> Pair.of(2, 6);
-            case "A Z" -> Pair.of(3, 8);
-            case "B Z" -> Pair.of(9, 9);
-            case "C Z" -> Pair.of(6, 7);
-            default -> throw new IllegalStateException("Unexpected value: " + key);
-        };
+        return SCORE_MAP.get(key);
     }
 }

@@ -19,22 +19,16 @@ public class Day04 implements Solution<List<String[]>> {
 
     @Override
     public Object solvePart1() {
-        return ranges.stream().mapToInt(pair -> {
-            if (pair.getLeft().containsRange(pair.getRight()) || pair.getRight().containsRange(pair.getLeft()))
-                return 1;
-            else
-                return 0;
-        }).sum();
+        return ranges.stream().filter(pair ->
+                pair.getLeft().containsRange(pair.getRight()) ||
+                        pair.getRight().containsRange(pair.getLeft())).count();
     }
 
     @Override
     public Object solvePart2() {
-        return ranges.stream().mapToInt(pair -> {
-            if (pair.getLeft().isOverlappedBy(pair.getRight()) || pair.getRight().isOverlappedBy(pair.getLeft()))
-                return 1;
-            else
-                return 0;
-        }).sum();
+        return ranges.stream().filter(pair ->
+                pair.getLeft().isOverlappedBy(pair.getRight()) ||
+                        pair.getRight().isOverlappedBy(pair.getLeft())).count();
     }
 
     private Range<Integer> toRange(String str) {

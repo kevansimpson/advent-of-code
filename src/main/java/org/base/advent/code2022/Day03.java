@@ -1,14 +1,11 @@
 package org.base.advent.code2022;
 
 import lombok.Getter;
+import org.apache.commons.collections4.ListUtils;
 import org.base.advent.Solution;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import static org.apache.commons.collections4.SetUtils.intersection;
 import static org.base.advent.util.Util.stringToSet;
@@ -42,10 +39,7 @@ public class Day03 implements Solution<List<String>> {
     }
 
     public int sumThreeElves(List<String> items) {
-        // https://e.printstacktrace.blog/divide-a-list-to-lists-of-n-size-in-Java-8/
-        AtomicInteger counter = new AtomicInteger();
-        Collection<List<String>> chunks = items.stream()
-                .collect(Collectors.groupingBy(it -> counter.getAndIncrement() / 3)).values();
+        List<List<String>> chunks = ListUtils.partition(items, 3);
         return chunks.stream().map(chunk -> {
             Set<Character> set1 = stringToSet(chunk.get(0));
             Set<Character> set2 = stringToSet(chunk.get(1));

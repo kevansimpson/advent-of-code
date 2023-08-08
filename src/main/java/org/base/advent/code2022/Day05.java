@@ -60,10 +60,7 @@ public class Day05 implements Solution<List<String>> {
         puzzle.get().moves.forEach(crate -> mover.accept(
                 new Crate(crate[0], crates.get(crate[1] - 1), crates.get(crate[2] - 1))));
         return crates.stream()
-                .map(s -> {
-                    if (s.isEmpty()) return "-";
-                    else return String.valueOf(s.peek());
-                })
+                .map(s -> String.valueOf(s.peek()))
                 .collect(Collectors.joining());
     }
 

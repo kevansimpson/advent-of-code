@@ -4,8 +4,6 @@ import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
 
-import java.util.List;
-
 import static org.base.advent.util.Util.stringToSet;
 
 /**
