@@ -54,6 +54,11 @@ public class Solutions2022UnitTests extends PuzzleTester {
         testSolutions(new Day09(), 5981, 2352);
     }
 
+    @Test
+    public void verifyDay10() {
+        testSolutions(new Day10(), 15260, "PGHFGLUG");
+    }
+
     @BeforeAll
     public static void start() {
         banner(2022);
