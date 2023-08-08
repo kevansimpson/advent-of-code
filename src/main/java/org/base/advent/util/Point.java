@@ -50,10 +50,22 @@ public class Point {
     public Point right(final int move) {
         return Point.of(x + move, y);
     }
+
     public Point move(final int deltaX, final int deltaY) {
         return Point.of(x + deltaX, y + deltaY);
     }
-
+    public Point move(final String dir) {
+        return move(dir, 1);
+    }
+    public Point move(final String dir, final int delta) {
+        return switch (dir) {
+            case "U", "N", "^" -> up(delta);
+            case "D", "S", "v" -> down(delta);
+            case "L", "W", "<" -> left(delta);
+            case "R", "E", ">" -> right(delta);
+            default -> this;
+        };
+    }
     public double angle(Point target) { // starts pointing up when cartesian graph is upside down
         double angle = Math.toDegrees(Math.atan2(target.y - y, target.x - x)) + 90.0d;
         return (angle < 0) ? angle + 360 : angle;
