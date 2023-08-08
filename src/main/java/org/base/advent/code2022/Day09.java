@@ -33,9 +33,8 @@ public class Day09 implements Solution<List<String>> {
     }
 
     private int countMoves(int knots) {
-        Point[] rope = new Point[knots];
-        Arrays.fill(rope, Point.ORIGIN);
-        AtomicReference<Planck> planck = new AtomicReference<>(new Planck(Arrays.asList(rope)));
+        AtomicReference<Planck> planck = new AtomicReference<>(
+                new Planck(new ArrayList<>(Collections.nCopies(knots, Point.ORIGIN))));
         moves.forEach(pair -> planck.set(movePlanck(planck.get(), pair)));
 
         return planck.get().path.size();
