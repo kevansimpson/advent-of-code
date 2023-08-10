@@ -1,6 +1,7 @@
 package org.base.advent.util;
 
 import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.Range;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -125,5 +126,9 @@ public class Point {
     public static Point point(final String commaDelimitedValues) {
         final String[] values = commaDelimitedValues.split(",");
         return new Point(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
+    }
+
+    public static boolean inGrid(Point pt, int width, int height) {
+        return Range.of(0, width - 1).contains(pt.x) && Range.of(0, height - 1).contains(pt.y);
     }
 }
