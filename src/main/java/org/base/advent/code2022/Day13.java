@@ -1,7 +1,6 @@
 package org.base.advent.code2022;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.base.advent.Solution;
 import org.base.advent.util.SafeLazyInitializer;
 
@@ -20,8 +19,8 @@ public class Day13 implements Solution<List<String>> {
     private static final List<List<Object>> PART2_SIGNALS =
             Stream.of("[[2]]", "[[6]]").map(Day13::parse).toList();
 
-    @Getter @Setter
-    private List<String> input = readLines("/2022/input13.txt");
+    @Getter
+    private final List<String> input = readLines("/2022/input13.txt");
     private final SafeLazyInitializer<List<List<Object>>> nested = new SafeLazyInitializer<>(() ->
         getInput().stream().filter(not(String::isBlank)).map(Day13::parse).toList());
 
