@@ -130,9 +130,10 @@ public class Examples2017UnitTests {
                 "gyxo (61)",
                 "cntj (57)");
         final List<Day07.Tower> towers = day07.parseTowers(input);
-        assertEquals("tknk", day07.findBottomTower(towers));
+        final String rootTower = day07.findBottomTower(towers);
+        assertEquals("tknk", rootTower);
         // part 2
-        assertEquals(60, day07.findMisweightedTowerSimple(towers));
+        assertEquals(60, day07.findMisweightedTower(rootTower, towers));
     }
 
     @Test
