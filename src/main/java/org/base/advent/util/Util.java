@@ -1,5 +1,7 @@
 package org.base.advent.util;
 
+import org.apache.commons.collections4.ListUtils;
+
 import java.math.BigInteger;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -12,10 +14,14 @@ import java.util.stream.Stream;
  * Utility methods.
  */
 public class Util {
-    private static final Pattern integerPattern = Pattern.compile("-?\\d+");
+    private static final Pattern numberPattern = Pattern.compile("-?\\d+");
 
     public static int[] extractInt(String str) {
-        return findAll(integerPattern, str).stream().mapToInt(Integer::valueOf).toArray();
+        return findAll(numberPattern, str).stream().mapToInt(Integer::valueOf).toArray();
+    }
+
+    public static long[] extractLong(String str) {
+        return findAll(numberPattern, str).stream().mapToLong(Long::valueOf).toArray();
     }
 
     public static List<String> findAll(Pattern pattern, String str) {
@@ -56,7 +62,7 @@ public class Util {
                     return columns;
                 },
                 (col1, col2) -> new ArrayList<>( // lame!
-                        Stream.concat(col1.stream(), col2.stream()).collect(Collectors.toList())));
+                        Stream.concat(col1.stream(), col2.stream()).toList()));
     }
 
     public static BigInteger factorial(int n) {
@@ -64,6 +70,27 @@ public class Util {
         for (int i = 2; i <= n; i++)
             result = result.multiply(BigInteger.valueOf(i));
         return result;
+    }
+
+    public static <T> List<List<T>> combinations(List<T> list, int len) {
+        if (len == 0) {
+            return new ArrayList<>(Arrays.asList(new ArrayList<>()));
+//            List<List<T>> singleEmpty = new ArrayList<>();
+//            singleEmpty.add(new ArrayList<>());
+//            return singleEmpty;
+        }
+        else {
+            List<List<T>> result = new ArrayList<>();
+            for (int i = 0, max = (list.size() - len); i <= max; i++) {
+                List<T> foo = new ArrayList<>(list.stream().skip(i + 1).limit(list.size() - 1).toList());
+                List<List<T>> sub = combinations(foo, len - 1);
+                for (List<T> perm : sub) {
+                    List<T> add = new ArrayList<>(Stream.concat(Stream.of(list.get(i)), perm.stream()).toList());
+                    result.add(add);
+                }
+            }
+            return result;
+        }
     }
 
     @SafeVarargs

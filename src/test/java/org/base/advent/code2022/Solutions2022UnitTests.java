@@ -79,6 +79,17 @@ public class Solutions2022UnitTests extends PuzzleTester {
         testSolutions(new Day14(), 737L, 28145L);
     }
 
+    @Test
+    public void verifyDay15() {
+        testSolutions(new Day15(), 5335787L, 13673971349056L);
+    }
+
+    @Test
+    public void verifyDay16() {
+        System.setProperty("full", "true");
+        testSolutions(new Day16(), 1923, 2594);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2022);
