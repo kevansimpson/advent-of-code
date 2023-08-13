@@ -26,7 +26,7 @@ public class Day24 implements Solution<List<Integer>>, TimeSaver {
 
     @Override
     public Object solvePart1() {
-        return fastOrFull(11846773891L, () -> solveFor(getInput(), 3));
+        return fastOrFull(11846773891L, () -> solveFor(new ArrayList<>(getInput()), 3));
     }
 
     @Override
