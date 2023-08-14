@@ -80,8 +80,8 @@ public class Day08 implements Solution<List<String>> {
         int highScore(Map.Entry<Point, Integer> entry) {
             Point pt = entry.getKey();
             int height = entry.getValue();
-            List<Integer> row = rows.get(pt.y);
-            List<Integer> col = cols.get(pt.x);
+            List<Integer> row = rows.get(pt.iy());
+            List<Integer> col = cols.get(pt.ix());
 
             List<Integer> left = fromLeft(row, pt).collect(Collectors.toList());
             Collections.reverse(left);
@@ -96,8 +96,8 @@ public class Day08 implements Solution<List<String>> {
         boolean isTreeVisible(Map.Entry<Point, Integer> entry) {
             Point pt = entry.getKey();
             int height = entry.getValue();
-            List<Integer> row = rows.get(pt.y);
-            List<Integer> col = cols.get(pt.x);
+            List<Integer> row = rows.get(pt.iy());
+            List<Integer> col = cols.get(pt.ix());
             return (height > fromLeft(row, pt).mapToInt(Integer::valueOf).max().orElse(1138) ||
                     height > fromRight(row, pt).mapToInt(Integer::valueOf).max().orElse(1138) ||
                     height > fromTop(col, pt).mapToInt(Integer::valueOf).max().orElse(1138) ||
@@ -113,16 +113,16 @@ public class Day08 implements Solution<List<String>> {
         }
 
         Stream<Integer> fromLeft(List<Integer> row, Point pt) {
-            return row.subList(0, pt.x).stream();
+            return row.subList(0, pt.ix()).stream();
         }
         Stream<Integer> fromRight(List<Integer> row, Point pt) {
-            return row.subList(pt.x + 1, row.size()).stream();
+            return row.subList(pt.ix() + 1, row.size()).stream();
         }
         Stream<Integer> fromTop(List<Integer> col, Point pt) {
-            return col.subList(0, pt.y).stream();
+            return col.subList(0, pt.iy()).stream();
         }
         Stream<Integer> fromBottom(List<Integer> col, Point pt) {
-            return col.subList(pt.y + 1, col.size()).stream();
+            return col.subList(pt.iy() + 1, col.size()).stream();
         }
     }
 }

@@ -147,7 +147,7 @@ public class Examples2017UnitTests {
         assertFalse(register.containsKey("b"));
         assertEquals(0, (int) register.getOrDefault("b", 0));
         assertEquals(-10, (int) register.getOrDefault("c", 0));
-        assertEquals(1, (int) register.values().stream().max(Comparator.naturalOrder()).get());
+        assertEquals(1, (int) register.values().stream().max(Comparator.naturalOrder()).orElse(-1));
         // part 2
         register = day08.updateRegisters(input, true);
         assertNotNull(register);
@@ -227,10 +227,10 @@ public class Examples2017UnitTests {
     @Test
     public void testDay11Examples() {
         final Day11 day11 = new Day11();
-        assertEquals(3, (int) day11.countSteps("ne,ne,ne").getLeft());
-        assertEquals(0, (int) day11.countSteps("ne,ne,sw,sw").getLeft());
-        assertEquals(2, (int) day11.countSteps("ne,ne,s,s").getLeft());
-        assertEquals(3, (int) day11.countSteps("se,sw,se,sw,sw").getLeft());
+        assertEquals(3L, day11.countSteps("ne,ne,ne").getLeft());
+        assertEquals(0L, day11.countSteps("ne,ne,sw,sw").getLeft());
+        assertEquals(2L, day11.countSteps("ne,ne,s,s").getLeft());
+        assertEquals(3L, day11.countSteps("se,sw,se,sw,sw").getLeft());
     }
 
     @Test

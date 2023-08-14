@@ -33,7 +33,7 @@ public class Day06 implements Solution<List<Point>> {
     public int findSafestArea(final List<Point> points, final int threshhold) {
         final Map<Integer, Point> idMap = buildIdMap(points);
         final Point fakeMaxPoint = idMap.remove(MAX_XY_ID);
-        final int maxX = fakeMaxPoint.x, maxY = fakeMaxPoint.y;
+        final long maxX = fakeMaxPoint.x, maxY = fakeMaxPoint.y;
 
         int area = 0;
         for (int x = 0; x <= maxX; x++) {
@@ -53,18 +53,18 @@ public class Day06 implements Solution<List<Point>> {
     public int findLargestArea(final List<Point> points) {
         final Map<Integer, Point> idMap = buildIdMap(points);
         final Point fakeMaxPoint = idMap.remove(MAX_XY_ID);
-        final int maxX = fakeMaxPoint.x, maxY = fakeMaxPoint.y;
+        final int maxX = fakeMaxPoint.ix(), maxY = fakeMaxPoint.iy();
         final int[][] grid = new int[maxX + 1][maxY + 1];
         final Map<Integer, Integer> regions = new HashMap<>();
 
         for (int x = 0; x <= maxX; x++) {
             for (int y = 0; y <= maxY; y++) {
-                int closest = maxX + maxY;
+                long closest = maxX + maxY;
                 int targetId = -1;
 
                 for (int id : idMap.keySet()) {
                     final Point pt = idMap.get(id);
-                    final int dist = Point.MANHATTAN_DISTANCE.apply(pt, new Point(x, y));
+                    final long dist = Point.MANHATTAN_DISTANCE.apply(pt, new Point(x, y));
                     if (dist < closest) {
                         closest = dist;
                         targetId = id;
@@ -104,9 +104,9 @@ public class Day06 implements Solution<List<Point>> {
             final Point pt = points.get(id);
             idMap.put(id, pt);
             if (pt.x > maxX)
-                maxX = pt.x;
+                maxX = pt.ix();
             if (pt.y > maxY)
-                maxY = pt.y;
+                maxY = pt.iy();
         }
 
         // tuck max values inside an invalid ID to be pulled out later... yes, we're cheating to avoid processing twice

@@ -22,10 +22,10 @@ public class Day11 implements Solution<String> {
         return countSteps(getInput()).getRight();
     }
 
-    public Pair<Integer, Integer> countSteps(final String directions) {
+    public Pair<Long, Long> countSteps(final String directions) {
         HexPoint point = HexPoint.CENTER;
         final String[] steps = directions.split(",");
-        int max = 0;
+        long max = 0;
 
         for (final String step : steps) {
             switch (step) {

@@ -26,7 +26,7 @@ public class Day01 implements Solution<List<String>> {
         return calculateDistance(getInput(), true);
     }
 
-    public int calculateDistance(final List<String> list, final boolean stopOn2ndVisit) {
+    public long calculateDistance(final List<String> list, final boolean stopOn2ndVisit) {
         return followDirections(list, stopOn2ndVisit).getManhattanDistance();
     }
 

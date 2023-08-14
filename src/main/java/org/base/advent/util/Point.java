@@ -14,10 +14,10 @@ import java.util.function.Function;
  */
 @EqualsAndHashCode
 public class Point {
-    private static final Map<Integer, Map<Integer, Point>> flyweightPool = Collections.synchronizedMap(new TreeMap<>());
+    private static final Map<Long, Map<Long, Point>> flyweightPool = Collections.synchronizedMap(new TreeMap<>());
 
     public static final Point ORIGIN = Point.of(0, 0);
-    public static final BiFunction<Point, Point, Integer> MANHATTAN_DISTANCE =
+    public static final BiFunction<Point, Point, Long> MANHATTAN_DISTANCE =
             (a, b) -> Math.abs(b.x - a.x) + Math.abs(b.y - a.y);
 
     public static Map<String, Function<Point, Point>> MOVE_MAP = Map.of(
@@ -26,12 +26,19 @@ public class Point {
         "L", pt -> pt.left(1),
         "R", pt -> pt.right(1));
 
-    public final int x;
-    public final int y;
+    public final long x;
+    public final long y;
 
-    public Point(final int x, final int y) {
+    public Point(final long x, final long y) {
         this.x = x;
         this.y = y;
+    }
+
+    public int ix() {
+        return (int) x;
+    }
+    public int iy() {
+        return (int) y;
     }
 
     @Override
@@ -78,11 +85,11 @@ public class Point {
         return BigDecimal.valueOf(dist);
     }
 
-    public int getManhattanDistance() {
+    public long getManhattanDistance() {
         return getManhattanDistance(ORIGIN);
     }
 
-    public int getManhattanDistance(final Point point) {
+    public long getManhattanDistance(final Point point) {
         return MANHATTAN_DISTANCE.apply(this, point);
     }
 
@@ -118,17 +125,17 @@ public class Point {
         return surrounding;
     }
 
-    public static Point of(final int x, final int y) {
-        Map<Integer, Point> column = flyweightPool.computeIfAbsent(y, key -> Collections.synchronizedMap(new TreeMap<>()));
+    public static Point of(final long x, final long y) {
+        Map<Long, Point> column = flyweightPool.computeIfAbsent(y, key -> Collections.synchronizedMap(new TreeMap<>()));
         return column.computeIfAbsent(x, row -> new Point(x, y));
     }
 
     public static Point point(final String commaDelimitedValues) {
         final String[] values = commaDelimitedValues.split(",");
-        return new Point(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
+        return Point.of(Long.parseLong(values[0]), Long.parseLong(values[1]));
     }
 
-    public static boolean inGrid(Point pt, int width, int height) {
-        return Range.of(0, width - 1).contains(pt.x) && Range.of(0, height - 1).contains(pt.y);
+    public static boolean inGrid(Point pt, long width, long height) {
+        return Range.of(0L, width - 1).contains(pt.x) && Range.of(0L, height - 1).contains(pt.y);
     }
 }

@@ -45,14 +45,14 @@ public class Day19 implements Solution<List<Point>> {
             final List<Point> cardinal = next.cardinal().stream()
                     .filter(pt -> grid.get(pt) != null)
                     .filter(pt -> !path.contains(pt))
-                    .collect(Collectors.toList());
+                    .toList();
 
             if (cardinal.isEmpty())
                 break;
             else if (cardinal.size() == 1) {
                 Point point = cardinal.get(0);
-                dX = point.x - next.x;
-                dY = point.y - next.y;
+                dX = point.ix() - next.ix();
+                dY = point.iy() - next.iy();
                 while (point != null) {
                     final String marker = grid.get(point);
                     if (marker == null)

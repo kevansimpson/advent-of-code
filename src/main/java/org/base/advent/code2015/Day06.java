@@ -40,8 +40,8 @@ public class Day06 implements Solution<List<String>> {
                 final Point start = Point.point(matcher.group(2));
                 final Point end = Point.point(matcher.group(3));
                 
-                for (int x = start.x; x <= end.x; x++) {
-                    for (int y = start.y; y <= end.y; y++) {
+                for (int x = start.ix(); x <= end.x; x++) {
+                    for (int y = start.iy(); y <= end.y; y++) {
                         switch (cmd) {
                             case on -> lightGrid[x][y] = true;
                             case off -> lightGrid[x][y] = false;
@@ -75,8 +75,8 @@ public class Day06 implements Solution<List<String>> {
                 final Point start = Point.point(matcher.group(2));
                 final Point end = Point.point(matcher.group(3));
                 
-                for (int x = start.x; x <= end.x; x++) {
-                    for (int y = start.y; y <= end.y; y++) {
+                for (int x = start.ix(); x <= end.x; x++) {
+                    for (int y = start.iy(); y <= end.y; y++) {
                         final int value = lightGrid[x][y];
                         switch (cmd) {
                             case on -> lightGrid[x][y] = value + 1;

@@ -25,7 +25,7 @@ public class Day03 implements Solution<Integer> {
         return firstLargerValue(getInput());
     }
 
-    public int distanceFromOrigin(int location) {
+    public long distanceFromOrigin(int location) {
         return toPoint(location).getManhattanDistance();
     }
 

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import static java.lang.Math.*;
@@ -70,13 +70,13 @@ public class Day14 implements Solution<List<String>>, TimeSaver {
     }
 
     List<Point> rockPath(Point start, Point end) {
-        int dx = abs(start.x - end.x);
-        if (dx == 0) {
-            return IntStream.rangeClosed(min(start.y, end.y), max(start.y, end.y))
+        long dx = abs(start.x - end.x);
+        if (dx == 0L) {
+            return LongStream.rangeClosed(min(start.y, end.y), max(start.y, end.y))
                     .mapToObj(y -> Point.of(start.x, y)).toList();
         }
-        int dy = abs(start.y - end.y);
-        return IntStream.rangeClosed(min(start.x, end.x), max(start.x, end.x))
+
+        return LongStream.rangeClosed(min(start.x, end.x), max(start.x, end.x))
                 .mapToObj(x -> Point.of(x, start.y)).toList();
     }
 
@@ -95,26 +95,22 @@ public class Day14 implements Solution<List<String>>, TimeSaver {
         return Stream.of(str.split(" -> ")).map(Point::point).toList();
     }
 
-    private class Cave {
+    private static class Cave {
         private final Map<Point, String> rocks;
-        private final int leftRock;
-        private final int rightRock;
-        private final int width;
         private final int left;
         private final int right;
         private final int top;
-        private final int bottom;
         private final int floor;
 
         public Cave(Map<Point, String> someRocks) {
             rocks = someRocks;
-            leftRock = rocks.keySet().parallelStream().mapToInt(it -> it.x).min().orElseThrow();
-            rightRock = rocks.keySet().parallelStream().mapToInt(it -> it.x).max().orElseThrow();
-            width = (rightRock - leftRock) * 3;
+            int leftRock = rocks.keySet().parallelStream().mapToInt(Point::ix).min().orElseThrow();
+            int rightRock = rocks.keySet().parallelStream().mapToInt(Point::ix).max().orElseThrow();
+            int width = (rightRock - leftRock) * 3;
             left = leftRock - width;
             right = rightRock + width;
-            top = min(0, rocks.keySet().parallelStream().mapToInt(it -> it.y).min().orElseThrow());
-            bottom = rocks.keySet().parallelStream().mapToInt(it -> it.y).max().orElseThrow();
+            top = min(0, rocks.keySet().parallelStream().mapToInt(Point::iy).min().orElseThrow());
+            int bottom = rocks.keySet().parallelStream().mapToInt(Point::iy).max().orElseThrow();
             floor = 2 + bottom;
         }
 

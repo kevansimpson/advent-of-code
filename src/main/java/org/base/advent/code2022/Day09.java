@@ -8,7 +8,7 @@ import org.base.advent.util.Point;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static java.lang.Integer.compare;
+import static java.lang.Long.compare;
 
 /**
  * <a href="https://adventofcode.com/2022/day/09">Day 09</a>

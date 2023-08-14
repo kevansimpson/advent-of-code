@@ -23,7 +23,7 @@ public class Solutions2017UnitTests extends PuzzleTester {
 
     @Test
     public void verifyDay03() {
-        testSolutions(new Day03(), 438, 266330L);
+        testSolutions(new Day03(), 438L, 266330L);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class Solutions2017UnitTests extends PuzzleTester {
 
     @Test
     public void verifyDay11() {
-        testSolutions(new Day11(), 643, 1471);
+        testSolutions(new Day11(), 643L, 1471L);
     }
 
     @Test

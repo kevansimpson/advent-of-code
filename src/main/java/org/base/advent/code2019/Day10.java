@@ -20,7 +20,7 @@ public class Day10 implements Solution<String[]> {
     }
 
     @Override
-    public Integer solvePart2() {
+    public Long solvePart2() {
         final Point _200th = vaporize(getInput());
         return _200th.x * 100 + _200th.y;
     }

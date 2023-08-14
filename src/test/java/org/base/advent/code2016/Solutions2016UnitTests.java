@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 public class Solutions2016UnitTests extends PuzzleTester {
     @Test
     public void verifyDay01() {
-        testSolutions(new Day01(), 288, 111);
+        testSolutions(new Day01(), 288L, 111L);
     }
 
     @Test

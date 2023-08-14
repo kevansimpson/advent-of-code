@@ -27,25 +27,25 @@ public class Day03 implements Solution<List<String[]>> {
     }
 
     // expects and uses only 2 wires
-    public int fewestSteps(final List<String[]> jumbledWires) {
+    public long fewestSteps(final List<String[]> jumbledWires) {
         final Pair<WirePath, WirePath> untangled = untangle(jumbledWires);
         return analyzePath(untangled, pt -> countStepsAt(pt, untangled));
     }
 
     // expects and uses only 2 wires
-    public int closestIntersection(final List<String[]> jumbledWires) {
+    public long closestIntersection(final List<String[]> jumbledWires) {
         return analyzePath(untangle(jumbledWires), Point::getManhattanDistance);
     }
 
-    protected int analyzePath(Pair<WirePath, WirePath> untangled, final Function<Point, Integer> function) {
+    protected long analyzePath(Pair<WirePath, WirePath> untangled, final Function<Point, Long> function) {
         return SetUtils.intersection(
                 new HashSet<>(untangled.getLeft().getPath()), new HashSet<>(untangled.getRight().getPath()))
                 .stream()
                 .map(function)
-                .min(Comparator.naturalOrder()).orElse(-1);
+                .min(Comparator.naturalOrder()).orElse(-1L);
     }
 
-    protected int countStepsAt(final Point point, final Pair<WirePath, WirePath> untangled) {
+    protected long countStepsAt(final Point point, final Pair<WirePath, WirePath> untangled) {
         return untangled.getLeft().getSteps().getOrDefault(point, 0) +
                 untangled.getRight().getSteps().getOrDefault(point, 0);
     }

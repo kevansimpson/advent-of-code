@@ -7,9 +7,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.Solution;
 import org.base.advent.TimeSaver;
 import org.base.advent.util.Point;
-import org.base.advent.util.Util;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -97,7 +95,7 @@ public class Day15 implements Solution<List<String>>, TimeSaver {
         private final Point position;
         @Getter
         private final Point beacon;
-        private final int dist;
+        private final long dist;
 
         public Sensor(int[] ints) {
             this(Point.of(ints[0], ints[1]), Point.of(ints[2], ints[3]));
