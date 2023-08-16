@@ -86,8 +86,12 @@ public class Solutions2022UnitTests extends PuzzleTester {
 
     @Test
     public void verifyDay16() {
-        System.setProperty("full", "true");
         testSolutions(new Day16(), 1923, 2594);
+    }
+
+    @Test
+    public void verifyDay17() {
+        testSolutions(new Day17(), 3124L, 1561176470569L);
     }
 
     @BeforeAll
