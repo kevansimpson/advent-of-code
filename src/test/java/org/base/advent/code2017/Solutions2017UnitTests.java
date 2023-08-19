@@ -112,7 +112,7 @@ public class Solutions2017UnitTests extends PuzzleTester {
 
     @Test
     public void verifyDay20() {
-        testSolutions(new Day20(), 258, 707);
+        testSolutions(new Day20(), 258L, 707);
     }
 
     @BeforeAll

@@ -4,6 +4,17 @@ The tables below contain links for solutions in other languages to demonstrate p
 but mostly shows my learning curve and that, even in my spare time, there will be tests and
 measurements to ensure performant code. ;-)
 
+## Run Solutions
+To run expedited solutions:
+```
+mvn verify
+```
+
+To run full solutions:
+```
+mvn verify -Dfull=true
+```
+
 ## Comparisons
 Solution comparisons by year and language:
 [2015](#2015) - [2016](#2016) - [2018](#2018) - [2019](#2019) - [2022](#2022)
