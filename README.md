@@ -49,6 +49,7 @@ Solution comparisons by year and language:
 | [Day23](https://adventofcode.com/2015/day/23) | [Day23](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2015/Day23.java) | [Day23](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2015/Day23.kt) | n/a                                                                           | [Day23](https://github.com/kevansimpson/advent-of-node/blob/master/src/2015/day23.ts) | n/a                                                                              |
 | [Day24](https://adventofcode.com/2015/day/24) | [Day24](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2015/Day24.java) | [Day24](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2015/Day24.kt) | n/a                                                                           | [Day24](https://github.com/kevansimpson/advent-of-node/blob/master/src/2015/day24.ts) | n/a                                                                              |
 | [Day25](https://adventofcode.com/2015/day/25) | [Day25](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2015/Day25.java) | n/a                                                                                                                | n/a                                                                           | [Day25](https://github.com/kevansimpson/advent-of-node/blob/master/src/2015/day25.ts) | n/a                                                                              |
+
 [Back to top](#comparisons)
 
 ### 2016
@@ -58,6 +59,7 @@ Solution comparisons by year and language:
 | [Day01](https://adventofcode.com/2016/day/1)  | [Day01](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2016/Day01.java) | [Day01](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2016/Day01.kt) |
 | [Day02](https://adventofcode.com/2016/day/2)  | [Day02](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2016/Day02.java) | [Day02](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2016/Day02.kt) |
 | [Day03](https://adventofcode.com/2016/day/3)  | [Day03](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2016/Day03.java) | [Day03](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2016/Day03.kt) |
+
 [Back to top](#comparisons)
 
 ### 2018
@@ -70,6 +72,7 @@ Solution comparisons by year and language:
 | [Day04](https://adventofcode.com/2018/day/4)  | [Day04](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2018/Day04.java) | [Day04](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2018/Day04.kt) | [Day04](https://github.com/kevansimpson/advent-of-node/blob/master/src/2018/day04.ts) |
 | [Day05](https://adventofcode.com/2018/day/5)  | [Day05](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2018/Day05.java) | [Day05](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2018/Day05.kt) | [Day05](https://github.com/kevansimpson/advent-of-node/blob/master/src/2018/day05.ts) |
 | [Day06](https://adventofcode.com/2018/day/6)  | [Day06](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2018/Day06.java) | [Day06](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2018/Day06.kt) | [Day06](https://github.com/kevansimpson/advent-of-node/blob/master/src/2018/day06.ts) |
+
 [Back to top](#comparisons)
 
 ### 2019
@@ -82,6 +85,7 @@ Solution comparisons by year and language:
 | [Day04](https://adventofcode.com/2019/day/4)  | [Day04](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2019/Day04.java) | [Day04](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2019/Day04.kt) | [Day04](https://github.com/kevansimpson/advent-of-scala/blob/master/src/main/scala/org/base/advent/_2019/Day04.scala) | n/a                                                                                   |
 | [Day05](https://adventofcode.com/2019/day/5)  | [Day05](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2019/Day05.java) | [Day05](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2019/Day05.kt) | [Day05](https://github.com/kevansimpson/advent-of-scala/blob/master/src/main/scala/org/base/advent/_2019/Day05.scala) | [Day05](https://github.com/kevansimpson/advent-of-node/blob/master/src/2019/day05.ts) |
 | [Day06](https://adventofcode.com/2019/day/6)  | [Day06](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2019/Day06.java) | [Day06](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2019/Day06.kt) | n/a                                                                                                                   | [Day06](https://github.com/kevansimpson/advent-of-node/blob/master/src/2019/day06.ts) |
+
 [Back to top](#comparisons)
 
 ### 2022
@@ -104,4 +108,6 @@ Solution comparisons by year and language:
 | [Day14](https://adventofcode.com/2022/day/14) | [Day14](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2022/Day14.java) | [Day14](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2022/Day14.kt) |
 | [Day15](https://adventofcode.com/2022/day/15) | [Day15](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2022/Day15.java) | [Day15](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2022/Day15.kt) |
 | [Day16](https://adventofcode.com/2022/day/16) | [Day16](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2022/Day16.java) | [Day16](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2022/Day16.kt) |
+| [Day17](https://adventofcode.com/2022/day/17) | [Day17](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2022/Day17.java) | n/a                                                                                                                |
+
 [Back to top](#comparisons)
