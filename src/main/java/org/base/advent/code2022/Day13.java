@@ -1,13 +1,10 @@
 package org.base.advent.code2022;
 
-import lombok.Getter;
-import org.base.advent.Solution;
-import org.base.advent.util.SafeLazyInitializer;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static java.util.function.Predicate.not;
@@ -15,35 +12,36 @@ import static java.util.function.Predicate.not;
 /**
  * <a href="https://adventofcode.com/2022/day/13">Day 13</a>
  */
-public class Day13 implements Solution<List<String>> {
+public class Day13 implements Function<List<String>, Day13.DistressSignal> {
+    public record DistressSignal(int indicesSum, int decoderKey) {}
+
     private static final List<List<Object>> PART2_SIGNALS =
             Stream.of("[[2]]", "[[6]]").map(Day13::parse).toList();
 
-    @Getter
-    private final List<String> input = readLines("/2022/input13.txt");
-    private final SafeLazyInitializer<List<List<Object>>> nested = new SafeLazyInitializer<>(() ->
-        getInput().stream().filter(not(String::isBlank)).map(Day13::parse).toList());
-
     @Override
-    public Object solvePart1() {
+    public DistressSignal apply(final List<String> input) {
+        final List<List<Object>> nested = input.stream().filter(not(String::isBlank)).map(Day13::parse).toList();
+        return new DistressSignal(sumIndices(nested), decoderKey(nested));
+    }
+
+    int sumIndices(final List<List<Object>> nested) {
         int result = 0;
-        List<List<Object>> copy = new ArrayList<>(nested.get());
+        List<List<Object>> copy = new ArrayList<>(nested);
         for (int i = 0, max = copy.size() - 1; i < max; i += 2)
             if (compareValues(copy.get(i), copy.get(i + 1)) < 0)
                 result += ((i + 2) / 2);
         return result;
     }
 
-    @Override
-    public Object solvePart2() {
+    int decoderKey(final List<List<Object>> nested) {
         List<List<Object>> part2 = new ArrayList<>(PART2_SIGNALS);
-        part2.addAll(nested.get());
+        part2.addAll(nested);
 
         List<String> sorted = part2.stream().sorted(this::compareValues).map(Object::toString).toList();
         return (sorted.indexOf("[[[2]]]") + 1) * (sorted.indexOf("[[[6]]]") + 1);
     }
 
-    int compareValues(List<Object> left, List<Object> right) {
+    int compareValues(final List<Object> left, final List<Object> right) {
         Iterator<Object> lit = left.iterator();
         Iterator<Object> rit = right.iterator();
         while (lit.hasNext() && rit.hasNext()) {
@@ -59,7 +57,7 @@ public class Day13 implements Solution<List<String>> {
     }
 
     @SuppressWarnings("unchecked")
-    int compareValues(Object left, Object right) {
+    int compareValues(final Object left, final Object right) {
         if (left instanceof Integer il) {
             if (right instanceof Integer ir)
                 return il - ir;
@@ -72,7 +70,7 @@ public class Day13 implements Solution<List<String>> {
             return compareValues((List<Object>) left, (List<Object>) right);
     }
 
-    private static List<Object> parse(String nested) {
+    private static List<Object> parse(final String nested) {
         Stack<List<Object>> stack = new Stack<>();
         stack.push(new ArrayList<>());
         StringBuilder str = new StringBuilder();

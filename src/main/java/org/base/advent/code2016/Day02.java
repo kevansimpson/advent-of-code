@@ -1,10 +1,8 @@
 package org.base.advent.code2016;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 import org.base.advent.util.Point;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,20 +11,17 @@ import java.util.Map;
  * <a href="https://adventofcode.com/2016/day/02">Day 02</a>
  */
 public class Day02 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input =  readLines("/2016/input02.txt");
-
     @Override
-    public Object solvePart1() {
-        return followInstructions(getInput(), squarePad());
+    public Object solvePart1(final List<String> input) {
+        return followInstructions(input, squarePad);
     }
 
     @Override
-    public Object solvePart2() {
-        return followInstructions(getInput(), diamondPad());
+    public Object solvePart2(final List<String> input) {
+        return followInstructions(input, diamondPad);
     }
 
-    public String followInstructions(final List<String> list, final Map<Point, Character> buttonPad) {
+    String followInstructions(final List<String> list, final Map<Point, Character> buttonPad) {
         final StringBuilder builder = new StringBuilder(list.size());
         Point point = buttonPad.entrySet().stream()
                 .filter(entry -> entry.getValue() == '5')
@@ -55,37 +50,29 @@ public class Day02 implements Solution<List<String>> {
         return builder.toString();
     }
 
-    Map<Point, Character> squarePad() {
-        final Map<Point, Character> pad = new HashMap<>();
-        pad.put(new Point(-1, 1), '1');
-        pad.put(new Point(0, 1), '2');
-        pad.put(new Point(1, 1), '3');
-        pad.put(new Point(-1, 0), '4');
-        pad.put(Point.ORIGIN, '5');
-        pad.put(new Point(1, 0), '6');
-        pad.put(new Point(-1, -1), '7');
-        pad.put(new Point(0, -1), '8');
-        pad.put(new Point(1, -1), '9');
+    static final Map<Point, Character> squarePad = Map.of(
+        new Point(-1, 1), '1',
+        new Point(0, 1), '2',
+        new Point(1, 1), '3',
+        new Point(-1, 0), '4',
+        Point.ORIGIN, '5',
+        new Point(1, 0), '6',
+        new Point(-1, -1), '7',
+        new Point(0, -1), '8',
+        new Point(1, -1), '9');
 
-        return pad;
-    }
-
-    Map<Point, Character> diamondPad() {
-        final Map<Point, Character> pad = new HashMap<>();
-        pad.put(new Point(0, 2), '1');
-        pad.put(new Point(-1, 1), '2');
-        pad.put(new Point(0, 1), '3');
-        pad.put(new Point(1, 1), '4');
-        pad.put(new Point(-2, 0), '5');
-        pad.put(new Point(-1, 0), '6');
-        pad.put(Point.ORIGIN, '7');
-        pad.put(new Point(1, 0), '8');
-        pad.put(new Point(2, 0), '9');
-        pad.put(new Point(-1, -1), 'A');
-        pad.put(new Point(0, -1), 'B');
-        pad.put(new Point(1, -1), 'C');
-        pad.put(new Point(0, -2), 'D');
-
-        return pad;
-    }
+    static final Map<Point, Character> diamondPad = Map.ofEntries( // more than 10, can't use Map.of
+            Map.entry(new Point(0, 2), '1'),
+            Map.entry(new Point(-1, 1), '2'),
+            Map.entry(new Point(0, 1), '3'),
+            Map.entry(new Point(1, 1), '4'),
+            Map.entry(new Point(-2, 0), '5'),
+            Map.entry(new Point(-1, 0), '6'),
+            Map.entry(Point.ORIGIN, '7'),
+            Map.entry(new Point(1, 0), '8'),
+            Map.entry(new Point(2, 0), '9'),
+            Map.entry(new Point(-1, -1), 'A'),
+            Map.entry(new Point(0, -1), 'B'),
+            Map.entry(new Point(1, -1), 'C'),
+            Map.entry(new Point(0, -2), 'D'));
 }

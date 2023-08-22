@@ -1,13 +1,17 @@
 package org.base.advent.code2015;
 
-import org.base.advent.Solution;
+import org.base.advent.Helpers;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * <a href="https://adventofcode.com/2015/day/21">Day 21</a>
  */
-public class Day21 implements Solution<Void> {
+public class Day21 implements Function<Void, Day21.OutfitCosts>, Helpers {
 
     private static final int BOSS_HP = 109;
     private static final int BOSS_DAMAGE = 8;
@@ -18,26 +22,10 @@ public class Day21 implements Solution<Void> {
     private int highestCost = Integer.MIN_VALUE;
     private Outfit worstOutfit;
 
-    @Override
-    public Void getInput(){
-        return null;
-    }
+    public record OutfitCosts(int lowest, int highest) {}
 
     @Override
-    public Object solvePart1() {
-        determineOutfits();
-        return lowestCost;
-    }
-
-    @Override
-    public Object solvePart2() {
-        if (worstOutfit == null)
-            determineOutfits();
-        return highestCost;
-    }
-
-    public void determineOutfits() {
-        final Map<String, List<Item>> itemMap = buildItems();
+    public OutfitCosts apply(Void unused) {
         for (final Item weapon : itemMap.get("weapons")) {
             for (final Item armor : itemMap.get("armor")) {
                 // no rings
@@ -61,9 +49,10 @@ public class Day21 implements Solution<Void> {
 
         debug("Best outfit is %s with cost of %d", bestOutfit, lowestCost);
         debug("Worst outfit is %s with cost of %d", worstOutfit, highestCost);
+        return new OutfitCosts(lowestCost, highestCost);
     }
 
-    protected void evaluateOutfit(final Outfit outfit) {
+    void evaluateOutfit(final Outfit outfit) {
         final int cost = outfit.getCost();
         if (isWinningOutfit(outfit)) {
             if (cost < lowestCost) {
@@ -95,7 +84,7 @@ public class Day21 implements Solution<Void> {
      * @param outfit The {@link Outfit} to evaluate.
      * @return {@code true} if the {@code Outfit} is winning.
      */
-    protected boolean isWinningOutfit(final Outfit outfit) {
+    boolean isWinningOutfit(final Outfit outfit) {
         int myHp = 100, bossHp = BOSS_HP;
         final int myNetDmg = outfit.getDamage() - BOSS_ARMOR;
         final int bossNetDmg = BOSS_DAMAGE - outfit.getArmor();
@@ -136,36 +125,29 @@ public class Day21 implements Solution<Void> {
      Defense +2   40     0       2
      Defense +3   80     0       3
 
-     * @return map of item lists
+     * the map of item lists
      */
-    protected Map<String, List<Item>> buildItems() {
-        final Map<String, List<Item>> itemMap = new HashMap<>();
-        final List<Item> weapons = new ArrayList<>();
-        weapons.add(new Item("Dagger",      8,  4, 0));
-        weapons.add(new Item("Shortsword",  10, 5, 0));
-        weapons.add(new Item("Warhammer",   25, 6, 0));
-        weapons.add(new Item("Longsword",   40, 7, 0));
-        weapons.add(new Item("Greataxe",    74, 8, 0));
-        itemMap.put("weapons", weapons);
-        final List<Item> armor = new ArrayList<>();
-        armor.add(new Item("Naked",          0, 0, 0));
-        armor.add(new Item("Leather",       13, 0, 1));
-        armor.add(new Item("Chainmail",     31, 0, 2));
-        armor.add(new Item("Splintmail",    53, 0, 3));
-        armor.add(new Item("Bandedmail",    75, 0, 4));
-        armor.add(new Item("Platemail",    102, 0, 5));
-        itemMap.put("armor", armor);
-        final List<Item> rings = new ArrayList<>();
-        rings.add(new Item("Damage +1",     25, 1, 0));
-        rings.add(new Item("Damage +2",     50, 2, 0));
-        rings.add(new Item("Damage +3",    100, 3, 0));
-        rings.add(new Item("Defense +1",    20, 0, 1));
-        rings.add(new Item("Defense +2",    40, 0, 2));
-        rings.add(new Item("Defense +3",    80, 0, 3));
-        itemMap.put("rings", rings);
-
-        return itemMap;
-    }
+    final Map<String, List<Item>> itemMap = Map.of(
+            "weapons", List.of(
+                    new Item("Dagger",      8,  4, 0),
+                    new Item("Shortsword",  10, 5, 0),
+                    new Item("Warhammer",   25, 6, 0),
+                    new Item("Longsword",   40, 7, 0),
+                    new Item("Greataxe",    74, 8, 0)),
+            "armor", List.of(
+                    new Item("Naked",          0, 0, 0),
+                    new Item("Leather",       13, 0, 1),
+                    new Item("Chainmail",     31, 0, 2),
+                    new Item("Splintmail",    53, 0, 3),
+                    new Item("Bandedmail",    75, 0, 4),
+                    new Item("Platemail",    102, 0, 5)),
+            "rings", List.of(
+                    new Item("Damage +1",     25, 1, 0),
+                    new Item("Damage +2",     50, 2, 0),
+                    new Item("Damage +3",    100, 3, 0),
+                    new Item("Defense +1",    20, 0, 1),
+                    new Item("Defense +2",    40, 0, 2),
+                    new Item("Defense +3",    80, 0, 3)));
 
     private static class Outfit {
         private final List<Item>items = new ArrayList<>();

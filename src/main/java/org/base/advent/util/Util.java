@@ -1,7 +1,5 @@
 package org.base.advent.util;
 
-import org.apache.commons.collections4.ListUtils;
-
 import java.math.BigInteger;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -14,6 +12,10 @@ import java.util.stream.Stream;
  * Utility methods.
  */
 public class Util {
+    /** Utility records to use as solution results. */
+    public record MinMaxInt(int min, int max) {}
+    public record MinMaxLong(long min, long max) {}
+
     private static final Pattern numberPattern = Pattern.compile("-?\\d+");
 
     public static int[] extractInt(String str) {

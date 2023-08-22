@@ -4,9 +4,9 @@ import lombok.Data;
 import lombok.NonNull;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.StringUtils;
-import org.base.advent.Solution;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -14,31 +14,21 @@ import java.util.stream.Collectors;
 /**
  * <a href="https://adventofcode.com/2018/day/04">Day 04</a>
  */
-public class Day04 implements Solution<List<String>> {
+public class Day04 implements Function<List<String>, Day04.GuardStrategy> {
+    public record GuardStrategy(int one, int two) {}
 
     @Override
-    public List<String> getInput(){
-        final List<String> lines = readLines("/2018/input04.txt");
+    public GuardStrategy apply(List<String> lines) {
         Collections.sort(lines);
-        return lines;
+        return new GuardStrategy(strategy1(lines), strategy2(lines));
     }
 
-    @Override
-    public Object solvePart1() {
-        return strategy1(getInput());
-    }
-
-    @Override
-    public Object solvePart2() {
-        return strategy2(getInput());
-    }
-
-    public int strategy1(final List<String> input) {
+    int strategy1(final List<String> input) {
         final Guard sleepy = findSleepiestGuard(input);
         return sleepy.getId() * sleepy.getSleepiestMinute();
     }
 
-    public int strategy2(final List<String> input) {
+    int strategy2(final List<String> input) {
         final Map<Integer, Guard> guardMap = parseRecords(input);
         final Map<Guard, Integer> sleepiest = guardMap.values().stream()
                 .collect(Collectors.toMap(g -> g, Guard::getSleepiestMinute));
@@ -56,7 +46,7 @@ public class Day04 implements Solution<List<String>> {
             }
         }
 
-        return sleepyGuard.getId() * sleepiest.get(sleepyGuard);
+        return Objects.requireNonNull(sleepyGuard).getId() * sleepiest.get(sleepyGuard);
     }
 
     Guard findSleepiestGuard(final List<String> input) {
@@ -64,11 +54,9 @@ public class Day04 implements Solution<List<String>> {
                 .max(Comparator.comparingInt(Guard::getTimeAsleep)).orElse(null);
     }
 
-    private static final Pattern REGEX = Pattern.compile(
-            "^\\[(\\d{4})-(\\d{2})-(\\d{2})\\s(\\d{2}):(\\d{2})]\\s(.+)$");
-
     Map<Integer, Guard> parseRecords(final List<String> input) {
-//        input.forEach(System.out::println);
+        final Pattern REGEX = Pattern.compile(
+                "^\\[(\\d{4})-(\\d{2})-(\\d{2})\\s(\\d{2}):(\\d{2})]\\s(.+)$");
         final Map<Integer, Guard> records = new LinkedHashMap<>();
         Guard current = null;
         int falls = -1, wakes;
@@ -80,23 +68,22 @@ public class Day04 implements Solution<List<String>> {
                 final String[] words = matcher.group(6).split("\\s");
 
                 switch (words[0]) {
-                    case "Guard":
+                    case "Guard" -> {
                         final int id = Integer.parseInt(StringUtils.remove(words[1], "#"));
                         current = records.getOrDefault(id, new Guard(id));
                         records.put(id, current);
-                        break;
-                    case "falls":
+                    }
+                    case "falls" -> {
                         falls = Integer.parseInt(matcher.group(5));
                         final List<Range<Integer>> rangeList =
-                                current.getRanges().getOrDefault(day, new ArrayList<>());
+                                Objects.requireNonNull(current).getRanges().getOrDefault(day, new ArrayList<>());
                         current.getRanges().put(day, rangeList);
-                        break;
-                    case "wakes":
+                    }
+                    case "wakes" -> {
                         wakes = Integer.parseInt(matcher.group(5));
-                        current.getRanges().get(day).add(Range.between(falls, wakes));
-                        break;
-                    default:
-                        throw new RuntimeException(rec);
+                        Objects.requireNonNull(current).getRanges().get(day).add(Range.of(falls, wakes));
+                    }
+                    default -> throw new RuntimeException(rec);
                 }
             }
             else
@@ -125,7 +112,7 @@ public class Day04 implements Solution<List<String>> {
 
         public int[] getSleepTallies() {
             final List<Range<Integer>> rangeList = getRanges().values().stream()
-                    .flatMap(Collection::stream).collect(Collectors.toList());
+                    .flatMap(Collection::stream).toList();
 
             final int[] counts = new int[60];
             for (final Range<Integer> range : rangeList) {

@@ -1,6 +1,5 @@
 package org.base.advent.code2019;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.List;
@@ -10,33 +9,30 @@ import java.util.function.ToIntFunction;
  * <a href="https://adventofcode.com/2019/day/01">Day 01</a>
  */
 public class Day01 implements Solution<List<Integer>> {
-    @Getter
-    private final List<Integer> input =  readNumbers("/2019/input01.txt");
-
     @Override
-    public Object solvePart1() {
-        return requiredFuel(getInput());
+    public Object solvePart1(final List<Integer> input) {
+        return requiredFuel(input);
     }
 
     @Override
-    public Object solvePart2() {
-        return accumulateFuel(getInput());
+    public Object solvePart2(final List<Integer> input) {
+        return accumulateFuel(input);
     }
 
-    public int requiredFuel(final List<Integer> list) {
+    int requiredFuel(final List<Integer> list) {
         return sum(list, this::calculate);
     }
 
-    public int accumulateFuel(final List<Integer> list) {
+    int accumulateFuel(final List<Integer> list) {
         return sum(list, this::accumulate);
     }
 
     // to find the fuel required for a module, take its mass, divide by three, round down, and subtract 2.
-    protected int calculate(final int mass) {
+    int calculate(final int mass) {
         return (int) (double) (mass / 3) - 2;
     }
 
-    protected int accumulate(final int mass) {
+    int accumulate(final int mass) {
         int fuel = calculate(mass), total = 0;
         while (fuel > 0) {
             total += fuel;

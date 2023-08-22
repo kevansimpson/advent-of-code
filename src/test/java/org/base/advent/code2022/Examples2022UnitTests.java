@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -41,9 +42,9 @@ public class Examples2022UnitTests {
                 "move 2 from 2 to 1",
                 "move 1 from 1 to 2");
         final Day05 day05 = new Day05();
-        day05.setInput(testData);
-        assertEquals("CMZ", day05.solvePart1());
-        assertEquals("MCD", day05.solvePart2());
+        final Day05.MovedCrate mc = day05.apply(testData);
+        assertEquals("CMZ", mc.top());
+        assertEquals("MCD", mc.rearranged());
     }
 
     @Test
@@ -55,17 +56,16 @@ public class Examples2022UnitTests {
                 "33549",
                 "35390");
         final Day08 day08 = new Day08();
-        day08.setInput(testData);
-        assertEquals(21, day08.solvePart1());
-        assertEquals(8, day08.solvePart2());
+        final Day08.Grid grid = day08.apply(testData);
+        assertEquals(21, grid.visibleTreesFromOutside());
+        assertEquals(8, grid.highestScenicScore());
     }
 
     @Test
     public void testDay17Examples() {
         final String winds = ">>><<><>><<<>><>>><<<>>><<<><<<>><>><<>>";
         final Day17 example = new Day17();
-        example.setInput(winds);
-        Day17.Cavern cavern = example.newCavern();
+        Day17.Cavern cavern = example.newCavern(winds);
         String str = IntStream.range(0, winds.length() * 2)
                 .mapToObj(it -> String.valueOf(cavern.nextWind())).collect(Collectors.joining());
         assertEquals(winds + winds, str);
@@ -73,8 +73,32 @@ public class Examples2022UnitTests {
         cavern.display();
 
         final Day17 day17 = new Day17();
-        day17.setInput(winds);
-        assertEquals(3068L, day17.solvePart1());
-        assertEquals(1514285714288L, day17.solvePart2());
+        assertEquals(3068L, day17.solvePart1(winds));
+        assertEquals(1514285714288L, day17.solvePart2(winds));
+    }
+
+    @Test
+    public void testDay18Examples() {
+        final Day18 small = new Day18();
+        final Day18.LavaDroplet droplet = small.apply(List.of("1,1,1", "2,1,1"));
+        assertEquals(10, droplet.surfaceArea());
+        final List<String> testData = Stream.of("""
+                                         2,2,2
+                                         1,2,2
+                                         3,2,2
+                                         2,1,2
+                                         2,3,2
+                                         2,2,1
+                                         2,2,3
+                                         2,2,4
+                                         2,2,6
+                                         1,2,5
+                                         3,2,5
+                                         2,1,5
+                                         2,3,5""".split("\n")).toList();
+        final Day18 day18 = new Day18();
+        final Day18.LavaDroplet lava = day18.apply(testData);
+        assertEquals(64, lava.surfaceArea());
+        assertEquals(58, lava.exterior());
     }
 }

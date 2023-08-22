@@ -18,12 +18,12 @@ public class Day14 implements Solution<List<String>> {
             readCachedLines("/2017/day14-bit-grid.txt",() -> listBits("uugsqrei"));
 
     @Override
-    public Object solvePart1() {
+    public Object solvePart1(final List<String> ignored) {
         return countUsedSquares(getInput());
     }
 
     @Override
-    public Object solvePart2() {
+    public Object solvePart2(final List<String> ignored) {
         return countRegions(getInput());
     }
 

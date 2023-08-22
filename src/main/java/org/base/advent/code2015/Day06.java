@@ -12,25 +12,23 @@ import java.util.regex.Pattern;
  * <a href="https://adventofcode.com/2015/day/06">Day 06</a>
  */
 public class Day06 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input = readLines("/2015/input06.txt");
-
-    @Override
-    public Object solvePart1() {
-        return countLightsOn(getInput());
-    }
-
-    @Override
-    public Object solvePart2() {
-        return totalBrightness(getInput());
-    }
 
     private enum Cmd {on, off, toggle}  // case-sensitive, to match input
 
     private static final Pattern PARSER = Pattern.compile(
             "(toggle|turn on|turn off)\\s([\\d,]+)\\sthrough\\s([\\d,]+)", Pattern.DOTALL);
 
-    public int countLightsOn(final List<String> directions)  {
+    @Override
+    public Object solvePart1(List<String> input) {
+        return countLightsOn(input);
+    }
+
+    @Override
+    public Object solvePart2(List<String> input) {
+        return totalBrightness(input);
+    }
+
+    int countLightsOn(final List<String> directions)  {
         final boolean[][] lightGrid = new boolean[1000][1000];
 
         for (final String directive : directions) {
@@ -65,7 +63,7 @@ public class Day06 implements Solution<List<String>> {
         return lightsOn;
     }
 
-    public int totalBrightness(final List<String> directions) {
+    int totalBrightness(final List<String> directions) {
         final int[][] lightGrid = new int[1000][1000];
 
         for (final String directive : directions) {
@@ -97,12 +95,11 @@ public class Day06 implements Solution<List<String>> {
                 lightsOn += lightGrid[x][y];
             }
         }
-        
-        // Wrong answer #1: 14190930 (too low, caused by not accounting for minimum brightness of 0)
+
         return lightsOn;
     }
 
-    protected Cmd parseCmd(final String text) {
+    Cmd parseCmd(final String text) {
         return Cmd.valueOf(text.replace("turn ", "").trim());
     }
 }

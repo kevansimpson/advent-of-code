@@ -1,6 +1,5 @@
 package org.base.advent.code2017;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.*;
@@ -9,18 +8,15 @@ import java.util.stream.Collectors;
 /**
  * <a href="https://adventofcode.com/2017/day/12">Day 12</a>
  */
-public class Day12 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input =  readLines("/2017/input12.txt");
-
+public class Day12 implements Solution<List<String>> { // TODO -> Function
     @Override
-    public Object solvePart1() {
-        return countPrograms(mapPrograms(getInput()), "0").size();
+    public Object solvePart1(final List<String> input) {
+        return countPrograms(mapPrograms(input), "0").size();
     }
 
     @Override
-    public Object solvePart2() {
-        return countProgramGroups(mapPrograms(getInput()));
+    public Object solvePart2(final List<String> input) {
+        return countProgramGroups(mapPrograms(input));
     }
 
     public int countProgramGroups(final Map<String, List<String>> map) {

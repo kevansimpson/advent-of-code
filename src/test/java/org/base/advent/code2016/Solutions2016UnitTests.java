@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Test;
 public class Solutions2016UnitTests extends PuzzleTester {
     @Test
     public void verifyDay01() {
-        testSolutions(new Day01(), 288L, 111L);
+        testSolutions(new Day01(), readInput("/2016/input01.txt"), 288L, 111L);
     }
 
     @Test
     public void verifyDay02() {
-        testSolutions(new Day02(), "76792", "A7AC3");
+        testSolutions(new Day02(), readLines("/2016/input02.txt"), "76792", "A7AC3");
     }
 
     @Test
     public void verifyDay03() {
-        testSolutions(new Day03(), 982L, 1826L);
+        testSolutions(new Day03(), readLines("/2016/input03.txt"), 982L, 1826L);
     }
 
     @BeforeAll

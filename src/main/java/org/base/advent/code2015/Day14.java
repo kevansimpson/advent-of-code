@@ -1,6 +1,5 @@
 package org.base.advent.code2015;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.*;
@@ -11,27 +10,24 @@ import java.util.regex.Pattern;
  * <a href="https://adventofcode.com/2015/day/14">Day 14</a>
  */
 public class Day14 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input = readLines("/2015/input14.txt");
-
     @Override
-    public Object solvePart1() {
-        return distanceTraveled(getInput());
+    public Object solvePart1(final List<String> input) {
+        return distanceTraveled(input);
     }
 
     @Override
-    public Object solvePart2() {
-        return winningPoints(getInput());
+    public Object solvePart2(final List<String> input) {
+        return winningPoints(input);
     }
 
-    public int distanceTraveled(final List<String> input) {
+    int distanceTraveled(final List<String> input) {
         final Map<String, ReindeerSpeed> speedMap = buildSpeedMap(input);
         final TreeMap<Integer, List<String>> distanceMap = buildDistanceMap(speedMap, 2503);
 
         return distanceMap.lastKey();
     }
 
-    public int winningPoints(final List<String> input) {
+    int winningPoints(final List<String> input) {
         final Map<String, ReindeerSpeed> speedMap = buildSpeedMap(input);
         final Map<String, String> pointMap = new HashMap<>();
 
@@ -52,18 +48,17 @@ public class Day14 implements Solution<List<String>> {
             }
         }
 
-        // > 1075 - didn't account for ties
         debug("The winning reindeer is "+ winner);
         return highest;
     }
 
-    protected List<String> identifyWinner(final Map<String, ReindeerSpeed> speedMap, final int seconds) {
+    List<String> identifyWinner(final Map<String, ReindeerSpeed> speedMap, final int seconds) {
         final TreeMap<Integer, List<String>> distanceMap = buildDistanceMap(speedMap, seconds);
         return distanceMap.get(distanceMap.lastKey());
     }
 
     /* Snapshot */
-    protected TreeMap<Integer, List<String>> buildDistanceMap(final Map<String, ReindeerSpeed> speedMap, final int seconds) {
+    TreeMap<Integer, List<String>> buildDistanceMap(final Map<String, ReindeerSpeed> speedMap, final int seconds) {
         final TreeMap<Integer, List<String>> distanceMap = new TreeMap<>();
         for (final String reindeer : speedMap.keySet()) {
             final int dist = calculateDistance(speedMap.get(reindeer), seconds);

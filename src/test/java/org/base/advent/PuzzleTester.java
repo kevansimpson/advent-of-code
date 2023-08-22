@@ -5,33 +5,44 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
-public class PuzzleTester {
+public class PuzzleTester implements PuzzleReader {
+    private static final String INDENT = StringUtils.repeat(' ', 59);
     private static final String LINE = "%n\t=======================%n";
     private static final String BANNER = LINE + "\t Advent of Code - %d" + LINE;
-
-    public static String readableTime(Duration duration) {
-        long nanos = duration.toNanos();
-        if (nanos > 1000000L)
-            return String.format("%d millis", TimeUnit.NANOSECONDS.toMillis(nanos));
-        else if (nanos > 1000L)
-            return String.format("%d micros", TimeUnit.NANOSECONDS.toMicros(nanos));
-        else
-            return String.format("%d nanos", nanos);
-    }
 
     protected static void banner(int year) {
         System.out.printf(BANNER, year);
     }
 
-    protected void testSolutions(Solution<?> solution, Object expected1, Object expected2) {
-        String name = solution.getClass().getSimpleName();
-        long total = stopwatch(name + " part 1", expected1, solution::solvePart1)
-                + stopwatch(name + " part 2", expected2, solution::solvePart2);
+    protected <T, S, A, B> void testSolutions(Function<T, S> solutions,
+                                              T input,
+                                              Object expected1,
+                                              Function<S, A> answer1,
+                                              Object expected2,
+                                              Function<S, B> answer2) {
+        final String name = solutions.getClass().getSimpleName();
+        long start = System.nanoTime();
+        S solutionRecord = solutions.apply(input);
+        assertEquals(expected1, answer1.apply(solutionRecord), name);
+        assertEquals(expected2, answer2.apply(solutionRecord), name);
+        Duration duration = Duration.of(System.nanoTime() - start, ChronoUnit.NANOS);
+        printTime(name + INDENT + name + " total", duration);
+        System.out.printf("%n\t-----%n");
+    }
+
+    protected <T> void testSolutions(Solution<T> solution,
+                                     T input,
+                                     Object expected1,
+                                     Object expected2) {
+        final String name = solution.getClass().getSimpleName();
+        final long total =
+                stopwatch(name + " part 1", expected1, () -> solution.solvePart1(input))
+                + stopwatch(name + " part 2", expected2, () -> solution.solvePart2(input));
         printTime(name + " total", Duration.ofNanos(total));
         System.out.printf("%n\t-----%n");
     }
@@ -46,5 +57,15 @@ public class PuzzleTester {
         Duration duration = Duration.of(System.nanoTime() - start, ChronoUnit.NANOS);
         printTime(name, duration);
         return duration.toNanos();
+    }
+
+    static String readableTime(Duration duration) {
+        long nanos = duration.toNanos();
+        if (nanos > 1000000L)
+            return String.format("%d millis", TimeUnit.NANOSECONDS.toMillis(nanos));
+        else if (nanos > 1000L)
+            return String.format("%d micros", TimeUnit.NANOSECONDS.toMicros(nanos));
+        else
+            return String.format("%d nanos", nanos);
     }
 }

@@ -10,23 +10,17 @@ import java.util.List;
  * <a href="https://adventofcode.com/2017/day/17">Day 17</a>
  */
 public class Day17 implements Solution<Integer> {
-
     @Override
-    public Integer getInput() {
-        return 337;
+    public Object solvePart1(final Integer input) {
+        return shortCircuitSpinLock(input);
     }
 
     @Override
-    public Object solvePart1() {
-        return shortCircuitSpinLock(getInput());
+    public Object solvePart2(final Integer input) {
+        return angrySpinLock(input);
     }
 
-    @Override
-    public Object solvePart2() {
-        return angrySpinLock(getInput());
-    }
-
-    public int angrySpinLock(final int input) {
+    int angrySpinLock(final int input) {
         int currPos = 0;
         int result = 0;
         final int limit = 50000000;
@@ -48,7 +42,7 @@ public class Day17 implements Solution<Integer> {
         return result;
     }
 
-    public int shortCircuitSpinLock(final int steps) {
+    int shortCircuitSpinLock(final int steps) {
         final List<Integer> buffer = newBuffer();
         int position = 0;
         for (int i = 1; i < 2018; i++) {
@@ -59,14 +53,14 @@ public class Day17 implements Solution<Integer> {
         return buffer.get(buffer.indexOf(2017) + 1);
     }
 
-    public int stepForward(final List<Integer> buffer, final int steps, final int position, final int index) {
+    int stepForward(final List<Integer> buffer, final int steps, final int position, final int index) {
         final int size = buffer.size();
         final int next = (position + steps) % size + 1;
         buffer.add(next, index);
         return next;
     }
 
-    public List<Integer> newBuffer() {
+    List<Integer> newBuffer() {
         final List<Integer> buffer = new ArrayList<>();
         buffer.add(0);
         return buffer;

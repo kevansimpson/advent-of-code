@@ -1,16 +1,19 @@
 package org.base.advent.code2022;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.Pair;
-import org.base.advent.Solution;
+import org.base.advent.Helpers;
 import org.base.advent.TimeSaver;
 import org.base.advent.util.Node;
 import org.base.advent.util.Point;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.base.advent.util.Node.createRootNode;
@@ -19,26 +22,22 @@ import static org.base.advent.util.Point.inGrid;
 /**
  * <a href="https://adventofcode.com/2022/day/12">Day 12</a>
  */
-public class Day12 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input = readLines("/2022/input12.txt");
-    private final Hill localArea = mapHill(getInput());
+public class Day12 implements Function<List<String>, Day12.HillPath> {
+    public record HillPath(long fewestSteps, long fewestFromA) {}
 
     @Override
-    public Object solvePart1() {
-        return climb(localArea);
+    public HillPath apply(final List<String> input) {
+        final Hill localArea = mapHill(input);
+        return new HillPath(
+                climb(localArea),
+                localArea.heightmap.entrySet().parallelStream()
+                        .filter(it -> it.getValue() == 'a')
+                        .map(Map.Entry::getKey)
+                        .mapToLong(it -> climb(localArea.copy(it)))
+                        .min().orElse(1138L));
     }
 
-    @Override
-    public Object solvePart2() {
-        return localArea.heightmap.entrySet().parallelStream()
-                .filter(it -> it.getValue() == 'a')
-                .map(Map.Entry::getKey)
-                .mapToLong(it -> climb(localArea.copy(it)))
-                .min().orElse(1138L);
-    }
-
-    long climb(Hill hill) {
+    long climb(final Hill hill) {
         List<Node<Point>> nodes = new ArrayList<>();
         nodes.add(createRootNode(hill.start));
         Map<Point, Long> depthMap = new HashMap<>();
@@ -70,7 +69,7 @@ public class Day12 implements Solution<List<String>> {
         return minimum.get();
     }
 
-    Hill mapHill(List<String> view) {
+    Hill mapHill(final List<String> view) {
         Map<Point, Character> heightmap = new HashMap<>();
         String line = "";
         for (int y = 0, maxY = view.size(); y < maxY; y++) {
@@ -83,7 +82,7 @@ public class Day12 implements Solution<List<String>> {
     }
 
     @AllArgsConstructor
-    private class Hill implements TimeSaver {
+    private static class Hill implements Helpers, TimeSaver {
         private static final int A = 'a';
         private static final int Z = 'z';
         private static final int PEAK = Z + 1;

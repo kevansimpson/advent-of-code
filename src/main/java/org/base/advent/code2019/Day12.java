@@ -1,7 +1,6 @@
 package org.base.advent.code2019;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
@@ -16,26 +15,23 @@ import java.util.stream.Collectors;
  * <a href="https://adventofcode.com/2019/day/12">Day 12</a>
  */
 public class Day12 implements Solution<List<String>>, TimeSaver {
-    @Getter
-    private final List<String> input =  readLines("/2019/input12.txt");
-
     @Override
-    public Integer solvePart1() {
-        return totalEnergy(getInput(), 1000);
+    public Integer solvePart1(final List<String> input) {
+        return totalEnergy(input, 1000);
     }
 
     @Override
-    public Long solvePart2() {
-        return fastOrFull(288684633706728L, () -> completeOrbit(getInput()));
+    public Long solvePart2(final List<String> input) {
+        return fastOrFull(288684633706728L, () -> completeOrbit(input));
     }
 
-    public int totalEnergy(final List<String> rows, final int steps) {
+    int totalEnergy(final List<String> rows, final int steps) {
         final List<Moon> moons = scanMoons(rows);
         for (int s = 0; s < steps; s++) simulate(moons);
         return moons.stream().mapToInt(Moon::energy).sum();
     }
 
-    public long completeOrbit(final List<String> rows) {
+    long completeOrbit(final List<String> rows) {
         final int[] result = new int[3];
         for (int axis = 0; axis < 3; axis++) result[axis] = completeOrbit(scanMoons(rows), axis);
         return lcm(lcm(result[0], result[1]), result[2]);

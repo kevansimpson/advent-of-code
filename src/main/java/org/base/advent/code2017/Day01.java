@@ -1,6 +1,5 @@
 package org.base.advent.code2017;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.function.Function;
@@ -14,20 +13,17 @@ public class Day01 implements Solution<String> {
     public static final Function<String, Integer> INCREMENT_ONE = (str) -> 1;
     public static final Function<String, Integer> INCREMENT_HALF = (str) -> str.length() / 2;
 
-    @Getter
-    private final String input =  readInput("/2017/input01.txt");
-
     @Override
-    public Object solvePart1() {
-        return solve(getInput(), INCREMENT_ONE);
+    public Object solvePart1(final String input) {
+        return solve(input, INCREMENT_ONE);
     }
 
     @Override
-    public Object solvePart2() {
-        return solve(getInput(), INCREMENT_HALF);
+    public Object solvePart2(final String input) {
+        return solve(input, INCREMENT_HALF);
     }
 
-    public int solve(String input, Function<String, Integer> incrementer) {
+    int solve(String input, Function<String, Integer> incrementer) {
         char[] ch = input.toCharArray();
         int sum = 0;
         int len = ch.length;

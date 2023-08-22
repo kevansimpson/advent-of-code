@@ -1,6 +1,5 @@
 package org.base.advent.code2019;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 import org.base.advent.TimeSaver;
 
@@ -17,24 +16,21 @@ import java.util.stream.Stream;
  * <a href="https://adventofcode.com/2019/day/14">Day 14</a>
  */
 public class Day14 implements Solution<List<String>>, TimeSaver {
-    @Getter
-    private final List<String> input = readLines("/2019/input14.txt");
-
     @Override
-    public Long solvePart1() {
-        return minimumOre(getInput());
+    public Long solvePart1(final List<String> input) {
+        return minimumOre(input);
     }
 
     @Override
-    public Long solvePart2() {
-        return fastOrFull(2144702L, () -> maximumFuel(getInput()));
+    public Long solvePart2(final List<String> input) {
+        return fastOrFull(2144702L, () -> maximumFuel(input));
     }
 
-    public long minimumOre(final List<String> rxns) {
+    long minimumOre(final List<String> rxns) {
         return minimumOre(new Chem(1, "FUEL"), rxns);
     }
 
-    public long minimumOre(final Chem fuel, final List<String> rxns) {
+    long minimumOre(final Chem fuel, final List<String> rxns) {
         return minimumOre(fuel, reactions(rxns));
     }
 
@@ -46,7 +42,7 @@ public class Day14 implements Solution<List<String>>, TimeSaver {
 
     private static final long FREE_FUEL = 1000000000000L;
 
-    public long maximumFuel(final List<String> rxns) {
+    long maximumFuel(final List<String> rxns) {
         final Map<String, Rxn> reactions = reactions(rxns);
         final long minOre = minimumOre(new Chem(1L, "FUEL"), reactions);
         // use cheat for day's input, examples need to be calculated

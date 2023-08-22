@@ -1,39 +1,32 @@
 package org.base.advent.code2019;
 
-import lombok.Getter;
-import org.base.advent.Solution;
 import org.base.advent.util.Point;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
  * <a href="https://adventofcode.com/2019/day/10">Day 10</a>
  */
-public class Day10 implements Solution<String[]> {
-    @Getter
-    private final String[] input = readLines("/2019/input10.txt").toArray(new String[36]);
+public class Day10 implements Function<List<String>, Day10.Asteroids> {
+    public record Asteroids(int max, long vaporize) {}
 
     @Override
-    public Integer solvePart1() {
-        return maxAsteroids(getInput());
+    public Asteroids apply(List<String> strings) {
+        final String[] input = strings.toArray(new String[36]);
+        final Point _200th = vaporize(input);
+        return new Asteroids(maxAsteroids(input), _200th.x * 100 + _200th.y);
     }
 
-    @Override
-    public Long solvePart2() {
-        final Point _200th = vaporize(getInput());
-        return _200th.x * 100 + _200th.y;
-    }
-
-    public int maxAsteroids(final String... rows) {
+    int maxAsteroids(final String... rows) {
         return mapVisibleAsteroids(rows).values().stream().max(Comparator.naturalOrder()).orElse(-1);
     }
 
-    public Point vaporize(final String... rows) {
+    Point vaporize(final String... rows) {
         final Map<Point, Integer> asteroids = mapVisibleAsteroids(rows);
-        @SuppressWarnings("OptionalGetWithoutIsPresent")
         final Point deathStar = asteroids.entrySet().stream()
-                .max(Comparator.comparingInt(Map.Entry::getValue)).get().getKey();
+                .max(Comparator.comparingInt(Map.Entry::getValue)).orElseThrow().getKey();
         final List<Point> vaporized = new ArrayList<>();
 
         while (vaporized.size() < 200) {
@@ -73,7 +66,6 @@ public class Day10 implements Solution<String[]> {
 
         return angles;
     }
-
 
     Set<Point> scanAsteroids(final String... rows) {
         final Set<Point> asteroids = new LinkedHashSet<>();

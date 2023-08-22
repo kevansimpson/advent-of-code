@@ -1,6 +1,5 @@
 package org.base.advent.code2018;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.List;
@@ -11,24 +10,21 @@ import java.util.TreeSet;
  * <a href="https://adventofcode.com/2018/day/01">Day 01</a>
  */
 public class Day01 implements Solution<List<Integer>> {
-    @Getter
-    private final List<Integer> input =  readNumbers("/2018/input01.txt");
-
     @Override
-    public Object solvePart1() {
-        return sum(getInput());
+    public Object solvePart1(final List<Integer> input) {
+        return sum(input);
     }
 
     @Override
-    public Object solvePart2() {
-        return findDuplicateFrequency(getInput());
+    public Object solvePart2(final List<Integer> input) {
+        return findDuplicateFrequency(input);
     }
 
-    public int sum(final List<Integer> list) {
+    int sum(final List<Integer> list) {
         return list.stream().mapToInt(Integer::intValue).sum();
     }
 
-    public int findDuplicateFrequency(final List<Integer> list) {
+    int findDuplicateFrequency(final List<Integer> list) {
         final Set<Integer> frequencies = new TreeSet<>();
         int sum = 0;
         frequencies.add(sum);

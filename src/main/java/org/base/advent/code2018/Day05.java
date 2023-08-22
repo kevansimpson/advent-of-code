@@ -1,29 +1,28 @@
 package org.base.advent.code2018;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Stack;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
  * <a href="https://adventofcode.com/2018/day/05">Day 05</a>
  */
 public class Day05 implements Solution<String> {
-    @Getter
-    private final String input =  readInput("/2018/input05.txt");
-
     @Override
-    public Object solvePart1() {
-        return formPolymer(getInput()).length();
+    public Object solvePart1(final String input) {
+        return formPolymer(input).length();
     }
 
     @Override
-    public Object solvePart2() {
-        return improvePolymer(getInput()).length();
+    public Object solvePart2(final String input) {
+        return improvePolymer(input).length();
     }
 
-    public String improvePolymer(final String input) {
+    String improvePolymer(final String input) {
         final Map<Character, Character> rxns = buildReactionMap();
         final Map<Character, String> collapsed = new TreeMap<>();
 
@@ -42,7 +41,7 @@ public class Day05 implements Solution<String> {
         return collapsed.values().stream().min(Comparator.comparingInt(String::length)).orElseGet(null);
     }
 
-    public String formPolymer(final String input) {
+    String formPolymer(final String input) {
         return formPolymer(input, buildReactionMap());
     }
 

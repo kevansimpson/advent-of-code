@@ -9,27 +9,21 @@ import org.base.advent.Solution;
  * <a href="https://adventofcode.com/2017/day/03">Day 03</a>
  */
 public class Day03 implements Solution<Integer> {
-
     @Override
-    public Integer getInput() {
-        return 265149;
+    public Object solvePart1(Integer input) {
+        return distanceFromOrigin(input);
     }
 
     @Override
-    public Object solvePart1() {
-        return distanceFromOrigin(getInput());
+    public Object solvePart2(Integer input) {
+        return firstLargerValue(input);
     }
 
-    @Override
-    public Object solvePart2() {
-        return firstLargerValue(getInput());
-    }
-
-    public long distanceFromOrigin(int location) {
+    long distanceFromOrigin(final int location) {
         return toPoint(location).getManhattanDistance();
     }
 
-    public long firstLargerValue(int input) {
+    long firstLargerValue(final int input) {
         Map<Point, Long> vmap = new LinkedHashMap<>();
         vmap.put(Point.ORIGIN, 1L);
 
@@ -45,11 +39,11 @@ public class Day03 implements Solution<Integer> {
         return firstLarger;
     }
 
-    public long spiralSum(Point point) {
+    long spiralSum(final Point point) {
         return spiralSum(point, new LinkedHashMap<>());
     }
 
-    public long spiralSum(Point point, Map<Point, Long> vmap) {
+    long spiralSum(final Point point, final Map<Point, Long> vmap) {
         vmap.put(Point.ORIGIN, 1L);
 
         if (vmap.containsKey(point))
@@ -71,7 +65,7 @@ public class Day03 implements Solution<Integer> {
         return sum;
     }
 
-    public Point toPoint(int location) {
+    Point toPoint(final int location) {
         if (location == 1)
             return Point.ORIGIN;
 

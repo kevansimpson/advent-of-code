@@ -17,24 +17,18 @@ import java.util.stream.Stream;
 /**
  * <a href="https://adventofcode.com/2017/day/20">Day 20</a>
  */
-public class Day20 implements Solution<List<Day20.Particle>> {
-
+public class Day20 implements Solution<List<String>> {
     @Override
-    public List<Particle> getInput(){
-        return toParticles(readLines("/2017/input20.txt"));
+    public Object solvePart1(final List<String> input) {
+        return findClosest(simulateParticles(toParticles(input), 500));
     }
 
     @Override
-    public Object solvePart1() {
-        return findClosest(simulateParticles(getInput(), 500));
+    public Object solvePart2(final List<String> input) {
+        return removeCollisions(toParticles(input));
     }
 
-    @Override
-    public Object solvePart2() {
-        return removeCollisions(getInput());
-    }
-
-    public int removeCollisions(final List<Particle> particles) {
+    int removeCollisions(final List<Particle> particles) {
         for (int i = 0; i < 50; i++) {
             particles.forEach(Particle::tick);
 
@@ -50,26 +44,26 @@ public class Day20 implements Solution<List<Day20.Particle>> {
         return particles.size();
     }
 
-    public long findClosest(final List<Particle> particles) {
+    long findClosest(final List<Particle> particles) {
         final long closest = particles.stream().mapToLong(p -> p.getPosition().manhattanDistance()).min().orElseThrow();
         final long[] distances = particles.stream().mapToLong(p -> p.getPosition().manhattanDistance()).toArray();
 
         return ArrayUtils.indexOf(distances, closest);
     }
 
-    protected List<Particle> simulateParticles(final List<Particle> particles, final int iterations) {
+    List<Particle> simulateParticles(final List<Particle> particles, final int iterations) {
         for (int i = 0; i < iterations; i++)
             particles.forEach(Particle::tick);
 
         return particles;
     }
 
-    protected List<Particle> toParticles(final List<String> input) {
+    List<Particle> toParticles(final List<String> input) {
         return input.stream().map(this::convert).collect(Collectors.toList());
     }
 
     private static final Pattern PATTERN = Pattern.compile("p=<\\s?([^>]+)>, v=<\\s?([^>]+)>, a=<\\s?([^>]+)>");
-    protected Particle convert(final String input) {
+    Particle convert(final String input) {
         // p=<-3787,-3683,3352>, v=<41,-25,-124>, a=<5,9,1>
         final Matcher matcher = PATTERN.matcher(input);
         if (matcher.matches()) {
@@ -79,7 +73,7 @@ public class Day20 implements Solution<List<Day20.Particle>> {
             throw new RuntimeException("Conversion failed: "+ input);
     }
 
-    protected Point3D toPoint(final String input) {
+    Point3D toPoint(final String input) {
         return new Point3D(Stream.of(input.split(",")).mapToLong(Long::valueOf).toArray());
     }
 

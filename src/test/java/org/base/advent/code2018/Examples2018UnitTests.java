@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Unit tests for daily puzzle examples.
@@ -55,10 +55,10 @@ public class Examples2018UnitTests {
         assertEquals(4, claim.getHeight());
 
         final List<String> input = Arrays.asList("#1 @ 1,3: 4x4", "#2 @ 3,1: 4x4", "#3 @ 5,5: 2x2");
-        day03.setClaims(day03.toClaims(input));
-        final Map<Point, List<Integer>> grid = day03.buildGrid(day03.getClaims());
+        List<Day03.Claim> claims = day03.toClaims(input);
+        final Map<Point, List<Integer>> grid = day03.buildGrid(claims);
         assertEquals(4, day03.calculateOverlap(grid));
-        assertEquals(3, day03.findAdjacentClaimId(grid));
+        assertEquals(3, day03.findAdjacentClaimId(claims, grid));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class Examples2018UnitTests {
     }
 
     @Test
-    public void testDay05Examples() throws Exception {
+    public void testDay05Examples() {
         final Day05 day05 = new Day05();
         assertEquals("", day05.formPolymer("aA"));
         assertEquals("", day05.formPolymer("abBA"));
@@ -102,7 +102,7 @@ public class Examples2018UnitTests {
     }
 
     @Test
-    public void testDay06Examples() throws Exception {
+    public void testDay06Examples() {
         final Day06 day06 = new Day06();
         final List<String> input = Arrays.asList("1, 1", "1, 6", "8, 3", "3, 4", "5, 5", "8, 9");
         final List<Point> points = day06.toPoints(input);

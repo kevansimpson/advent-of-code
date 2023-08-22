@@ -1,40 +1,30 @@
 package org.base.advent.code2017;
 
 import org.apache.commons.lang3.StringUtils;
-import org.base.advent.Solution;
+import org.base.advent.Helpers;
 import org.base.advent.util.Point;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
  * <a href="https://adventofcode.com/2017/day/19">Day 19</a>
  */
-public class Day19 implements Solution<List<Point>> {
-
-    private Map<Point, String> grid;
-
-    @Override
-    public List<Point> getInput(){
-        final List<String> input = readLines("/2017/input19.txt");
-        grid = buildGrid(input);
-        return followPath(grid);
-    }
+public class Day19 implements Function<List<String>, Day19.LittlePacket>, Helpers {
+    public record LittlePacket(String letters, long steps) {}
 
     @Override
-    public Object solvePart1() {
-        return toLetters(getInput(), grid);
+    public Day19.LittlePacket apply(List<String> input) {
+        Map<Point, String> grid = buildGrid(input);
+        final List<Point> points = followPath(grid);
+        return new Day19.LittlePacket(toLetters(points, grid), points.size());
     }
 
-    @Override
-    public Object solvePart2() {
-        return getInput().size();
-    }
-
-    public List<Point> followPath(final Map<Point, String> grid) {
+    List<Point> followPath(final Map<Point, String> grid) {
         final Point start = findStart(grid);
         final List<Point> path = new ArrayList<>();
         path.add(start);
@@ -75,7 +65,7 @@ public class Day19 implements Solution<List<Point>> {
         return path;
     }
 
-    public String toLetters(final List<Point> path, final Map<Point, String> grid) {
+    String toLetters(final List<Point> path, final Map<Point, String> grid) {
         return path.stream()
                 .map(grid::get)
                 .collect(Collectors.joining())
@@ -84,12 +74,11 @@ public class Day19 implements Solution<List<Point>> {
                 .replaceAll("\\+", "");
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public Point findStart(final Map<Point, String> grid) {
-        return grid.entrySet().stream().filter(e -> e.getKey().y == 0).findFirst().get().getKey();
+    Point findStart(final Map<Point, String> grid) {
+        return grid.entrySet().stream().filter(e -> e.getKey().y == 0).findFirst().orElseThrow().getKey();
     }
 
-    public Map<Point, String> buildGrid(final List<String> points) {
+    Map<Point, String> buildGrid(final List<String> points) {
         final Map<Point, String> grid = new HashMap<>();
 
         for (int y = 0; y < points.size(); y++) {
@@ -102,5 +91,4 @@ public class Day19 implements Solution<List<Point>> {
 
         return grid;
     }
-
 }

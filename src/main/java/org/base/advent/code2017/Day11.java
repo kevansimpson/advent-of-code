@@ -1,28 +1,16 @@
 package org.base.advent.code2017;
 
-import lombok.Getter;
-import org.apache.commons.lang3.tuple.Pair;
-import org.base.advent.Solution;
 import org.base.advent.util.HexPoint;
+import org.base.advent.util.Util;
+
+import java.util.function.Function;
 
 /**
  * <a href="https://adventofcode.com/2017/day/11">Day 11</a>
  */
-public class Day11 implements Solution<String> {
-    @Getter
-    private final String input =  readInput("/2017/input11.txt");
-
+public class Day11 implements Function<String, Util.MinMaxLong> {
     @Override
-    public Object solvePart1() {
-        return countSteps(getInput()).getLeft();
-    }
-
-    @Override
-    public Object solvePart2() {
-        return countSteps(getInput()).getRight();
-    }
-
-    public Pair<Long, Long> countSteps(final String directions) {
+    public Util.MinMaxLong apply(final String directions) {
         HexPoint point = HexPoint.CENTER;
         final String[] steps = directions.split(",");
         long max = 0;
@@ -40,6 +28,6 @@ public class Day11 implements Solution<String> {
             max = Math.max(max, HexPoint.hexDistance(point));
         }
 
-        return Pair.of(HexPoint.hexDistance(point), max);
+        return new Util.MinMaxLong(HexPoint.hexDistance(point), max);
     }
 }

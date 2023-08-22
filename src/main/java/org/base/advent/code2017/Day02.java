@@ -1,6 +1,5 @@
 package org.base.advent.code2017;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.ArrayList;
@@ -13,21 +12,18 @@ import java.util.stream.Collectors;
  * <a href="https://adventofcode.com/2017/day/02">Day 02</a>
  */
 public class Day02 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input =  readLines("/2017/input02.txt");
-
     @Override
-    public Object solvePart1() {
-        return checksum(getInput());
+    public Object solvePart1(final List<String> input) {
+        return checksum(input);
     }
 
     @Override
-    public Object solvePart2() {
-        return evenlyDivisible(getInput());
+    public Object solvePart2(final List<String> input) {
+        return evenlyDivisible(input);
     }
 
-    public int checksum(List<String> input) {
-        List<List<Integer>> lines = parseLines(input);
+    int checksum(final List<String> input) {
+        final List<List<Integer>> lines = parseLines(input);
         return lines.stream()
              .mapToInt(values -> ((values.get(values.size() - 1)) - values.get(0)))
              .sum();

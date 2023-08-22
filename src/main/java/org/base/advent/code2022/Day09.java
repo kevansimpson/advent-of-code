@@ -1,38 +1,30 @@
 package org.base.advent.code2022;
 
-import lombok.Getter;
 import org.apache.commons.lang3.tuple.Pair;
-import org.base.advent.Solution;
 import org.base.advent.util.Point;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 import static java.lang.Long.compare;
 
 /**
  * <a href="https://adventofcode.com/2022/day/09">Day 09</a>
  */
-public class Day09 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input = readLines("/2022/input09.txt");
-
-    private final List<Pair<String, Integer>> moves = getInput().stream().map(it -> {
-        String[] strings = it.split(" ");
-        return Pair.of(strings[0], Integer.parseInt(strings[1]));
-    }).toList();
+public class Day09 implements Function<List<String>, Day09.MoveCounts> {
+    public record MoveCounts(int twoKnots, int tenKnots) {}
 
     @Override
-    public Object solvePart1() {
-        return countMoves(2);
+    public MoveCounts apply(List<String> input) {
+        final List<Pair<String, Integer>> moves = input.stream().map(it -> {
+            String[] strings = it.split(" ");
+            return Pair.of(strings[0], Integer.parseInt(strings[1]));
+        }).toList();
+        return new MoveCounts(countMoves(moves, 2), countMoves(moves, 10));
     }
 
-    @Override
-    public Object solvePart2() {
-        return countMoves(10);
-    }
-
-    private int countMoves(int knots) {
+    int countMoves(final List<Pair<String, Integer>> moves, final int knots) {
         AtomicReference<Planck> planck = new AtomicReference<>(
                 new Planck(new ArrayList<>(Collections.nCopies(knots, Point.ORIGIN))));
         moves.forEach(pair -> planck.set(movePlanck(planck.get(), pair)));
@@ -40,7 +32,7 @@ public class Day09 implements Solution<List<String>> {
         return planck.get().path.size();
     }
 
-    private Planck movePlanck(Planck planck, Pair<String, Integer> move) {
+    private Planck movePlanck(final Planck planck, final Pair<String, Integer> move) {
         List<Point> alt = planck.knots;
         Set<Point> path = planck.path;
         for (int i = 0; i < move.getRight(); i++) {
@@ -55,7 +47,7 @@ public class Day09 implements Solution<List<String>> {
         return new Planck(alt, path);
     }
 
-    private Point follow(Point head, Point tail) {
+    private Point follow(final Point head, final Point tail) {
         if (head.surrounding().contains(tail))
             return tail;
         else

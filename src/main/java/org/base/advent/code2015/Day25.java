@@ -6,29 +6,24 @@ import org.base.advent.util.Point;
 /**
  * <a href="https://adventofcode.com/2015/day/25">Day 25</a>
  */
-public class Day25 implements Solution<Long>{
+public class Day25 implements Solution<Long> {
     
     private static final int DIM = 6400;
     
     private final long[][] grid = new long[DIM][DIM];
 
     @Override
-    public Long getInput(){
-        return 20151125L;
+    public Object solvePart1(Long input) {
+        return calcMachineCode(input); // gives wrong answer
     }
 
     @Override
-    public Object solvePart1() {
-        return calcMachineCode(getInput()); // gives wrong answer
-    }
-
-    @Override
-    public Object solvePart2() {
-        return givenUp(getInput());
+    public Object solvePart2(Long input) {
+        return givenUp(input);
     }
 
     // < 13431666
-    public long calcMachineCode(final long input) {
+    long calcMachineCode(final long input) {
         buildInitialGrid();
         int index = 1;
         long next = input;
@@ -107,7 +102,7 @@ public class Day25 implements Solution<Long>{
  5 |    77061  17552253  28094349   6899651   9250759  31663883
  6 | 33071741   6796745  25397450  24659492   1534922  27995004
     */
-    protected void buildInitialGrid() {
+    void buildInitialGrid() {
         grid[1][1] = 20151125;    grid[2][1] = 18749137;    grid[3][1] = 17289845;    grid[4][1] = 30943339;    grid[5][1] = 10071777;    grid[6][1] = 33511524;
         grid[1][2] = 31916031;    grid[2][2] = 21629792;    grid[3][2] = 16929656;    grid[4][2] =  7726640;    grid[5][2] = 15514188;    grid[6][2] =  4041754;
         grid[1][3] = 16080970;    grid[2][3] =  8057251;    grid[3][3] =  1601130;    grid[4][3] =  7981243;    grid[5][3] = 11661866;    grid[6][3] = 16474243;
@@ -116,7 +111,7 @@ public class Day25 implements Solution<Long>{
         grid[1][6] = 33071741;    grid[2][6] =  6796745;    grid[3][6] = 25397450;    grid[4][6] = 24659492;    grid[5][6] =  1534922;    grid[6][6] = 27995004;
     }
 
-    protected long next(final long start) {
+    long next(final long start) {
         return (start * 252533) % 33554393;
     }
 }

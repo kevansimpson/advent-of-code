@@ -1,6 +1,5 @@
 package org.base.advent.code2022;
 
-import lombok.Getter;
 import org.apache.commons.collections4.ListUtils;
 import org.base.advent.Solution;
 
@@ -14,20 +13,17 @@ import static org.base.advent.util.Util.stringToSet;
  * <a href="https://adventofcode.com/2022/day/03">Day 03</a>
  */
 public class Day03 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input = readLines("/2022/input03.txt");
-
     @Override
-    public Object solvePart1() {
-        return sumPriorities(getInput());
+    public Object solvePart1(final List<String> input) {
+        return sumPriorities(input);
     }
 
     @Override
-    public Object solvePart2() {
-        return sumThreeElves(getInput()); //2522;
+    public Object solvePart2(final List<String> input) {
+        return sumThreeElves(input);
     }
 
-    public int sumPriorities(List<String> items) {
+    int sumPriorities(final List<String> items) {
         return items.stream().map(str -> {
             int ix = str.length() / 2;
             Set<Character> set1 = stringToSet(str.substring(0, ix));
@@ -38,7 +34,7 @@ public class Day03 implements Solution<List<String>> {
         }).mapToInt(Integer::intValue).sum();
     }
 
-    public int sumThreeElves(List<String> items) {
+    int sumThreeElves(final List<String> items) {
         List<List<String>> chunks = ListUtils.partition(items, 3);
         return chunks.stream().map(chunk -> {
             Set<Character> set1 = stringToSet(chunk.get(0));

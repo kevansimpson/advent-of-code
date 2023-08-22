@@ -1,32 +1,23 @@
 package org.base.advent.code2015;
 
-import org.base.advent.Solution;
-
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 /**
  * <a href="https://adventofcode.com/2015/day/11">Day 11</a>
  */
-public class Day11 implements Solution<String> {
-
+public class Day11 implements Function<String, Day11.NextTwoPasswords> {
     private static final Pattern disallowed = Pattern.compile("[^iol]+", Pattern.CASE_INSENSITIVE);
 
-    @Override
-    public String getInput(){
-        return "vzbxkghb";
-    }
+    public record NextTwoPasswords(String one, String two) {}
 
     @Override
-    public Object solvePart1() {
-        return nextValidPassword(getInput());
+    public NextTwoPasswords apply(String input) {
+        String one = nextValidPassword(input);
+        return new NextTwoPasswords(one, nextValidPassword(one));
     }
 
-    @Override
-    public Object solvePart2() {
-        return nextValidPassword("vzbxxyzz");   // we know answer from first part... save some time
-    }
-
-    public String nextValidPassword(final String input) {
+    String nextValidPassword(final String input) {
         String pswd = nextPassword(input);
         while (!isValidPassword(pswd)) {
             pswd = nextPassword(pswd);
@@ -35,7 +26,7 @@ public class Day11 implements Solution<String> {
         return pswd;
     }
 
-    protected String nextPassword(final String input) {
+    String nextPassword(final String input) {
         final char[] ltrs = input.toCharArray();
 
         for (int i = ltrs.length - 1; i >= 0; i--) {
@@ -48,26 +39,21 @@ public class Day11 implements Solution<String> {
         return new String(ltrs);
     }
 
-    protected char nextLetter(final char ltr) {
+    char nextLetter(final char ltr) {
         final char next = (ltr == 'z') ? 'a' : (char) (1 + ((int) ltr));
-
-        switch (next) {
-            case 'i':
-                return 'j';
-            case 'l':
-                return 'm';
-            case 'o':
-                return 'p';
-            default:
-                return next;
-        }
+        return switch (next) {
+            case 'i' -> 'j';
+            case 'l' -> 'm';
+            case 'o' -> 'p';
+            default -> next;
+        };
     }
 
-    protected boolean isValidPassword(final String pswd) {
+    boolean isValidPassword(final String pswd) {
         return !isDisallowed(pswd) && hasNonOverlappingPairs(pswd) && hasSequence(pswd);
     }
 
-    protected boolean hasSequence(final String pswd) {
+    boolean hasSequence(final String pswd) {
         int count = 1;
         int current = 0;
         final char[] letters = pswd.toCharArray();
@@ -80,17 +66,17 @@ public class Day11 implements Solution<String> {
             else {
                 count = 1;
             }
-            current = (int) ch;
+            current = ch;
         }
 
         return false;
     }
 
-    protected boolean isDisallowed(final String pswd) {
+    boolean isDisallowed(final String pswd) {
         return !disallowed.matcher(pswd).matches();
     }
 
-    protected boolean hasNonOverlappingPairs(final String pswd) {
+    boolean hasNonOverlappingPairs(final String pswd) {
         return ("Q"+pswd+"Q").split("([a-z])\\1").length >= 3;
     }
 }

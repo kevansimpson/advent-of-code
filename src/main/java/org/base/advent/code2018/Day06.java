@@ -1,10 +1,9 @@
 package org.base.advent.code2018;
 
-import lombok.Getter;
-import org.base.advent.Solution;
 import org.base.advent.util.Point;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -14,23 +13,18 @@ import java.util.stream.Collectors;
  * <a href="https://www.reddit.com/user/TroZShack">Reddit user TroZShack's answer</a> on
  * <a href="https://www.reddit.com/r/adventofcode/comments/a3kr4r/2018_day_6_solutions/">Reddit</a>.
  */
-public class Day06 implements Solution<List<Point>> {
+public class Day06 implements Function<List<String>, Day06.GridAreas> {
     private static final int MAX_XY_ID = -1138;
 
-    @Getter
-    private final List<Point> input =  toPoints(readLines("/2018/input06.txt"));
+    public record GridAreas(int largest, int safest) {}
 
     @Override
-    public Object solvePart1() {
-        return findLargestArea(getInput());
+    public GridAreas apply(List<String> lines) {
+        final List<Point> input = toPoints(lines);
+        return new GridAreas(findLargestArea(input), findSafestArea(input, 10000));
     }
 
-    @Override
-    public Object solvePart2() {
-        return findSafestArea(getInput(), 10000);
-    }
-
-    public int findSafestArea(final List<Point> points, final int threshhold) {
+    int findSafestArea(final List<Point> points, final int threshold) {
         final Map<Integer, Point> idMap = buildIdMap(points);
         final Point fakeMaxPoint = idMap.remove(MAX_XY_ID);
         final long maxX = fakeMaxPoint.x, maxY = fakeMaxPoint.y;
@@ -42,7 +36,7 @@ public class Day06 implements Solution<List<Point>> {
                 for (final Point pt : points)
                     size += Point.MANHATTAN_DISTANCE.apply(pt, new Point(x, y));
 
-                if (size < threshhold)
+                if (size < threshold)
                     area++;
             }
         }
@@ -50,7 +44,7 @@ public class Day06 implements Solution<List<Point>> {
         return area;
     }
 
-    public int findLargestArea(final List<Point> points) {
+    int findLargestArea(final List<Point> points) {
         final Map<Integer, Point> idMap = buildIdMap(points);
         final Point fakeMaxPoint = idMap.remove(MAX_XY_ID);
         final int maxX = fakeMaxPoint.ix(), maxY = fakeMaxPoint.iy();

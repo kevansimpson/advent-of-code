@@ -4,51 +4,34 @@ import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * <a href="https://adventofcode.com/2015/day/17">Day 17</a>
  */
-public class Day17 implements Solution<List<String>> {
-    private int[] cans;
-    private int numberOfCans;
+public class Day17 implements Function<List<String>, Day17.CanPermutations> {
     private int totalPermutations;
     private int fewestCans = Integer.MAX_VALUE;
     private int totalPermutationsWithFewest;
 
-    @Getter
-    private final List<String> input = readLines("/2015/input17.txt");
+    public record CanPermutations(int total, int fewest) {}
 
     @Override
-    public Object solvePart1() {
-        return totalCanPermutations(getInput());
-    }
-
-    @Override
-    public Object solvePart2() {
-        return fewestCanPermutations(getInput());
-    }
-    
-    public int totalCanPermutations(final List<String> input) {
-        cans = input.stream().map(Integer::parseInt).mapToInt(i->i).toArray();
-        numberOfCans = cans.length;
-        final boolean[] permutation = new boolean[numberOfCans];
+    public CanPermutations apply(List<String> input) {
+        int[] cans = input.stream().map(Integer::parseInt).mapToInt(i->i).toArray();
+        final boolean[] permutation = new boolean[cans.length];
         
-        sumCans(permutation, 0);
-        return totalPermutations;
+        sumCans(permutation, 0, cans);
+        return new CanPermutations(totalPermutations, totalPermutationsWithFewest);
     }
 
-    public int fewestCanPermutations(final List<String> input) {
-        if (cans == null)
-            totalCanPermutations(input);
-        return totalPermutationsWithFewest;
-    }
-
-    protected void sumCans(final boolean[] permutation, final int index) {
+    void sumCans(final boolean[] permutation, final int index, int[] cans) {
+        int numberOfCans = cans.length;
         if (index >= numberOfCans) {
-            if (sum(permutation) == 150) {
+            if (sum(permutation, cans) == 150) {
                 totalPermutations += 1;
 
-                final int used = used(permutation);
+                final int used = used(permutation, numberOfCans);
                 if (used < fewestCans) {
                     fewestCans = used;
                     totalPermutationsWithFewest = 1;
@@ -66,20 +49,20 @@ public class Day17 implements Solution<List<String>> {
         System.arraycopy(permutation, 0, off, 0, numberOfCans);
         System.arraycopy(permutation, 0, on, 0, numberOfCans);
 
-        sumCans(off, 1 + index);
+        sumCans(off, 1 + index, cans);
         on[index] = true;
-        sumCans(on, 1 + index);
+        sumCans(on, 1 + index, cans);
     }
 
-    protected int sum(final boolean[] permutation) {
+    int sum(final boolean[] permutation, int[] cans) {
         int sum = 0;
-        for (int i = 0; i < numberOfCans; i++)
+        for (int i = 0; i < cans.length; i++)
             sum += (permutation[i]) ? cans[i] : 0;
 
         return sum;
     }
 
-    protected int used(final boolean[] permutation) {
+    int used(final boolean[] permutation, int numberOfCans) {
         int used = 0;
         for (int i = 0; i < numberOfCans; i++)
             used += (permutation[i]) ? 1 : 0;

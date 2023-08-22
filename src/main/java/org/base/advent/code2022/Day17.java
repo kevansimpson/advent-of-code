@@ -2,7 +2,6 @@ package org.base.advent.code2022;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Delegate;
 import org.apache.commons.collections4.SetUtils;
@@ -22,17 +21,14 @@ import static java.util.stream.Collectors.groupingBy;
  * <a href="https://adventofcode.com/2022/day/17">Day 17</a>
  */
 public class Day17 implements Solution<String> {
-    @Getter @Setter
-    private String input = readInput("/2022/input17.txt");
-
     @Override
-    public Object solvePart1() {
-        return dropRocks(newCavern(), 2022L);
+    public Object solvePart1(final String input) {
+        return dropRocks(newCavern(input), 2022L);
     }
 
     @Override
-    public Object solvePart2() {
-        return dropRocks(newCavern(), 1000000000000L);
+    public Object solvePart2(final String input) {
+        return dropRocks(newCavern(input), 1000000000000L);
     }
 
     public long dropRocks(Cavern cavern, long rockCount) {
@@ -49,8 +45,8 @@ public class Day17 implements Solution<String> {
         return cavern.height;
     }
 
-    Cavern newCavern() {
-        return new Cavern(getInput().toCharArray());
+    Cavern newCavern(final String input) {
+        return new Cavern(input.toCharArray());
     }
 
     record RockHistory(@Delegate

@@ -1,6 +1,5 @@
 package org.base.advent.code2022;
 
-import lombok.Getter;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
@@ -17,19 +16,17 @@ import static org.base.advent.util.Util.extractInt;
  * <a href="https://adventofcode.com/2022/day/11">Day 11</a>
  */
 public class Day11 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input = readLines("/2022/input11.txt");
-    private final List<Monkey> barrel1 = readMonkeyNotes(input);
-    private final List<Monkey> barrel2 = readMonkeyNotes(input);
 
     @Override
-    public Object solvePart1() {
+    public Object solvePart1(final List<String> input) {
+        final List<Monkey> barrel1 = readMonkeyNotes(input);
         play20Rounds(barrel1);
         return mostActive(barrel1);
     }
 
     @Override
-    public Object solvePart2() {
+    public Object solvePart2(final List<String> input) {
+        final List<Monkey> barrel2 = readMonkeyNotes(input);
         for (int i = 1; i <= 10000; i++) {
             barrel2.forEach(m -> quickMonkey(m, barrel2));
         }

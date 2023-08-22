@@ -1,62 +1,40 @@
 package org.base.advent.code2015;
 
 
-import org.base.advent.Solution;
+import java.util.function.Function;
 
 /**
  * <a href="https://adventofcode.com/2015/day/20">Day 20</a>
  */
-public class Day20 implements Solution<Integer> {
+public class Day20 implements Function<Integer, Day20.LowestHouseNumbers> {
 
     private static final int MAX = 1000000;
 
-    @Override
-    public Integer getInput() {
-        return 34000000;
-    }
+    public record LowestHouseNumbers(int low1, int low2) {}
 
     @Override
-    public Object solvePart1() {
-        return findLowestHouse();
-    }
-
-    @Override
-    public Object solvePart2() {
-        return findLowestWithNewRules();
-    }
-
-    public int findLowestHouse() {
-        final int[] houses = new int[MAX];
-
-        for (int elf = 1; elf < MAX; elf++) {
-            for (int visited = elf; visited < MAX; visited += elf) {
-                houses[visited] += elf * 10;
-            }
-        }
-
-        return findTargetHouse(houses);
-    }
-
-    public int findLowestWithNewRules() {
-        final int[] houses = new int[MAX];
+    public LowestHouseNumbers apply(final Integer target) {
+        final int[] houses1 = new int[MAX];
+        final int[] houses2 = new int[MAX];
 
         for (int elf = 1; elf < MAX; elf++) {
             int count = 0;
             for (int visited = elf; visited < MAX; visited += elf) {
-                houses[visited] += elf * 11;
-                count += 1;
-                if (count >= 50)
-                    break;
+                houses1[visited] += elf * 10;
+                // new rules
+                if (count++ < 50) {
+                    houses2[visited] += elf * 11;
+                }
             }
         }
 
-        return findTargetHouse(houses);
+        return new LowestHouseNumbers(findTargetHouse(houses1, target), findTargetHouse(houses2, target));
     }
 
-    protected int findTargetHouse(final int[] houses) {
+    int findTargetHouse(final int[] houses, final int target) {
         int answer = 0;
         for (int i = 0; i < MAX; i++) {
-            if (houses[i] >= getInput()) {
+            if (houses[i] >= target) {
                 answer = i;
                 break;
             }

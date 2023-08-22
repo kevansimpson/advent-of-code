@@ -93,7 +93,7 @@ public class Examples2019UnitTests {
         // part 2
         final List<String> input2 = Arrays.asList(
                 "COM)B", "B)C", "C)D", "D)E", "E)F", "B)G", "G)H", "D)I", "E)J", "J)K", "K)L", "K)YOU", "I)SAN");
-        assertEquals(4, day06.minimalTransfers("YOU", "SAN", input2));
+        assertEquals(4, day06.minimalTransfers(input2));
     }
 
     @Test

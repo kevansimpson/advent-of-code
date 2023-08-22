@@ -1,6 +1,5 @@
 package org.base.advent.code2015;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.HashMap;
@@ -11,28 +10,25 @@ import java.util.Map;
  * <a href="https://adventofcode.com/2015/day/23">Day 23</a>
  */
 public class Day23 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input = readLines("/2015/input23.txt");
-
     @Override
-    public Object solvePart1() {
-        return solve(getInput(), 0, 0);
+    public Object solvePart1(final List<String> input) {
+        return solve(input, 0);
     }
 
     @Override
-    public Object solvePart2() {
-        return solve(getInput(), 1, 0);
+    public Object solvePart2(final List<String> input) {
+        return solve(input, 1);
     }
 
-    public int solve(final List<String> instructions, final int a, final int b) {
+    int solve(final List<String> instructions, final int a) {
         final Map<String, Integer> registers = new HashMap<>();
         registers.put("a", a);
-        registers.put("b", b);
+        registers.put("b", 0);
         followInstructions(registers, instructions, 0);
         return registers.get("b");
     }
     
-    protected void followInstructions(final Map<String, Integer> registers, final List<String> instructions, final int index) {
+    void followInstructions(final Map<String, Integer> registers, final List<String> instructions, final int index) {
         if (index < 0 || index >= instructions.size())
             return;
 

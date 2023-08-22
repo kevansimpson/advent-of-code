@@ -15,17 +15,14 @@ import java.util.stream.Collectors;
  * <a href="https://adventofcode.com/2017/day/13">Day 13</a>
  */
 public class Day13 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input =  readLines("/2017/input13.txt");
-
     @Override
-    public Object solvePart1() {
-        return traverseNetwork(getInput());
+    public Object solvePart1(final List<String> input) {
+        return traverseNetwork(input);
     }
 
     @Override
-    public Object solvePart2() {
-        return shortestDelay(getInput());
+    public Object solvePart2(final List<String> input) {
+        return shortestDelay(input);
     }
 
     /**
@@ -38,9 +35,10 @@ public class Day13 implements Solution<List<String>> {
      * Preceding is comment from:
      * <a href="https://www.reddit.com/r/adventofcode/comments/7jgyrt/2017_day_13_solutions/">reddit</a>
      */
-    public int shortestDelay(final List<String> input) {
+    int shortestDelay(final List<String> input) {
         final Map<Integer, Integer> firewall = input.stream()
-            .map(s -> s.split(": ")).collect(Collectors.toMap(ab -> Integer.parseInt(ab[0]), ab -> Integer.parseInt(ab[1])));
+                .map(s -> s.split(": "))
+                .collect(Collectors.toMap(ab -> Integer.parseInt(ab[0]), ab -> Integer.parseInt(ab[1])));
 
         final AtomicInteger delay = new AtomicInteger(0);
         // same logic, but the packet reaches layer N after N+delay steps
@@ -51,11 +49,10 @@ public class Day13 implements Solution<List<String>> {
             delay.incrementAndGet();
 
         return delay.get();
-
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public int traverseNetwork(final List<String> input) {
+    int traverseNetwork(final List<String> input) {
         final Map<Integer, Wall> firewalls = buildWalls(input);
         final int duration  = firewalls.keySet().stream().max(Comparator.naturalOrder()).get();
         int severity = 0;
@@ -74,7 +71,7 @@ public class Day13 implements Solution<List<String>> {
         return severity;
     }
 
-    public Map<Integer, Wall> buildWalls(final List<String> input) {
+    Map<Integer, Wall> buildWalls(final List<String> input) {
         return input.stream()
                      .map(s -> s.split(": "))
                      .map(ab -> new Wall(Integer.parseInt(ab[0]), Integer.parseInt(ab[1])))
@@ -83,7 +80,7 @@ public class Day13 implements Solution<List<String>> {
 
     @Getter
     @ToString
-    public static class Wall {
+    private static class Wall {
         private final int layer;
         private final int range;
 

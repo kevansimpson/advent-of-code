@@ -1,6 +1,5 @@
 package org.base.advent.code2015;
 
-import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
 
@@ -10,20 +9,17 @@ import java.util.List;
  * <a href="https://adventofcode.com/2015/day/08">Day 08</a>
  */
 public class Day08 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input = readLines("/2015/input08.txt");
-
     @Override
-    public Object solvePart1() {
-        return totalCharacters(getInput());
+    public Object solvePart1(final List<String> input) {
+        return totalCharacters(input);
     }
 
     @Override
-    public Object solvePart2() {
-        return totalEncryptedCharacters(getInput());
+    public Object solvePart2(final List<String> input) {
+        return totalEncryptedCharacters(input);
     }
 
-    public int totalCharacters(final List<String> directions) {
+    int totalCharacters(final List<String> directions) {
         int inMemory = 0;
         for (String line : directions) {
             line = StringUtils.chop(line.trim()).substring(1);
@@ -34,7 +30,7 @@ public class Day08 implements Solution<List<String>> {
         return inMemory;
     }
 
-    public int totalEncryptedCharacters(final List<String> directions) {
+    int totalEncryptedCharacters(final List<String> directions) {
         int encrypted = 0;
         for (String line : directions) {
             line = StringUtils.chop(line.trim()).substring(1);

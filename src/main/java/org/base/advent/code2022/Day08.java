@@ -1,13 +1,10 @@
 package org.base.advent.code2022;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.lang3.tuple.Pair;
-import org.base.advent.Solution;
 import org.base.advent.util.Point;
-import org.base.advent.util.SafeLazyInitializer;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -16,28 +13,21 @@ import static org.base.advent.util.Util.columns;
 
 /**
  * <a href="https://adventofcode.com/2022/day/08">Day 08</a>
- * <p>
- *     Versus:
- *     <a href="https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2022/Day08.kt">
- *         Kotlin Day 08</a>
- * </p>
  */
-public class Day08 implements Solution<List<String>> {
-    @Getter @Setter
-    private List<String> input = readLines("/2022/input08.txt");
-
-    private final SafeLazyInitializer<Grid> grid = new SafeLazyInitializer<>(() -> {
-        List<List<Integer>> rows = getInput().stream()
+public class Day08 implements Function<List<String>, Day08.Grid> {
+    @Override
+    public Grid apply(List<String> input) {
+        List<List<Integer>> rows = input.stream()
                 .map(it -> Arrays.stream(it.split(""))
                         .mapToInt(Integer::parseInt).boxed().toList()).toList();
-        List<List<Integer>> cols = columns(getInput()).stream()
+        List<List<Integer>> cols = columns(input).stream()
                 .map(it -> Arrays.stream(it.split(""))
                         .mapToInt(Integer::parseInt).boxed().toList()).toList();
-        int size = getInput().size();
+        int size = input.size();
         // this is what flatMapIndexed looks like in Java :-(
         // map the range of indices from getInput() to List<List<Pair<Point, Character>>>
         Map<Point, Integer> area = IntStream.range(0, size).mapToObj(row -> {
-            String line = getInput().get(row);
+            String line = input.get(row);
             return IntStream.range(0, line.length()) // map range of line indices to List<Pair<Point, Char...
                     .mapToObj(col -> Pair.of(
                             new Point(col, row),
@@ -48,19 +38,9 @@ public class Day08 implements Solution<List<String>> {
         List<Map.Entry<Point, Integer>> inside = area.entrySet().stream()
                 .filter(it -> isInside(it.getKey(), size - 1)).toList();
         return new Grid(rows, cols, size, area, inside);
-    });
-
-    @Override
-    public Object solvePart1() {
-        return grid.get().visibleTreesFromOutside();
     }
 
-    @Override
-    public Object solvePart2() {
-        return grid.get().highestScenicScore();
-    }
-
-    private boolean isInside(Point pt, int size) {
+    private boolean isInside(final Point pt, final int size) {
         return pt.x > 0 && pt.x < size && pt.y > 0 && pt.y < size;
     }
 
@@ -77,7 +57,7 @@ public class Day08 implements Solution<List<String>> {
             return inside.stream().mapToInt(this::highScore).max().orElse(1138);
         }
 
-        int highScore(Map.Entry<Point, Integer> entry) {
+        int highScore(final Map.Entry<Point, Integer> entry) {
             Point pt = entry.getKey();
             int height = entry.getValue();
             List<Integer> row = rows.get(pt.iy());
@@ -93,7 +73,7 @@ public class Day08 implements Solution<List<String>> {
                     look(fromBottom(col, pt).toList(), height);
         }
 
-        boolean isTreeVisible(Map.Entry<Point, Integer> entry) {
+        boolean isTreeVisible(final Map.Entry<Point, Integer> entry) {
             Point pt = entry.getKey();
             int height = entry.getValue();
             List<Integer> row = rows.get(pt.iy());
@@ -104,7 +84,7 @@ public class Day08 implements Solution<List<String>> {
                     height > fromBottom(col, pt).mapToInt(Integer::valueOf).max().orElse(1138));
         }
 
-        int look(List<Integer> list, int height) {
+        int look(final List<Integer> list, final int height) {
             int sub = (int) list.stream().takeWhile(tree -> height > tree).count();
             if (list.size() == sub)
                 return sub;

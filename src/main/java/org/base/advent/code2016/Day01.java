@@ -12,21 +12,19 @@ import java.util.List;
 /**
  * <a href="https://adventofcode.com/2016/day/01">Day 01</a>
  */
-public class Day01 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input =  Arrays.asList(readInput("/2016/input01.txt").split("\\s*,\\s*"));
-
+public class Day01 implements Solution<String> {
     @Override
-    public Object solvePart1() {
-        return calculateDistance(getInput(), false);
+    public Object solvePart1(String input) {
+        return calculateDistance(input, false);
     }
 
     @Override
-    public Object solvePart2() {
-        return calculateDistance(getInput(), true);
+    public Object solvePart2(String input) {
+        return calculateDistance(input, true);
     }
 
-    public long calculateDistance(final List<String> list, final boolean stopOn2ndVisit) {
+    long calculateDistance(final String input, final boolean stopOn2ndVisit) {
+        List<String> list = Arrays.asList(input.split("\\s*,\\s*"));
         return followDirections(list, stopOn2ndVisit).getManhattanDistance();
     }
 

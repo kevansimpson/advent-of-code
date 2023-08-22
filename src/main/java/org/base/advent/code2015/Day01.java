@@ -1,36 +1,27 @@
 package org.base.advent.code2015;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 
 /**
  * <a href="https://adventofcode.com/2015/day/01">Day 01</a>
  */
 public class Day01 implements Solution<String> {
-    @Getter
-    private final String input = readInput("/2015/input01.txt");
-
     @Override
-    public Object solvePart1() {
-        return findFloor(getInput());
+    public Object solvePart1(final String input) {
+        return findFloor(input);
     }
 
     @Override
-    public Object solvePart2() {
-        return firstEntersBasement(getInput());
+    public Object solvePart2(final String input) {
+        return firstEntersBasement(input);
     }
 
-    public int findFloor(String instructions) {
-        final int totalLength = instructions.length();
-        instructions = instructions.replaceAll("\\(", "");
-        final int down = instructions.length();
-        final int up = totalLength - down;
-        instructions = instructions.replaceAll("\\)", "");
-        final int remaining = instructions.length();
-        return (up - down - remaining);
+    int findFloor(String instructions) {
+        return instructions.replaceAll("\\)", "").length() -
+                instructions.replaceAll("\\(", "").length();
     }
 
-    public int firstEntersBasement(final String instructions) {
+    int firstEntersBasement(final String instructions) {
         int floor = 0;
         int position = 0;
         for (final char ch : instructions.toCharArray()) {

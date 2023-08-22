@@ -1,12 +1,9 @@
 package org.base.advent.code2022;
 
-import lombok.Getter;
 import lombok.experimental.Delegate;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.base.advent.Solution;
 import org.base.advent.TimeSaver;
-import org.base.advent.util.SafeLazyInitializer;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -23,26 +20,24 @@ import static org.base.advent.util.Util.extractInt;
 /**
  * <a href="https://adventofcode.com/2022/day/16">Day 16</a>
  */
-public class Day16 implements Solution<List<String>>, TimeSaver {
-    @Getter
-    private final List<String> input = readLines("/2022/input16.txt");
-    private final SafeLazyInitializer<ValveMap> valveMap = new SafeLazyInitializer<>(() -> new ValveMap(getInput()));
+public class Day16 implements Function<List<String>, Day16.ValvePath>, TimeSaver {
+    public record ValvePath(int mostEfficient, int withElephant) {}
+
+    private static final String START = "AA";
     private final ExecutorService pool = fastOrFull(null, () -> Executors.newFixedThreadPool(10));
 
     @Override
-    public Object solvePart1() {
-        return mostEfficientPath(valveMap.get().important, "AA", 30);
+    public ValvePath apply(final List<String> input) {
+        final ValveMap valveMap = new ValveMap(input);
+        int mostEfficient = mostEfficientPath(valveMap.important, "AA", 30);
+        int withElephant = fastOrFull(2594, () -> mostElephantPath(valveMap.important));
+        return new ValvePath(mostEfficient, withElephant);
     }
 
-    @Override
-    public Object solvePart2() {
-        return fastOrFull(2594, () -> mostElephantPath(valveMap.get().important, "AA", 26));
-    }
-
-    public int mostElephantPath(Map<String, Valve> valveMap, String start, int duration) {
-        Valve startNode = valveMap.get(start);
+    int mostElephantPath(final Map<String, Valve> valveMap) {
+        Valve startNode = valveMap.get(START);
         Map<String, Valve> unopened = new HashMap<>(valveMap);
-        unopened.remove(start);
+        unopened.remove(START);
         int count = floorDiv(unopened.size(), 2);
         int mod = unopened.size() % 2;
         List<List<Valve>> allPaths = combinations(new ArrayList<>(unopened.values()), count + mod);
@@ -58,14 +53,14 @@ public class Day16 implements Solution<List<String>>, TimeSaver {
 
             final Map<String, Valve> a =
                     path.stream().collect(Collectors.toMap(Valve::name, Function.identity()));
-            a.put(start, startNode);
+            a.put(START, startNode);
 
             final Map<String, Valve> b =
                     temp.stream().flatMap(List::stream)
                             .filter(it -> !a.containsKey(it.name))
                             .collect(Collectors.toMap(Valve::name, Function.identity(), (one, two) -> one));
-            b.put(start, startNode);
-            return mostEfficientPath(a, start, duration) + mostEfficientPath(b, start, duration);
+            b.put(START, startNode);
+            return mostEfficientPath(a, START, 26) + mostEfficientPath(b, START, 26);
         })).toList();
 
         try {

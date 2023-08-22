@@ -1,9 +1,6 @@
 package org.base.advent.code2017;
 
-import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
-import org.base.advent.Solution;
-import org.base.advent.util.SafeLazyInitializer;
 
 import java.util.*;
 import java.util.function.Function;
@@ -12,24 +9,17 @@ import java.util.stream.Collectors;
 /**
  * <a href="https://adventofcode.com/2017/day/07">Day 07</a>
  */
-public class Day07 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input =  readLines("/2017/input07.txt");
-    private final List<Tower> towers1 = parseTowers(getInput());
-
-    private final SafeLazyInitializer<String> rootTower = new SafeLazyInitializer<>(() -> findBottomTower(towers1));
+public class Day07 implements Function<List<String>, Day07.TowerRoot> {
+    public record TowerRoot(String name, int weightToBalance) {}
 
     @Override
-    public Object solvePart1() {
-        return rootTower.get();
+    public TowerRoot apply(List<String> input) {
+        final List<Tower> towers = parseTowers(input);
+        final String rootTower = findBottomTower(towers);
+        return new TowerRoot(rootTower, findMisweightedTower(rootTower, towers));
     }
 
-    @Override
-    public Object solvePart2() {
-        return findMisweightedTower(rootTower.get(), towers1);
-    }
-
-    public int findMisweightedTower(String rootName, List<Tower> towers) {
+    int findMisweightedTower(final String rootName, final List<Tower> towers) {
         Map<String, Tower> towerMap = towers.stream().collect(Collectors.toMap(Tower::name, Function.identity()));
         TowerMap map = new TowerMap(towerMap);
         Map<String, Integer> weightMap = towerMap.entrySet().stream()
@@ -52,7 +42,7 @@ public class Day07 implements Solution<List<String>> {
         return towerMap.get(outlier).weight - delta;
     }
 
-    public String findBottomTower(final List<Tower> towers) {
+    String findBottomTower(final List<Tower> towers) {
         final List<String> rootNames = towers.stream()
                 .filter(t -> !t.subs().isEmpty())
                 .map(Tower::name)
@@ -61,7 +51,7 @@ public class Day07 implements Solution<List<String>> {
         return rootNames.get(0);
     }
 
-    public List<Tower> parseTowers(final List<String> input) {
+    List<Tower> parseTowers(final List<String> input) {
         return input.stream().map(this::fromString).toList();
     }
 
@@ -76,7 +66,7 @@ public class Day07 implements Solution<List<String>> {
         return new Tower(name, weight, subs);
     }
 
-    public record TowerMap(Map<String, Tower> data) {
+    record TowerMap(Map<String, Tower> data) {
         public Tower get(String name) {
             return data.get(name);
         }
@@ -102,5 +92,5 @@ public class Day07 implements Solution<List<String>> {
         }
     }
 
-    public record Tower(String name, int weight, List<String> subs) {}
+    record Tower(String name, int weight, List<String> subs) {}
 }

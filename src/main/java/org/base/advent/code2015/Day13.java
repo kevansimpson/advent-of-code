@@ -1,100 +1,67 @@
 package org.base.advent.code2015;
 
-import lombok.Getter;
-import org.base.advent.Solution;
+import org.base.advent.util.PermIterator;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * <a href="https://adventofcode.com/2015/day/13">Day 13</a>
  */
-public class Day13 implements Solution<List<String>> {
+public class Day13 implements Function<List<String>, Day13.OptimalHappiness> {
     private static final String ME = "ME";
-
-    //Alice would gain 2 happiness units by sitting next to Bob.
-    //Alice would gain 26 happiness units by sitting next to Carol.
     private static final Pattern parser = Pattern.compile(
             "(.+)\\swould\\s(.+)\\s(\\d+).*to\\s(.+)\\.", Pattern.DOTALL);
 
-    private final Set<String> people = new HashSet<>();
-    private final Map<List<String>, Integer> distanceMap = new HashMap<>();
-    private Map<String, Integer> jumpDistanceMap;
-
-    @Getter
-    private final List<String> input = readLines("/2015/input13.txt");
+    public record OptimalHappiness(int withoutMe, int withMe) {}
+    record RoundTable(Set<String> people, Map<String, Integer> distanceMap) {}
 
     @Override
-    public Object solvePart1() {
-        return solveOptimal(getInput());
+    public OptimalHappiness apply(List<String> input) {
+        RoundTable roundTable = buildRoundTable(input);
+        int withoutMe = solveOptimal(roundTable);
+        roundTable.people.add(ME);
+        return new OptimalHappiness(withoutMe, solveOptimal(roundTable));
     }
 
-    @Override
-    public Object solvePart2() {
-        return solveWithMe(getInput());
-    }
-
-    public int solveOptimal(final List<String> directions) {
-        jumpDistanceMap = buildDistanceMap(directions);
-        
-        final List<String> permutation = new ArrayList<>();
-        final List<String> peopleList = new ArrayList<>(this.people);
-        buildAllPaths(peopleList, permutation, perm -> distanceMap.put(perm, calculateDistance(perm)));
-        
-        int longest = Integer.MIN_VALUE;
-        List<String> optimal = null;
-        for (final List<String> path : distanceMap.keySet()) {
-            final Integer dist = distanceMap.get(path);
-            if (dist > longest) {
-                longest = dist;
-                optimal = path;
-            }
+    int solveOptimal(final RoundTable roundTable) {
+        final PermIterator<String> permIterator = new PermIterator<>(roundTable.people.toArray(new String[0]));
+        int optimal = 0;
+        for (final List<String> perm : permIterator) {
+            optimal = Math.max(optimal, calculateDistance(perm, roundTable.distanceMap));
         }
-        
-        debug("The optimal seating arrangement is: "+ optimal);
-        return longest;
+        return optimal;
     }
 
-    public int solveWithMe(final List<String> directions) {
-        distanceMap.clear();
-        jumpDistanceMap.clear();
-        people.clear();
-        people.add(ME);
-        return solveOptimal(directions);
-    }
-
-    protected int calculateDistance(final List<String> path) {
+    int calculateDistance(final List<String> path, final Map<String, Integer> distanceMap) {
         final int last = path.size() - 1;
-        int dist = getDelta(path.get(last), path.get(0));
-        dist += getDelta(path.get(0), path.get(last));
+        int dist = getDelta(path.get(last), path.get(0), distanceMap);
+        dist += getDelta(path.get(0), path.get(last), distanceMap);
         for (int i = 0; i < last; i++) {
             final String person1 = path.get(i);
             final String person2 = path.get(i + 1);
-            dist += getDelta(person1, person2);
-            dist += getDelta(person2, person1);
+            dist += getDelta(person1, person2, distanceMap);
+            dist += getDelta(person2, person1, distanceMap);
         }
 
         return dist;
     }
 
-    protected int getDelta(final String person1, final String person2) {
-        if (Arrays.asList(person1, person2).contains(ME))
+    int getDelta(final String person1, final String person2, final Map<String, Integer> distanceMap) {
+        if (ME.equals(person1) || ME.equals(person2))
             return 0;
 
-        final String key = key(person1, person2);
-        final Integer step = jumpDistanceMap.get(key);
-        if (step == null)
-            throw new NullPointerException(key);
-        else
-            return step;
+        return distanceMap.get(key(person1, person2));
     }
 
-    protected String key(final String loc1, final String loc2) {
-        return "JUMP-"+ Arrays.asList(loc1, loc2);
+    String key(final String loc1, final String loc2) {
+        return "JUMP-"+ loc1 + loc2;
     }
 
-    protected Map<String, Integer> buildDistanceMap(final List<String> directions) {
+    RoundTable buildRoundTable(final List<String> directions) {
+        final Set<String> people = new HashSet<>();
         final Map<String, Integer> distanceMap = new HashMap<>();
         for (final String directive : directions) {
             final Matcher matcher = parser.matcher(directive);
@@ -112,6 +79,6 @@ public class Day13 implements Solution<List<String>> {
             }
         }
 
-        return distanceMap;
+        return new RoundTable(people, distanceMap);
     }
 }

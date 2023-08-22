@@ -1,6 +1,5 @@
 package org.base.advent.code2015;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,20 +14,17 @@ import java.util.regex.Pattern;
 public class Day12 implements Solution<String> {
     private static final Pattern numbers = Pattern.compile("([-\\d]+)");
 
-    @Getter
-    private final String input = readInput("/2015/input12.txt");
-
     @Override
-    public Object solvePart1() {
-        return sumNumbers(getInput());
+    public Object solvePart1(final String input) {
+        return sumNumbers(input);
     }
 
     @Override
-    public Object solvePart2() {
-        return sumJson(getInput());
+    public Object solvePart2(final String input) {
+        return sumJson(input);
     }
 
-    public int sumNumbers(final String input) {
+    int sumNumbers(final String input) {
         int sum = 0;
         final Matcher m = numbers.matcher(input);
         while (m.find()) {
@@ -38,7 +34,7 @@ public class Day12 implements Solution<String> {
         return sum;
     }
 
-    public int sumJson(final String input) {
+    int sumJson(final String input) {
         try {
             final JSONParser parser = new JSONParser();
             return sum((JSONObject) parser.parse(input));
@@ -48,7 +44,7 @@ public class Day12 implements Solution<String> {
         }
     }
 
-    protected int sum(final JSONObject obj) {
+    int sum(final JSONObject obj) {
         int sum = 0;
         
         for (final Object key : obj.keySet()) {
@@ -73,7 +69,7 @@ public class Day12 implements Solution<String> {
         return sum;
     }
 
-    protected int sum(final JSONArray arr) {
+    int sum(final JSONArray arr) {
         int sum = 0;
         
         for (final Object elem : arr) {

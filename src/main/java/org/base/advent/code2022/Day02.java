@@ -1,30 +1,26 @@
 package org.base.advent.code2022;
 
-import lombok.Getter;
 import org.apache.commons.lang3.tuple.Pair;
-import org.base.advent.Solution;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * <a href="https://adventofcode.com/2022/day/02">Day 02</a>
  */
-public class Day02 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input = readLines("/2022/input02.txt");
-
-    private final List<Pair<Integer, Integer>> pairs =
-            getInput().stream().map(Day02::score).toList();
+public class Day02 implements Function<List<String>, Day02.StrategyScores> {
+    public record StrategyScores(int round1, int round2) {}
 
     @Override
-    public Object solvePart1() {
-        return pairs.stream().mapToInt(Pair::getLeft).sum();
-    }
-
-    @Override
-    public Object solvePart2() {
-        return pairs.stream().mapToInt(Pair::getRight).sum();
+    public StrategyScores apply(List<String> input) {
+        final List<Pair<Integer, Integer>> pairs = input.stream().map(Day02::score).toList();
+        int round1 = 0, round2 = 0;
+        for (Pair<Integer, Integer> p : pairs) {
+            round1 += p.getLeft();
+            round2 += p.getRight();
+        }
+        return new StrategyScores(round1, round2);
     }
 
     private static final Map<String, Pair<Integer, Integer>> SCORE_MAP = Map.of(

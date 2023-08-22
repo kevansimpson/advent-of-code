@@ -17,16 +17,16 @@ public class Day07 implements Solution<int[]> {
     private final ExecutorService threadPool = Executors.newFixedThreadPool(5);
 
     @Getter
-    private final int[] input =  readNumbersCSV("/2019/input07.txt");
+    private final int[] input2 =  readNumbersCSV("/2019/input07.txt");
 
     @Override
-    public Integer solvePart1() {
-        return maxThrusterSignal(true, getInput());
+    public Integer solvePart1(final int[] input) {
+        return maxThrusterSignal(true, input);
     }
 
     @Override
-    public Integer solvePart2() {
-        return maxThrusterSignal(false, getInput());
+    public Integer solvePart2(final int[] input) {
+        return maxThrusterSignal(false, input);
     }
 
     public int calcThrust(final boolean feedback, final int[] boosts, final int... codes) {

@@ -1,13 +1,12 @@
 package org.base.advent.code2022;
 
-import lombok.Getter;
-import org.base.advent.Solution;
 import org.base.advent.TimeSaver;
 import org.base.advent.util.Point;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
@@ -17,29 +16,23 @@ import static java.lang.Math.*;
 /**
  * <a href="https://adventofcode.com/2022/day/14">Day 14</a>
  */
-public class Day14 implements Solution<List<String>>, TimeSaver {
+public class Day14 implements Function<List<String>, Day14.PouredSand>, TimeSaver {
+    public record PouredSand(long noFloor, long withFloor) {}
+
     private static final String ROCK = "#";
     private static final String SAND = "o";
     private static final String AIR = " ";
     private static final String SRC = "+";
     private static final Point DROP = Point.of(500, 0);
 
-    @Getter
-    private final List<String> input = readLines("/2022/input14.txt");
-    private final Cave cave1 = buildCave(input.stream().map(this::scanRocks).toList());
-    private final Cave cave2 = cave1.addFloor();
-
     @Override
-    public Object solvePart1() {
-        return pourSand(cave1);
+    public PouredSand apply(final List<String> input) {
+        final Cave cave1 = buildCave(input.stream().map(this::scanRocks).toList());
+        final Cave cave2 = cave1.addFloor();
+        return new PouredSand(pourSand(cave1), pourSand(cave2));
     }
 
-    @Override
-    public Object solvePart2() {
-        return pourSand(cave2);
-    }
-
-    long pourSand(Cave cave) {
+    long pourSand(final Cave cave) {
         Point sand = dropSand(cave, DROP);
         while (sand != null) {
             cave.drop(sand);
@@ -51,7 +44,7 @@ public class Day14 implements Solution<List<String>>, TimeSaver {
         return cave.countSand();
     }
 
-    Point dropSand(Cave cave, Point drop) {
+    Point dropSand(final Cave cave, final Point drop) {
         Point[] below = new Point[] {
                 drop.move(-1, 1), drop.move(0, 1), drop.move(1, 1)};
         String space = Stream.of(below).map(cave::at).collect(Collectors.joining());
@@ -69,7 +62,7 @@ public class Day14 implements Solution<List<String>>, TimeSaver {
             return null;
     }
 
-    List<Point> rockPath(Point start, Point end) {
+    List<Point> rockPath(final Point start, final Point end) {
         long dx = abs(start.x - end.x);
         if (dx == 0L) {
             return LongStream.rangeClosed(min(start.y, end.y), max(start.y, end.y))
@@ -80,7 +73,7 @@ public class Day14 implements Solution<List<String>>, TimeSaver {
                 .mapToObj(x -> Point.of(x, start.y)).toList();
     }
 
-    private Cave buildCave(List<List<Point>> paths) {
+    private Cave buildCave(final List<List<Point>> paths) {
         Map<Point, String> rocks = new HashMap<>(Map.of(DROP, SRC));
         paths.forEach(path -> {
             for (int i = 0, max = path.size() - 1; i < max; i++)
@@ -91,7 +84,7 @@ public class Day14 implements Solution<List<String>>, TimeSaver {
         return new Cave(rocks);
     }
 
-    private List<Point> scanRocks(String str) {
+    private List<Point> scanRocks(final String str) {
         return Stream.of(str.split(" -> ")).map(Point::point).toList();
     }
 

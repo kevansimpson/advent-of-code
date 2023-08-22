@@ -1,6 +1,5 @@
 package org.base.advent.code2016;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.Arrays;
@@ -11,20 +10,17 @@ import java.util.stream.Stream;
  * <a href="https://adventofcode.com/2016/day/03">Day 03</a>
  */
 public class Day03 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input =  readLines("/2016/input03.txt");
-
     @Override
-    public Object solvePart1() {
-        return countTrianglesByRow(getInput());
+    public Object solvePart1(final List<String> input) {
+        return countTrianglesByRow(input);
     }
 
     @Override
-    public Object solvePart2() {
-        return countTrianglesByColumn(getInput());
+    public Object solvePart2(final List<String> input) {
+        return countTrianglesByColumn(input);
     }
 
-    public long countTrianglesByColumn(final List<String> input) {
+    long countTrianglesByColumn(final List<String> input) {
         final List<int[]> rows = toIntArray(input).toList();
         long valid = 0;
         for (int i = 0, max = input.size(); i < max; i += 3) {
@@ -37,7 +33,7 @@ public class Day03 implements Solution<List<String>> {
         return valid;
     }
 
-    public long countTrianglesByRow(final List<String> input) {
+    long countTrianglesByRow(final List<String> input) {
         return toIntArray(input).filter(this::validTriangle).count();
     }
 

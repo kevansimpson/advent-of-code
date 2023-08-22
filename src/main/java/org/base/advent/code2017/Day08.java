@@ -1,6 +1,5 @@
 package org.base.advent.code2017;
 
-import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
 
@@ -9,28 +8,24 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * <a href="https://adventofcode.com/2017/day/08">Day 08</a>
  */
 public class Day08 implements Solution<List<String>> {
     public static final String HIGHEST = "highestValueDuringInstructionProcessing";
 
-    @Getter
-    private final List<String> input =  readLines("/2017/input08.txt");
-
     @SuppressWarnings("OptionalGetWithoutIsPresent")
 	@Override
-    public Object solvePart1() {
-        return updateRegisters(getInput(), false).values().stream().max(Comparator.naturalOrder()).get();
+    public Object solvePart1(final List<String> input) {
+        return updateRegisters(input, false).values().stream().max(Comparator.naturalOrder()).get();
     }
 
     @Override
-    public Object solvePart2() {
-        return updateRegisters(getInput(), true).getOrDefault(HIGHEST, -1);
+    public Object solvePart2(final List<String> input) {
+        return updateRegisters(input, true).getOrDefault(HIGHEST, -1);
     }
 
-    public Map<String, Integer> updateRegisters(List<String> equations, boolean trackHighest) {
+    Map<String, Integer> updateRegisters(final List<String> equations, final boolean trackHighest) {
         Map<String, Integer> register = new LinkedHashMap<>();
 
         for (String instruction : equations) {

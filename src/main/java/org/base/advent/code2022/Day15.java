@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.lang3.Range;
 import org.apache.commons.lang3.tuple.Pair;
-import org.base.advent.Solution;
 import org.base.advent.TimeSaver;
 import org.base.advent.util.Point;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.abs;
@@ -19,30 +19,25 @@ import static org.base.advent.util.Util.extractInt;
 /**
  * <a href="https://adventofcode.com/2022/day/15">Day 15</a>
  */
-public class Day15 implements Solution<List<String>>, TimeSaver {
-    @Getter
-    private final List<String> input = readLines("/2022/input15.txt");
-    private final List<Sensor> sensors = input.stream().map(line -> new Sensor(extractInt(line))).toList();
-    private final Set<Point> beacons = sensors.stream().map(Sensor::getBeacon).collect(Collectors.toSet());
+public class Day15 implements Function<List<String>, Day15.HandheldDevice>, TimeSaver {
+    public record HandheldDevice(long noBeacons, long tuningFrequency) {}
 
     @Override
-    public Object solvePart1() {
-        return overlap(sensors, 2000000L);
-    }
-
-    @Override
-    public Object solvePart2() {
+    public HandheldDevice apply(final List<String> input) {
+        final List<Sensor> sensors = input.stream().map(line -> new Sensor(extractInt(line))).toList();
+        final Set<Point> beacons = sensors.stream().map(Sensor::getBeacon).collect(Collectors.toSet());
+        final long ptsWithoutBeacons = overlap(sensors, 2000000L, beacons);
         try {
             for (long row = fullOrFast(0L, 3349000L); row <= 4000000L; row += 1L)
-                overlap(sensors, row);
+                overlap(sensors, row, beacons);
         }
         catch (Answer answer) {
-            return answer.result;
+            return new HandheldDevice(ptsWithoutBeacons, answer.result);
         }
-        return 1138;
+        throw new IllegalStateException("Day15,2022");
     }
 
-    public long overlap(List<Sensor> sensors, long row) {
+    long overlap(final List<Sensor> sensors, final long row, final Set<Point> beacons) {
         List<Range<Long>> ranges = sensors.stream()
                 .map(it -> it.inRange(row))
                 .filter(Objects::nonNull)

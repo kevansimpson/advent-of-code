@@ -1,33 +1,29 @@
 package org.base.advent.code2022;
 
-import lombok.Getter;
-import org.base.advent.Solution;
-import org.base.advent.util.SafeLazyInitializer;
-
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
  * <a href="https://adventofcode.com/2022/day/07">Day 07</a>
  */
-public class Day07 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input = readLines("/2022/input07.txt");
+public class Day07 implements Function<List<String>, Day07.DirectorySizes> {
+    public record DirectorySizes(int sum100kDirs, int smallestToDelete) {}
 
-    private final SafeLazyInitializer<FileSys> fileSys = new SafeLazyInitializer<>(() -> {
+    @Override
+    public DirectorySizes apply(List<String> input) {
         Dir root = parseLogs(input.stream().map(it -> it.split(" ")).toList());
-        return new FileSys(root.flatten(), root.totalSize());
-    });
-
-    @Override
-    public Object solvePart1() {
-        return fileSys.get().allDirs.stream().mapToInt(Dir::totalSize).filter(it -> it < 100000).sum();
-    }
-
-    @Override
-    public Object solvePart2() {
-        int need = 30000000 - (70000000 - fileSys.get().totalSize);
-        return fileSys.get().allDirs.stream().mapToInt(Dir::totalSize).filter(it -> it >= need).min().orElse(1138);
+        final FileSys fileSys = new FileSys(root.flatten(), root.totalSize());
+        final int need = 30000000 - (70000000 - fileSys.totalSize);
+        int sum100kDirs = 0, smallestToDelete = Integer.MAX_VALUE;
+        for (Dir dir : fileSys.allDirs) {
+            int total = dir.totalSize();
+            if (total < 100000)
+                sum100kDirs += total;
+            if (total >= need && total < smallestToDelete)
+                smallestToDelete = total;
+        }
+        return new DirectorySizes(sum100kDirs, smallestToDelete);
     }
 
     protected Dir parseLogs(List<String[]> logs) {

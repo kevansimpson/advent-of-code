@@ -1,6 +1,5 @@
 package org.base.advent.code2019;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.stream.Stream;
@@ -9,20 +8,17 @@ import java.util.stream.Stream;
  * <a href="https://adventofcode.com/2019/day/16">Day 16</a>
  */
 public class Day16 implements Solution<String> {
-    @Getter
-    private final String input = readInput("/2019/input16.txt");
-
     @Override
-    public String solvePart1() {
-        return transmit(getInput(), 100L);
+    public String solvePart1(final String input) {
+        return transmit(input, 100L);
     }
 
     @Override
-    public String solvePart2() {
-        return realSignal(getInput());
+    public String solvePart2(final String input) {
+        return realSignal(input);
     }
 
-    public String realSignal(final String input) {
+    String realSignal(final String input) {
         final int index = Integer.parseInt(input.substring(0, 7));
         final long[] code = Stream.of(input.repeat(10000).substring(index).split("")).mapToLong(Long::parseLong).toArray();
         long[] state = code.clone();
@@ -43,7 +39,7 @@ public class Day16 implements Solution<String> {
         return result.toString();
     }
 
-    public String transmit(final String input, final long phaseCount) {
+    String transmit(final String input, final long phaseCount) {
         String fft = input;
         for (int p = 0; p < phaseCount; p++) fft = phase(fft);
         return fft.substring(0, 8);

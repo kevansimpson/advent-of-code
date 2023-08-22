@@ -1,38 +1,25 @@
 package org.base.advent.code2015;
 
-import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
-import org.base.advent.Solution;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Function;
+
+import static org.apache.commons.lang3.StringUtils.countMatches;
 
 /**
  * <a href="https://adventofcode.com/2015/day/19">Day 19</a>
  */
-public class Day19 implements Solution<List<String>> {
-    private final Set<String> molecules = new HashSet<>();
-    private String medicine;
-
-    @Getter
-    private final List<String> input = readLines("/2015/input19.txt");
-    @Getter
-    private final List<String> input2 = readLines("/2015/input19.txt");
+public class Day19 implements Function<List<String>, Day19.MedicineMolecule> {
+    public record MedicineMolecule(int totalDistinct, int fewestSteps) {}
 
     @Override
-    public Object solvePart1() {
-        return totalMolecules(getInput());
-    }
+    public MedicineMolecule apply(List<String> replacements) {
+        String medicine = replacements.remove(replacements.size() - 1);
+        final Set<String> molecules = applyAllReplacements(buildReplacementMap(replacements), medicine);
 
-    @Override
-    public Object solvePart2() {
-        return shortestPath(input2);
-    }
-    
-    public int totalMolecules(final List<String> replacements) {
-        medicine = replacements.remove(replacements.size() - 1);
-        applyAllReplacements(buildReplacementMap(replacements));
-        return molecules.size();
+        return new MedicineMolecule(molecules.size(), shortestPath(medicine));
     }
 
     /**
@@ -54,9 +41,7 @@ public class Day19 implements Solution<List<String>> {
      * Subtract one because we start with "e".
      *
      */
-    public int shortestPath(final List<String> replacements) {
-        medicine = replacements.remove(replacements.size() - 1);
-
+    int shortestPath(final String medicine) {
         int upper = 0;
         for (final char ch : medicine.toCharArray()) {
             if (Character.isUpperCase(ch))
@@ -64,23 +49,21 @@ public class Day19 implements Solution<List<String>> {
         }
 
         return upper
-                - countOccurrences(medicine, "Rn")
-                - countOccurrences(medicine, "Ar")
-                - 2 * countOccurrences(medicine, "Y") - 1;
+                - countMatches(medicine, "Rn")
+                - countMatches(medicine, "Ar")
+                - 2 * countMatches(medicine, "Y") - 1;
     }
 
-    protected int countOccurrences(final String str, final String x) {
-        return StringUtils.countMatches(str, x);
-    }
-
-    protected void applyAllReplacements(final Map<String, List<String>> rmap) {
+    Set<String> applyAllReplacements(final Map<String, List<String>> rmap, final String medicine) {
+        final Set<String> molecules = new HashSet<>();
         for (final Entry<String, List<String>> replacement : rmap.entrySet()) {
             final Set<String> uniqueMolecules = applyReplacement(medicine, replacement);
             molecules.addAll(uniqueMolecules);
         }
+        return molecules;
     }
 
-    protected Set<String> applyReplacement(final String chain, final Entry<String, List<String>> replacement) {
+    Set<String> applyReplacement(final String chain, final Entry<String, List<String>> replacement) {
         final Set<String> uniqueMolecules = new HashSet<>();
         for (final String repl : replacement.getValue()) {
             int start = 0, index;
@@ -95,7 +78,7 @@ public class Day19 implements Solution<List<String>> {
         return uniqueMolecules;
     }
 
-    protected Map<String, List<String>> buildReplacementMap(final List<String> replacements) {
+    Map<String, List<String>> buildReplacementMap(final List<String> replacements) {
         final Map<String, List<String>> rmap = new HashMap<>();
         for (final String replacement : replacements) {
             if (StringUtils.isBlank(replacement)) continue;

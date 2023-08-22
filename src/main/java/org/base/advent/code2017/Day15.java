@@ -6,32 +6,24 @@ import org.base.advent.Solution;
 
 import java.util.function.Predicate;
 
-
 /**
  * <a href="https://adventofcode.com/2017/day/15">Day 15</a>
  */
 public class Day15 implements Solution<Pair<Integer, Integer>> {
-
-    /** Generator A starts with 783. Generator B starts with 325 */
     @Override
-    public Pair<Integer, Integer> getInput(){
-        return Pair.of(783, 325);
-    }
-
-    @Override
-    public Object solvePart1() {
+    public Object solvePart1(final Pair<Integer, Integer> input) {
         return countLowBitMatches(40000000,
-                Pair.of(Generator.A(getInput().getLeft()), Generator.B(getInput().getRight())));
+                Pair.of(Generator.A(input.getLeft()), Generator.B(input.getRight())));
     }
 
     @Override
-    public Object solvePart2() {
+    public Object solvePart2(final Pair<Integer, Integer> input) {
         return countLowBitMatches(5000000,
-                Pair.of(Generator.A(getInput().getLeft(), i -> (i % 4) == 0),
-                        Generator.B(getInput().getRight(), i -> (i % 8) == 0)));
+                Pair.of(Generator.A(input.getLeft(), i -> (i % 4) == 0),
+                        Generator.B(input.getRight(), i -> (i % 8) == 0)));
     }
 
-    public int countLowBitMatches(final long iterations, final Pair<Generator, Generator> generators) {
+    int countLowBitMatches(final long iterations, final Pair<Generator, Generator> generators) {
         final Generator genA = generators.getLeft();
         final Generator genB = generators.getRight();
         int sum = 0;
@@ -43,11 +35,11 @@ public class Day15 implements Solution<Pair<Integer, Integer>> {
         return sum;
     }
 
-    public boolean lowBitsMatch(final long value1, final long value2) {
+    boolean lowBitsMatch(final long value1, final long value2) {
         return StringUtils.equals(toBits(value1).substring(16), toBits(value2).substring(16));
     }
 
-    public String toBits(final long value) {
+    String toBits(final long value) {
         return StringUtils.leftPad(Long.toBinaryString(value), 32, "0");
     }
 

@@ -1,6 +1,5 @@
 package org.base.advent.code2019;
 
-import lombok.Getter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
@@ -12,20 +11,17 @@ import java.util.stream.Stream;
  * <a href="https://adventofcode.com/2019/day/08">Day 08</a>
  */
 public class Day08 implements Solution<String> {
-    @Getter
-    private final String input =  readInput("/2019/input08.txt");
-
     @Override
-    public Integer solvePart1() {
-        return zeroLayer(getInput());
+    public Integer solvePart1(final String input) {
+        return zeroLayer(input);
     }
 
     @Override
-    public String solvePart2() {
-        return drawImage(getInput());
+    public String solvePart2(final String input) {
+        return drawImage(input);
     }
 
-    public String drawImage(final String rawImage, final int... dims) {
+    String drawImage(final String rawImage, final int... dims) {
         final String[] layers = toLayers(rawImage, dims);
         char[] decoded = layers[0].toCharArray();
 
@@ -44,7 +40,7 @@ public class Day08 implements Solution<String> {
         return new String(decoded);
     }
 
-    public int zeroLayer(final String image, final int... dims) {
+    int zeroLayer(final String image, final int... dims) {
         //noinspection OptionalGetWithoutIsPresent
         return Stream.of(toLayers(image, dims))
                 .min(Comparator.comparingInt(l -> StringUtils.countMatches(l, "0")))

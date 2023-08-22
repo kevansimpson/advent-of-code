@@ -1,6 +1,5 @@
 package org.base.advent.code2015;
 
-import lombok.Getter;
 import org.apache.commons.lang3.ObjectUtils;
 import org.base.advent.Solution;
 
@@ -12,26 +11,24 @@ import java.util.regex.Pattern;
  * <a href="https://adventofcode.com/2015/day/16">Day 16</a>
  */
 public class Day16 implements Solution<List<String>> {
-
     private static final String INDEX = "INDEX";
 
-    @Getter
-    private final List<String> input = readLines("/2015/input16.txt");
+    private final Map<String, Integer> tickerTape = Map.of("children", 3,
+        "cats", 7, "samoyeds", 2, "pomeranians", 3,
+        "akitas", 0, "vizslas", 0, "goldfish", 5,
+        "trees", 3, "cars", 2, "perfumes", 1);
 
     @Override
-    public Object solvePart1() {
-        return auntSueIndex(getInput());
+    public Object solvePart1(final List<String> input) {
+        return auntSueIndex(input);
     }
 
     @Override
-    public Object solvePart2() {
-        return outdatedRetroencabulator(getInput());
+    public Object solvePart2(final List<String> input) {
+        return outdatedRetroencabulator(input);
     }
 
-
-    public int auntSueIndex(final List<String> sueList) {
-        final Map<String, Integer> tickerTape = buildTickerTape();
-
+    int auntSueIndex(final List<String> sueList) {
         final List<Map<String, Integer>> potentials = new ArrayList<>();
         for (final String aSueList : sueList) {
             final Map<String, Integer> attr = parseSue(aSueList);
@@ -43,9 +40,7 @@ public class Day16 implements Solution<List<String>> {
         return potentials.get(0).get(INDEX);
     }
 
-    public int outdatedRetroencabulator(final List<String> sueList) {
-        final Map<String, Integer> tickerTape = buildTickerTape();
-
+    int outdatedRetroencabulator(final List<String> sueList) {
         final List<Map<String, Integer>> potentials = new ArrayList<>();
         for (final String aSueList : sueList) {
             final Map<String, Integer> attr = parseSue(aSueList);
@@ -57,11 +52,11 @@ public class Day16 implements Solution<List<String>> {
         return potentials.get(0).get(INDEX);
     }
 
-    protected boolean hasSameRanges(final Map<String, Integer> attr1, final Map<String, Integer> attr2) {
+    boolean hasSameRanges(final Map<String, Integer> attr1, final Map<String, Integer> attr2) {
         return satisfiesTicker(attr1, attr2) && reverseTicker(attr2, attr1);
     }
 
-    protected boolean satisfiesTicker(final Map<String, Integer> tickerTape, final Map<String, Integer> attr) {
+    boolean satisfiesTicker(final Map<String, Integer> tickerTape, final Map<String, Integer> attr) {
         for (final String key : tickerTape.keySet()) {
             switch (key) {
                 case INDEX -> {
@@ -87,7 +82,7 @@ public class Day16 implements Solution<List<String>> {
         return true;
     }
 
-    protected boolean reverseTicker(final Map<String, Integer> attr, final Map<String, Integer> tickerTape) {
+    boolean reverseTicker(final Map<String, Integer> attr, final Map<String, Integer> tickerTape) {
         for (final String key : attr.keySet()) {
             switch (key) {
                 case INDEX, "trees", "cats", "pomeranians", "goldfish" -> {
@@ -103,11 +98,11 @@ public class Day16 implements Solution<List<String>> {
         return true;
     }
 
-    protected boolean hasSameAttr(final Map<String, Integer> attr1, final Map<String, Integer> attr2) {
+    boolean hasSameAttr(final Map<String, Integer> attr1, final Map<String, Integer> attr2) {
         return hasSameValues(attr1, attr2) && hasSameValues(attr2, attr1);
     }
 
-    protected boolean hasSameValues(final Map<String, Integer> attr1, final Map<String, Integer> attr2) {
+    boolean hasSameValues(final Map<String, Integer> attr1, final Map<String, Integer> attr2) {
         for (final String key : attr1.keySet()) {
             if (INDEX.equals(key)) continue;
 
@@ -118,26 +113,9 @@ public class Day16 implements Solution<List<String>> {
         return true;
     }
 
-    protected Map<String, Integer> buildTickerTape() {
-        final Map<String, Integer> tickerTape = new HashMap<>();
-        tickerTape.put("children", 3);
-        tickerTape.put("cats", 7);
-        tickerTape.put("samoyeds", 2);
-        tickerTape.put("pomeranians", 3);
-        tickerTape.put("akitas", 0);
-        tickerTape.put("vizslas", 0);
-        tickerTape.put("goldfish", 5);
-        tickerTape.put("trees", 3);
-        tickerTape.put("cars", 2);
-        tickerTape.put("perfumes", 1);
-
-        return tickerTape;
-    }
-
-    private static final Pattern parser = Pattern.compile(
-            "\\w+ (\\d+): (\\w+): (\\d+), (\\w+): (\\d+), (\\w+): (\\d+)", Pattern.DOTALL);
-
     protected Map<String, Integer> parseSue(final String sue) {
+        final Pattern parser = Pattern.compile(
+                "\\w+ (\\d+): (\\w+): (\\d+), (\\w+): (\\d+), (\\w+): (\\d+)", Pattern.DOTALL);
         final Map<String, Integer> attr = new HashMap<>();
         final Matcher m = parser.matcher(sue);
         if (m.matches()) {

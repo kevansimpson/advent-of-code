@@ -1,9 +1,5 @@
 package org.base.advent.code2022;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.base.advent.Solution;
-import org.base.advent.util.SafeLazyInitializer;
 import org.base.advent.util.Util;
 
 import java.util.ArrayList;
@@ -11,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.base.advent.util.Util.splitByBlankLine;
@@ -18,34 +15,26 @@ import static org.base.advent.util.Util.splitByBlankLine;
 /**
  * <a href="https://adventofcode.com/2022/day/05">Day 05</a>
  */
-public class Day05 implements Solution<List<String>> {
-    @Getter @Setter
-    private List<String> input = readLines("/2022/input05.txt");
-    private final SafeLazyInitializer<Puzzle> puzzle = new SafeLazyInitializer<>(() -> {
-        List<List<String>> split = splitByBlankLine(getInput());
+public class Day05 implements Function<List<String>, Day05.MovedCrate> {
+    public record MovedCrate(String top, String rearranged) {}
+
+    @Override
+    public MovedCrate apply(final List<String> strings) {
+        List<List<String>> split = splitByBlankLine(strings);
         List<String> stacks = split.get(0).subList(0, split.get(0).size() - 1);
-        return new Puzzle(split, stacks,
+        final Puzzle puzzle = new Puzzle(split, stacks,
                 Arrays.stream(Util.extractInt(split.get(0).get(stacks.size()))).max().orElse(-1),
                 split.get(1).stream().map(Util::extractInt).toList());
-    });
-
-    @Override
-    public Object solvePart1() {
-        return moveCrates(this::topCrates);
+        return new MovedCrate(moveCrates(puzzle, this::topCrates), moveCrates(puzzle, this::rearrangeCrates));
     }
 
-    @Override
-    public Object solvePart2() {
-        return moveCrates(this::rearrangeCrates);
-    }
-
-    protected void topCrates(Crate crate) {
+    void topCrates(final Crate crate) {
         for (int s = 0; s < crate.qty; s++)
             if (!crate.from.isEmpty())
                 crate.to.push(crate.from.pop());
     }
 
-    protected void rearrangeCrates(Crate crate) {
+    void rearrangeCrates(final Crate crate) {
         Stack<Character> stack = new Stack<>();
         for (int s = 0; s < crate.qty; s++)
             if (!crate.from.isEmpty())
@@ -55,18 +44,17 @@ public class Day05 implements Solution<List<String>> {
             crate.to.push(stack.pop());
     }
 
-    protected String moveCrates(CrateMover mover) {
-        List<Stack<Character>> crates = scanCrates();
-        puzzle.get().moves.forEach(crate -> mover.accept(
+     String moveCrates(final Puzzle puzzle, final CrateMover mover) {
+        List<Stack<Character>> crates = scanCrates(puzzle);
+        puzzle.moves.forEach(crate -> mover.accept(
                 new Crate(crate[0], crates.get(crate[1] - 1), crates.get(crate[2] - 1))));
         return crates.stream()
                 .map(s -> String.valueOf(s.peek()))
                 .collect(Collectors.joining());
     }
 
-    private List<Stack<Character>> scanCrates() {
+    private List<Stack<Character>> scanCrates(Puzzle p) {
         List<Stack<Character>> list = new ArrayList<>();
-        Puzzle p = puzzle.get();
         for (int i = 0, max = p.numStacks - 1; i <= max; i++) {
             Stack<Character> stack = new Stack<>();
             int column = 1 + i * 4;

@@ -1,33 +1,27 @@
 package org.base.advent.code2017;
 
-import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  * <a href="https://adventofcode.com/2017/day/09">Day 09</a>
  */
 public class Day09 implements Solution<String> {
-    @Getter
-    private final String input =  readInput("/2017/input09.txt");
-
     @Override
-    public Object solvePart1() {
-        return score(getInput());
+    public Object solvePart1(final String input) {
+        return score(input);
     }
 
     @Override
-    public Object solvePart2() {
-        return countGarbage(getInput());
+    public Object solvePart2(final String input) {
+        return countGarbage(input);
     }
 
-    private static final Pattern PATTERN = Pattern.compile("<([^>]+)>");
-
-    public int countGarbage(String input) {
+    int countGarbage(String input) {
+        final Pattern PATTERN = Pattern.compile("<([^>]+)>");
         input = input.replaceAll( "(!.)", "");
         int count = 0;
         int start = 0;
@@ -42,7 +36,7 @@ public class Day09 implements Solution<String> {
         return count;
     }
 
-    public int score(String input) {
+    int score(String input) {
         input = clean(input);
         int level = 0;
         int score = 0;
@@ -60,12 +54,12 @@ public class Day09 implements Solution<String> {
         return score;
     }
 
-    public int countGroups(String input) {
+    int countGroups(String input) {
         input = clean(input);
         return Math.min(StringUtils.countMatches(input, "{"), StringUtils.countMatches(input, "}"));
     }
 
-    protected String clean(String input) {
+    String clean(String input) {
         input = input.replaceAll("(!.)", "");
         input = input.replaceAll("(<[^>]+>)", "");
 

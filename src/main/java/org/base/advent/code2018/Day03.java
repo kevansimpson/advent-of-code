@@ -1,15 +1,13 @@
 package org.base.advent.code2018;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
-import org.base.advent.Solution;
 import org.base.advent.TimeSaver;
 import org.base.advent.util.Point;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -19,45 +17,25 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 /**
  * <a href="https://adventofcode.com/2018/day/03">Day 03</a>
  */
-public class Day03 implements Solution<Map<Point, List<Integer>>>, TimeSaver {
-
-    @Setter(AccessLevel.PACKAGE)
-    private List<Claim> claims;
-    private Map<Point, List<Integer>> grid;
+public class Day03 implements Function<List<String>, Day03.OverlappingClaims>, TimeSaver {
+    public record OverlappingClaims(long fabricSqFt, int nonOverlappingClaimId) {}
 
     @Override
-    public Map<Point, List<Integer>> getInput(){
-        if (grid == null)
-            grid = buildGrid(getClaims());
+    public Day03.OverlappingClaims apply(List<String> input) {
+        List<Claim> claims = toClaims(input);
+        Collections.reverse(claims);  // look from the end of the list
+        Map<Point, List<Integer>> grid = buildGrid(claims);
 
-        return grid;
+        return new OverlappingClaims(calculateOverlap(grid),
+                fastOrFull(1097, () -> findAdjacentClaimId(claims, grid)));
     }
 
-    @Override
-    public Object solvePart1() {
-        return calculateOverlap(getInput());
-    }
-
-    @Override
-    public Object solvePart2() {
-        return fastOrFull(1097, () -> findAdjacentClaimId(getInput()));
-    }
-
-    public List<Claim> getClaims() {
-        if (claims == null) {
-            claims = toClaims(readLines("/2018/input03.txt"));
-            Collections.reverse(claims);  // look from the end of the list
-        }
-
-        return claims;
-    }
-
-    public int findAdjacentClaimId(final Map<Point, List<Integer>> grid) {
+    int findAdjacentClaimId(final List<Claim> claims, final Map<Point, List<Integer>> grid) {
         final List<Point> points = grid.entrySet().stream()
                 .filter(entry -> entry.getValue().size() == 1)
                 .map(Map.Entry::getKey).collect(Collectors.toList());
 
-        for (final Claim claim : getClaims()) {
+        for (final Claim claim : claims) {
             if (CollectionUtils.containsAll(points, claim.getPoints()))
                 return claim.getId();
         }
@@ -65,7 +43,7 @@ public class Day03 implements Solution<Map<Point, List<Integer>>>, TimeSaver {
         return -1;
     }
 
-    public long calculateOverlap(final Map<Point, List<Integer>> grid) {
+    long calculateOverlap(final Map<Point, List<Integer>> grid) {
         return grid.values().stream().filter(list -> list.size() > 1).count();
     }
 
@@ -85,10 +63,9 @@ public class Day03 implements Solution<Map<Point, List<Integer>>>, TimeSaver {
         return input.stream().map(this::toClaim).collect(Collectors.toList());
     }
 
-    private static final Pattern CLAIM_PATTERN = // #123 @ 3,2: 5x4
-            Pattern.compile("#(\\d+)\\s@\\s(\\d+),(\\d+):\\s(\\d+)x(\\d+)");
-
     Claim toClaim(final String input) {
+        final Pattern CLAIM_PATTERN = // #123 @ 3,2: 5x4
+                Pattern.compile("#(\\d+)\\s@\\s(\\d+),(\\d+):\\s(\\d+)x(\\d+)");
         final Matcher m = CLAIM_PATTERN.matcher(input);
         if (m.matches()) {
             final int id = toInt(m.group(1)), l = toInt(m.group(2)), t = toInt(m.group(3)),

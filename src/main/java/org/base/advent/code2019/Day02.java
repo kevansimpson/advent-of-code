@@ -1,6 +1,5 @@
 package org.base.advent.code2019;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 import org.base.advent.code2019.intCode.Program;
 
@@ -10,23 +9,20 @@ import java.util.Arrays;
  * <a href="https://adventofcode.com/2019/day/02">Day 02</a>
  */
 public class Day02 implements Solution<int[]> {
-    @Getter
-    private final int[] input =  readNumbersCSV("/2019/input02.txt");
-
     @Override
-    public Object solvePart1() {
+    public Object solvePart1(final int[] input) {
         // before running the program,
         // replace position 1 with the value 12 and
         // replace position 2 with the value 2.
-        return ((int[]) gravityAssist(12, 2, getInput()))[0];
+        return ((int[]) gravityAssist(12, 2, input))[0];
     }
 
     @Override
-    public Object solvePart2() {
-        return targetOutput(19690720, getInput());
+    public Object solvePart2(final int[] input) {
+        return targetOutput(19690720, input);
     }
 
-    public int targetOutput(final int target, final int... codes) {
+    int targetOutput(final int target, final int... codes) {
         final int[] copy = Arrays.copyOf(codes, codes.length);
         for (int n = 0; n < 100; n++)
             for (int v = 0; v < 100; v++)
@@ -39,7 +35,7 @@ public class Day02 implements Solution<int[]> {
      * In this program, the value placed in address 1 is called the noun, and the value placed in address 2 is called
      * the verb.
      */
-    public int[] gravityAssist(final int noun, final int verb, final int... codes) {
+    int[] gravityAssist(final int noun, final int verb, final int... codes) {
         codes[1] = noun;
         codes[2] = verb;
         return Program.runProgram(codes);

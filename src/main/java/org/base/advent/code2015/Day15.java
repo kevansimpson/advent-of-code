@@ -1,6 +1,5 @@
 package org.base.advent.code2015;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.ArrayList;
@@ -17,17 +16,14 @@ public class Day15 implements Solution<List<String>> {
     private Map<String, Ingredient> ingredientMap;
     private int highestScore = Integer.MIN_VALUE;
 
-    @Getter
-    private final List<String> input = readLines("/2015/input15.txt");
-
     @Override
-    public Object solvePart1() {
-        return findHighestScore(getInput());
+    public Object solvePart1(final List<String> input) {
+        return findHighestScore(input);
     }
 
     @Override
-    public Object solvePart2() {
-        return findHighestScoreFor500Calories(getInput());
+    public Object solvePart2(final List<String> input) {
+        return findHighestScoreFor500Calories(input);
     }
 
     public int findHighestScore(final List<String> cookbook) {

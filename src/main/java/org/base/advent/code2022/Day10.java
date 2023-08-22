@@ -1,6 +1,5 @@
 package org.base.advent.code2022;
 
-import lombok.Getter;
 import org.base.advent.Solution;
 
 import java.util.ArrayList;
@@ -12,21 +11,17 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <a href="https://adventofcode.com/2022/day/10">Day 10</a>
  */
 public class Day10 implements Solution<List<String>> {
-    @Getter
-    private final List<String> input = readLines("/2022/input10.txt");
-
-    private final Program program = new Program(getInput().stream().map(signal -> {
-        if ("noop".equals(signal))
-            return new Cmd();
-        else {
-            String[] bits = signal.split(" ");
-            return new Cmd(Integer.parseInt(bits[1]), new AtomicInteger(2));
-        }
-
-    }).toList());
 
     @Override
-    public Object solvePart1() {
+    public Object solvePart1(final List<String> input) {
+        final Program program = new Program(input.stream().map(signal -> {
+            if ("noop".equals(signal))
+                return new Cmd();
+            else {
+                String[] bits = signal.split(" ");
+                return new Cmd(Integer.parseInt(bits[1]), new AtomicInteger(2));
+            }
+        }).toList());
         return program.runUntil();
     }
 
@@ -39,7 +34,7 @@ public class Day10 implements Solution<List<String>> {
      * #     ### #  # #     ### ####  ##   ###
      */
     @Override
-    public Object solvePart2() {
+    public Object solvePart2(final List<String> input) {
         return "PGHFGLUG";
     }
 
@@ -55,7 +50,7 @@ public class Day10 implements Solution<List<String>> {
                           List<Integer> signalStack) {
         private static final List<Integer> TARGET_CYCLES = List.of(20, 60, 100, 140, 180, 220);
 
-        public Program(List<Cmd> instructions) {
+        public Program(final List<Cmd> instructions) {
             this(instructions, new AtomicInteger(1), new LinkedList<>(), new ArrayList<>());
         }
 

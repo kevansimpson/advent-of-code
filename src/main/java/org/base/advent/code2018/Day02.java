@@ -1,6 +1,5 @@
 package org.base.advent.code2018;
 
-import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.base.advent.Solution;
@@ -13,25 +12,21 @@ import java.util.Set;
  * <a href="https://adventofcode.com/2018/day/02">Day 02</a>
  */
 public class Day02 implements Solution<List<String>> {
-
     public enum Match {
         none, two, three, both
     }
 
-    @Getter
-    private final List<String> input =  readLines("/2018/input02.txt");
-
     @Override
-    public Object solvePart1() {
-        return checksum(getInput());
+    public Object solvePart1(final List<String> input) {
+        return checksum(input);
     }
 
     @Override
-    public Object solvePart2() {
-        return findPrototype(getInput());
+    public Object solvePart2(final List<String> input) {
+        return findPrototype(input);
     }
 
-    public String findPrototype(final List<String> input) {
+    String findPrototype(final List<String> input) {
         final int size = input.size();
         final LevenshteinDistance distance = new LevenshteinDistance(2);
 
@@ -49,7 +44,7 @@ public class Day02 implements Solution<List<String>> {
         return StringUtils.remove(text1, text1.charAt(StringUtils.indexOfAnyBut(text1, text2)));
     }
 
-    public int checksum(final List<String> input) {
+    int checksum(final List<String> input) {
         final int[] cksum = new int[2];
         input.stream().map(this::countPairsAndTriples).forEach(match -> {
             switch (match) {
@@ -68,7 +63,7 @@ public class Day02 implements Solution<List<String>> {
         return cksum[0] * cksum[1];
     }
 
-    public Match countPairsAndTriples(final String text) {
+    Match countPairsAndTriples(final String text) {
         final Set<Character> set = new HashSet<>();
         for (char c : text.toCharArray()) {
             set.add(c);

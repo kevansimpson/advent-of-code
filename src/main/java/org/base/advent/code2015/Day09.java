@@ -1,52 +1,39 @@
 package org.base.advent.code2015;
 
-import lombok.Getter;
-import org.base.advent.Solution;
+import org.base.advent.util.PermIterator;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * <a href="https://adventofcode.com/2015/day/09">Day 09</a>
  */
-@SuppressWarnings("OptionalGetWithoutIsPresent")
-public class Day09 implements Solution<List<String>> {
+public class Day09 implements Function<List<String>, Day09.PathDistances> {
     private static final Pattern parser = Pattern.compile("(.+)\\sto\\s(.+)\\s=\\s(\\d+)", Pattern.DOTALL);
 
-    private final Set<String> locations = new HashSet<>();
-    private final Map<List<String>, Integer> distanceMap = new HashMap<>();
-    private Map<String, Integer> jumpDistanceMap;
+    public record PathDistances(int shortest, int longest) {}
 
-    @Getter
-    private final List<String> input = readLines("/2015/input09.txt");
+    record SantaSleigh(String[] locations, Map<String, Integer> jumpDistanceMap) {}
 
     @Override
-    public Object solvePart1() {
-        return shortestPath(getInput());
+    public PathDistances apply(final List<String> directions) {
+        final SantaSleigh sleigh = buildSleigh(directions);
+        final PermIterator<String> permIterator = new PermIterator<>(sleigh.locations);
+
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        for (final List<String> perm : permIterator) {
+            int dist = calculateDistance(perm, sleigh.jumpDistanceMap);
+            min = Math.min(min, dist);
+            max = Math.max(max, dist);
+        }
+
+        return new PathDistances(min, max);
     }
 
-    @Override
-    public Object solvePart2() {
-        return longestPath();
-    }
-
-    public int shortestPath(final List<String> directions) {
-        jumpDistanceMap = buildDistanceMap(directions);
-        
-        final List<String> permutation = new ArrayList<>();
-        final List<String> locationList = new ArrayList<>(this.locations);
-
-        buildAllPaths(locationList, permutation, perm -> distanceMap.put(perm, calculateDistance(perm)));
-
-        return distanceMap.values().stream().min(Comparator.naturalOrder()).get();
-    }
-
-    public int longestPath() {
-        return distanceMap.values().stream().max(Comparator.naturalOrder()).get();
-    }
-
-    int calculateDistance(final List<String> path) {
+    int calculateDistance(final List<String> path, final Map<String, Integer> jumpDistanceMap) {
         int dist = 0;
         for (int i = 0; i < path.size() - 1; i++) {
             final String key = key(path.get(i), path.get(i + 1));
@@ -64,8 +51,10 @@ public class Day09 implements Solution<List<String>> {
         return "JUMP-"+ Arrays.asList(loc1, loc2);
     }
 
-    protected Map<String, Integer> buildDistanceMap(final List<String> directions) {
+    SantaSleigh buildSleigh(final List<String> directions) {
+        final Set<String> locations = new HashSet<>();
         final Map<String, Integer> distanceMap = new HashMap<>();
+
         for (final String directive : directions) {
             final Matcher matcher = parser.matcher(directive);
             if (matcher.matches()) {
@@ -82,6 +71,6 @@ public class Day09 implements Solution<List<String>> {
             }
         }
 
-        return distanceMap;
+        return new SantaSleigh(locations.toArray(new String[0]), distanceMap);
     }
 }

@@ -227,10 +227,10 @@ public class Examples2017UnitTests {
     @Test
     public void testDay11Examples() {
         final Day11 day11 = new Day11();
-        assertEquals(3L, day11.countSteps("ne,ne,ne").getLeft());
-        assertEquals(0L, day11.countSteps("ne,ne,sw,sw").getLeft());
-        assertEquals(2L, day11.countSteps("ne,ne,s,s").getLeft());
-        assertEquals(3L, day11.countSteps("se,sw,se,sw,sw").getLeft());
+        assertEquals(3L, day11.apply("ne,ne,ne").min());
+        assertEquals(0L, day11.apply("ne,ne,sw,sw").min());
+        assertEquals(2L, day11.apply("ne,ne,s,s").min());
+        assertEquals(3L, day11.apply("se,sw,se,sw,sw").min());
     }
 
     @Test
