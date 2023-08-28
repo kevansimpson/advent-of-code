@@ -32,14 +32,12 @@ public class Day21 implements Function<Void, Day21.OutfitCosts>, Helpers {
                 evaluateOutfit(new Outfit(weapon, armor));
 
                 final List<Item> rings = itemMap.get("rings");
-                final List<Item> leftHand = new ArrayList<>(rings);
                 // one rings
-                for (final Item lhRing : leftHand) {
+                for (final Item lhRing : rings) {
                     evaluateOutfit(new Outfit(weapon, armor, lhRing));
 
                     // two rings
-                    final List<Item> rightHand = new ArrayList<>(rings);
-                    for (final Item rhRing : rightHand) {
+                    for (final Item rhRing : rings) {
                         if (rhRing.cost == lhRing.cost) continue;
                         evaluateOutfit(new Outfit(weapon, armor, lhRing, rhRing));
                     }

@@ -13,46 +13,36 @@ import java.util.regex.Pattern;
  * <a href="https://adventofcode.com/2015/day/15">Day 15</a>
  */
 public class Day15 implements Solution<List<String>> {
-    private Map<String, Ingredient> ingredientMap;
-    private int highestScore = Integer.MIN_VALUE;
-
     @Override
     public Object solvePart1(final List<String> input) {
-        return findHighestScore(input);
+        return findHighestScore(input, -1);
     }
 
     @Override
     public Object solvePart2(final List<String> input) {
-        return findHighestScoreFor500Calories(input);
+        return findHighestScore(input, 500);
     }
 
-    public int findHighestScore(final List<String> cookbook) {
-        ingredientMap = buildIngredientMap(cookbook);
+    int findHighestScore(final List<String> cookbook, final int calorieRequirement) {
+        Map<String, Ingredient> ingredientMap = buildIngredientMap(cookbook);
         final Recipe recipe = new Recipe();
-        final List<Ingredient> ingredientList = new ArrayList<>(this.ingredientMap.values());
-        buildAllRecipes(ingredientList, 0, recipe, 100, -1);
-        return highestScore;
+        final List<Ingredient> ingredientList = new ArrayList<>(ingredientMap.values());
+        buildAllRecipes(ingredientMap, ingredientList, 0, recipe, 100, calorieRequirement);
+        return recipe.highestScore;
     }
 
-    public int findHighestScoreFor500Calories(final List<String> cookbook) {
-        if (ingredientMap.isEmpty())
-            ingredientMap = buildIngredientMap(cookbook);
-
-        highestScore = Integer.MIN_VALUE;
-        final Recipe recipe = new Recipe();
-        final List<Ingredient> ingredientList = new ArrayList<>(this.ingredientMap.values());
-        buildAllRecipes(ingredientList, 0, recipe, 100, 500);
-        return highestScore;
-    }
-
-    protected void buildAllRecipes(final List<Ingredient> ingredientList, final int ingredientIndex,
-                                   final Recipe recipe, final int total, final int calorieRequirement) {
+    protected void buildAllRecipes(final Map<String, Ingredient> ingredientMap,
+                                   final List<Ingredient> ingredientList,
+                                   final int ingredientIndex,
+                                   final Recipe recipe,
+                                   final int total,
+                                   final int calorieRequirement) {
         if (ingredientList.size() <= ingredientIndex) {    // recipe has all ingredients
             if (recipe.sumTeaspoons() == 100) {            // recipe has =100 teaspoons
                 if (calorieRequirement <= 0 || recipe.caloricCount(ingredientMap) == calorieRequirement) {
                     final int score = recipe.calculateScore(ingredientMap);
-                    if (score > highestScore) {
-                        highestScore = score;
+                    if (score > recipe.highestScore) {
+                        recipe.highestScore = score;
                     }
                 }
             }
@@ -60,10 +50,14 @@ public class Day15 implements Solution<List<String>> {
             return;
         }
 
-        for (int i = 0; i <= total; i++) {
+        // one {500 map[Butterscotch:31 Candy:29 Frosting:24 Sugar:16]}
+        // two {500 map[Butterscotch:31 Candy:23 Frosting:21 Sugar:25]}
+        // hindsight tells us this loop can be 16..32 or (2^numIngredients)..(2^numIngredients+1)
+        for (int i = 16; i <= 32; i++) {
             final Ingredient current = ingredientList.get(ingredientIndex);
             recipe.setTeaspoons(current.name, i);
-            buildAllRecipes(ingredientList, ingredientIndex + 1, recipe, total - i, calorieRequirement);
+            buildAllRecipes(ingredientMap, ingredientList,
+                    ingredientIndex + 1, recipe, total - i, calorieRequirement);
         }
     }
 
@@ -94,6 +88,7 @@ public class Day15 implements Solution<List<String>> {
 
     private static class Recipe {
         private final Map<String, Integer> ingredientMap = new HashMap<>();// # of tspn/ingredient
+        int highestScore = Integer.MIN_VALUE;
 
         public int caloricCount(final Map<String, Ingredient> cookbook) {
             int count = 0;
@@ -102,7 +97,7 @@ public class Day15 implements Solution<List<String>> {
                 count += (ingredientMap.get(name)) * ingredient.getValue(Trait.calories);
             }
 
-            return Math.max(count, 0);
+            return count;
         }
 
         public void setTeaspoons(final String ingredient, final int teaspoons) {

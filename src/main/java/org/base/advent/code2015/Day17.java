@@ -1,8 +1,5 @@
 package org.base.advent.code2015;
 
-import lombok.Getter;
-import org.base.advent.Solution;
-
 import java.util.List;
 import java.util.function.Function;
 
@@ -18,7 +15,7 @@ public class Day17 implements Function<List<String>, Day17.CanPermutations> {
 
     @Override
     public CanPermutations apply(List<String> input) {
-        int[] cans = input.stream().map(Integer::parseInt).mapToInt(i->i).toArray();
+        int[] cans = input.stream().mapToInt(Integer::parseInt).toArray();
         final boolean[] permutation = new boolean[cans.length];
         
         sumCans(permutation, 0, cans);

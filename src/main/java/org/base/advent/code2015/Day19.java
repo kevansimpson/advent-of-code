@@ -17,14 +17,14 @@ public class Day19 implements Function<List<String>, Day19.MedicineMolecule> {
     @Override
     public MedicineMolecule apply(List<String> replacements) {
         String medicine = replacements.remove(replacements.size() - 1);
-        final Set<String> molecules = applyAllReplacements(buildReplacementMap(replacements), medicine);
+        final int molecules = applyAllReplacements(buildReplacementMap(replacements), medicine);
 
-        return new MedicineMolecule(molecules.size(), shortestPath(medicine));
+        return new MedicineMolecule(molecules, shortestPath(medicine));
     }
 
     /**
-     * Adapted from solution found on
-     * <a href="https://www.reddit.com/r/adventofcode/comments/3xflz8/day_19_solutions/">reddit</a>.
+     * From solution found on
+     * <a href="https://www.reddit.com/r/adventofcode/comments/3xflz8/day_19_solutions/cy4h7ji/">reddit</a>.
      * <pre>
      * All the rules are of one of the following forms:
      * α => βγ
@@ -39,7 +39,6 @@ public class Day19 implements Function<List<String>, Day19.MedicineMolecule> {
      * Subtract of #Rn and #Ar because those are just extras. 
      * Subtract two times #Y because we get rid of the Ys and the extra elements following them. 
      * Subtract one because we start with "e".
-     *
      */
     int shortestPath(final String medicine) {
         int upper = 0;
@@ -54,13 +53,13 @@ public class Day19 implements Function<List<String>, Day19.MedicineMolecule> {
                 - 2 * countMatches(medicine, "Y") - 1;
     }
 
-    Set<String> applyAllReplacements(final Map<String, List<String>> rmap, final String medicine) {
+    int applyAllReplacements(final Map<String, List<String>> rmap, final String medicine) {
         final Set<String> molecules = new HashSet<>();
         for (final Entry<String, List<String>> replacement : rmap.entrySet()) {
             final Set<String> uniqueMolecules = applyReplacement(medicine, replacement);
             molecules.addAll(uniqueMolecules);
         }
-        return molecules;
+        return molecules.size();
     }
 
     Set<String> applyReplacement(final String chain, final Entry<String, List<String>> replacement) {

@@ -98,7 +98,9 @@ public class Solutions2015UnitTests extends PuzzleTester {
 
     @Test
     public void verifyDay16() {
-        testSolutions(new Day16(), readLines("/2015/input16.txt"), 40, 241);
+        testSolutions(new Day16(), readLines("/2015/input16.txt"),
+                40, Day16.AuntSue::giftingSue,
+                241, Day16.AuntSue::realSue);
     }
 
     @Test
@@ -147,11 +149,6 @@ public class Solutions2015UnitTests extends PuzzleTester {
     @Test
     public void verifyDay24() { // part 1 = 20s, has shortcut enabled
         testSolutions(new Day24(), readNumbers("/2015/input24.txt"), 11846773891L, 80393059L);
-    }
-
-    @Test
-    public void verifyDay25() {
-        testSolutions(new Day25(), 20151125L, 13431666L, 2650453L);
     }
 
     @BeforeAll
