@@ -1,6 +1,7 @@
 package org.base.advent.code2015;
 
 import org.base.advent.PuzzleTester;
+import org.base.advent.util.Point;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -149,6 +150,11 @@ public class Solutions2015UnitTests extends PuzzleTester {
     @Test
     public void verifyDay24() { // part 1 = 20s, has shortcut enabled
         testSolutions(new Day24(), readNumbers("/2015/input24.txt"), 11846773891L, 80393059L);
+    }
+
+    @Test
+    public void verifyDay25() {
+        testSolutions(new Day25(), Point.of(2978, 3083), 2650453L, 1138);
     }
 
     @BeforeAll
