@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 public class Solutions2016UnitTests extends PuzzleTester {
     @Test
     public void verifyDay01() {
-        testSolutions(new Day01(), readInput("/2016/input01.txt"), 288L, 111L);
+        testSolutions(new Day01(), readInput("/2016/input01.txt"),
+                288L, Day01.EasterBunnyHQ::distance,
+                111L, Day01.EasterBunnyHQ::alreadyVisited);
     }
 
     @Test

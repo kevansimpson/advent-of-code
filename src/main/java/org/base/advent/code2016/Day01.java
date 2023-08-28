@@ -1,94 +1,48 @@
 package org.base.advent.code2016;
 
-import lombok.Getter;
-import org.base.advent.Solution;
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.util.Point;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * <a href="https://adventofcode.com/2016/day/01">Day 01</a>
  */
-public class Day01 implements Solution<String> {
-    @Override
-    public Object solvePart1(String input) {
-        return calculateDistance(input, false);
-    }
+public class Day01 implements Function<String, Day01.EasterBunnyHQ> {
+    public record EasterBunnyHQ(long distance, long alreadyVisited) {}
 
     @Override
-    public Object solvePart2(String input) {
-        return calculateDistance(input, true);
-    }
-
-    long calculateDistance(final String input, final boolean stopOn2ndVisit) {
+    public EasterBunnyHQ apply(String input) {
         List<String> list = Arrays.asList(input.split("\\s*,\\s*"));
-        return followDirections(list, stopOn2ndVisit).getManhattanDistance();
+        Pair<Point, Point> pair = followDirections(list);
+        return new EasterBunnyHQ(
+                pair.getLeft().getManhattanDistance(), pair.getRight().getManhattanDistance());
     }
 
-    private enum Dir {
-        up(0, 1),       // (left, right)
-        left(-1, 0),    // (down, up)
-        down(0, -1),    // (right, left)
-        right(1, 0);    // (up, down)
-
-        @Getter
-        private final int deltaX;
-        @Getter
-        private final int deltaY;
-
-        Dir(final int dx, final int dy) {
-            deltaX = dx;
-            deltaY = dy;
-        }
-
-        public Dir next(final boolean goLeft) {
-            return switch (this) {
-                case up -> goLeft ? left : right;
-                case left -> goLeft ? down : up;
-                case down -> goLeft ? right : left;
-                case right -> goLeft ? up : down;
-            };
-        }
-    }
-
-    Point followDirections(final List<String> list, final boolean stopOn2ndVisit) {
-        final List<Point> path = new ArrayList<>();
-        Point point = Point.ORIGIN;
+    Pair<Point, Point> followDirections(final List<String> list) {
+        String[] nesw = new String[] {"^", ">", "v", "<"};
+        int facing = 0; // up/north
+        final Set<Point> path = new HashSet<>();
+        Point point = Point.ORIGIN, alreadyVisited = null;
         path.add(point);
 
-        Dir direction = Dir.up;
         for (final String instruction : list) {
             final boolean goLeft = instruction.charAt(0) == 'L';
             final int distance = Integer.parseInt(instruction.substring(1));
-            direction = direction.next(goLeft);
-            final List<Point> jump = gather(last(path), direction.getDeltaX(), direction.getDeltaY(), distance);
-            if (stopOn2ndVisit) {
-                for (final Point pt : jump) {
-                    if (path.contains(pt))
-                        return pt;
-                    else
-                        path.add(pt);
-                }
+            facing = (4 + facing + (goLeft ? -1 : 1)) % 4;
+            for (int i = 0; i < distance; i++) {
+                point = point.move(nesw[facing], 1);
+                if (path.contains(point) && alreadyVisited == null)
+                    alreadyVisited = point;
+                else
+                    path.add(point);
             }
-            else
-                path.addAll(jump);
         }
 
-        return last(path); // last stop
-    }
-
-    static List<Point> gather(Point start, int deltaX, int deltaY, int distance) {
-        final List<Point> path = new ArrayList<>();
-        for (int i = 1; i <= distance; i++)
-            path.add(start.move(i * deltaX, i * deltaY));
-
-        return path;
-    }
-
-    private static Point last(final List<Point> list) {
-        return list.get(list.size() - 1);
+        return Pair.of(point, alreadyVisited);
     }
 }
