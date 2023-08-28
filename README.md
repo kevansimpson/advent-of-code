@@ -19,6 +19,13 @@ mvn verify -Dfull=true
 Solution comparisons by year and language:
 [2015](#2015) - [2016](#2016) - [2018](#2018) - [2019](#2019) - [2022](#2022)
 
+### Sans Comparison
+| Year | Language | Notes                                                           |
+|------|----------|-----------------------------------------------------------------|
+| 2017 | Ruby     | Pushed to repository at work like a numbskull, then lost access |
+| 2020 | Scala    | https://github.com/kevansimpson/advent-of-scala                 |
+| 2021 | Kotlin   | https://github.com/kevansimpson/advent-of-kotlin                |
+
 ### 2015
 
 | Description                                   | Java                                                                                                                | Kotlin                                                                                                             | Ruby                                                                          | NodeJS                                                                                | Golang                                                                           |
@@ -107,6 +114,6 @@ Solution comparisons by year and language:
 | [Day14](https://adventofcode.com/2022/day/14) | [Day14](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2022/Day14.java) | [Day14](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2022/Day14.kt) |
 | [Day15](https://adventofcode.com/2022/day/15) | [Day15](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2022/Day15.java) | [Day15](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2022/Day15.kt) |
 | [Day16](https://adventofcode.com/2022/day/16) | [Day16](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2022/Day16.java) | [Day16](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2022/Day16.kt) |
-| [Day17](https://adventofcode.com/2022/day/17) | [Day17](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2022/Day17.java) | n/a                                                                                                                |
+| [Day17](https://adventofcode.com/2022/day/17) | [Day17](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2022/Day17.java) | [Day17](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2022/Day17.kt) |
 
 [Back to top](#comparisons)
