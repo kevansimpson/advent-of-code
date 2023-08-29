@@ -31,13 +31,7 @@ public class Day02 implements Solution<List<String>> {
         for (final String instruction : list) {
             Point start = point;
             for (char dir : instruction.toCharArray()) {
-                Point next = switch (dir) {
-                    case 'U' -> start.up(1);
-                    case 'D' -> start.down(1);
-                    case 'L' -> start.left(1);
-                    case 'R' -> start.right(1);
-                    default -> null;
-                };
+                Point next = start.move(String.valueOf(dir));
 
                 if (buttonPad.containsKey(next))
                     start = next;

@@ -17,6 +17,16 @@ public class Util {
     public record MinMaxLong(long min, long max) {}
 
     private static final Pattern numberPattern = Pattern.compile("-?\\d+");
+    private static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+    public static String shiftText(String str, int shift) {
+        return Stream.of(str.split("")).map(ch -> {
+            if (alphabet.contains(ch))
+                return String.valueOf(alphabet.charAt((alphabet.indexOf(ch) + shift) % 26));
+            else
+                return ch;
+        }).collect(Collectors.joining());
+    }
 
     public static int[] extractInt(String str) {
         return findAll(numberPattern, str).stream().mapToInt(Integer::valueOf).toArray();
@@ -77,9 +87,6 @@ public class Util {
     public static <T> List<List<T>> combinations(List<T> list, int len) {
         if (len == 0) {
             return new ArrayList<>(Arrays.asList(new ArrayList<>()));
-//            List<List<T>> singleEmpty = new ArrayList<>();
-//            singleEmpty.add(new ArrayList<>());
-//            return singleEmpty;
         }
         else {
             List<List<T>> result = new ArrayList<>();
@@ -93,35 +100,5 @@ public class Util {
             }
             return result;
         }
-    }
-
-    @SafeVarargs
-    public static <T> List<List<T>> permute(T... set) {
-        List<List<T>> result = new ArrayList<>();
-
-        //start from an empty list
-        result.add(new ArrayList<>());
-
-        for (T t : set) {
-            //list of list in current iteration of the array num
-            List<List<T>> current = new ArrayList<>();
-
-            for (List<T> l : result) {
-                // # of locations to insert is the largest index + 1
-                for (int j = 0; j < l.size() + 1; j++) {
-                    // + add num[i] to different locations
-                    l.add(j, t);
-
-                    List<T> temp = new ArrayList<>(l);
-                    current.add(temp);
-                    //noinspection SuspiciousListRemoveInLoop
-                    l.remove(j);
-                }
-            }
-
-            result = new ArrayList<>(current);
-        }
-
-        return result;
     }
 }

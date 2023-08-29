@@ -26,6 +26,13 @@ public class Solutions2016UnitTests extends PuzzleTester {
         testSolutions(new Day03(), readLines("/2016/input03.txt"), 982L, 1826L);
     }
 
+    @Test
+    public void verifyDay04() {
+        testSolutions(new Day04(), readLines("/2016/input04.txt"),
+                137896, Day04.RoomSectorInfo::realSectorSum,
+                501, Day04.RoomSectorInfo::northPoleSector);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2016);
