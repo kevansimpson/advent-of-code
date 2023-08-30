@@ -40,6 +40,13 @@ public class Solutions2016UnitTests extends PuzzleTester {
                 "694190cd", Day05.TwoPasswords::second);
     }
 
+    @Test
+    public void verifyDay06() {
+        testSolutions(new Day06(), readLines("/2016/input06.txt"),
+                "umcvzsmw", Day06.RepetitionCode::correctedVersion,
+                "rwqoacfz", Day06.RepetitionCode::originalMessage);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2016);
