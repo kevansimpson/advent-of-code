@@ -3,7 +3,7 @@ package org.base.advent.code2022;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Solution;
 
-import static org.base.advent.util.Util.stringToSet;
+import static org.base.advent.util.Text.stringToSet;
 
 /**
  * <a href="https://adventofcode.com/2022/day/06">Day 06</a>

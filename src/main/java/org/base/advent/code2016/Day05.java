@@ -25,7 +25,6 @@ public class Day05 implements Function<String, Day05.TwoPasswords>, TimeSaver {
         StringBuilder first = new StringBuilder();
         char[] second = "        ".toCharArray();
         for (HashAtIndex hai : list) {
-            System.out.println(hai);
             char five = hai.hash().charAt(5);
             if (first.length() < 8)
                 first.append(five);

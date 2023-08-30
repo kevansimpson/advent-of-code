@@ -2,20 +2,12 @@ package org.base.advent.util;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.base.advent.util.Util.columns;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class UtilTest {
     @Test
-    public void testColumns() {
-        List<String> rows = Arrays.asList(
-                "147",
-                "258",
-                "369");
-        List<String> cols = columns(rows);
-        assertEquals(Arrays.asList("123", "456", "789"), cols);
+    public void testExtractLong() {
+        String str = "foo" + Long.MAX_VALUE +"bar1234567890";
+        assertArrayEquals(new long[] { Long.MAX_VALUE, 1234567890L }, Text.extractLong(str));
     }
 }

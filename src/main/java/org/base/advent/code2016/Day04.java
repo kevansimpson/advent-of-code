@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static org.base.advent.util.Util.shiftText;
+import static org.base.advent.util.Text.shiftText;
 
 /**
  * <a href="https://adventofcode.com/2016/day/4">Day 4</a>

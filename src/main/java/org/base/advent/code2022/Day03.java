@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.apache.commons.collections4.SetUtils.intersection;
-import static org.base.advent.util.Util.stringToSet;
+import static org.base.advent.util.Text.stringToSet;
 
 /**
  * <a href="https://adventofcode.com/2022/day/03">Day 03</a>

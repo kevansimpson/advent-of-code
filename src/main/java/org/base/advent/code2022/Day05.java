@@ -1,6 +1,6 @@
 package org.base.advent.code2022;
 
-import org.base.advent.util.Util;
+import org.base.advent.util.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,8 +23,8 @@ public class Day05 implements Function<List<String>, Day05.MovedCrate> {
         List<List<String>> split = splitByBlankLine(strings);
         List<String> stacks = split.get(0).subList(0, split.get(0).size() - 1);
         final Puzzle puzzle = new Puzzle(split, stacks,
-                Arrays.stream(Util.extractInt(split.get(0).get(stacks.size()))).max().orElse(-1),
-                split.get(1).stream().map(Util::extractInt).toList());
+                Arrays.stream(Text.extractInt(split.get(0).get(stacks.size()))).max().orElse(-1),
+                split.get(1).stream().map(Text::extractInt).toList());
         return new MovedCrate(moveCrates(puzzle, this::topCrates), moveCrates(puzzle, this::rearrangeCrates));
     }
 

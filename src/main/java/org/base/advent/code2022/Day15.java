@@ -14,7 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.abs;
-import static org.base.advent.util.Util.extractInt;
+import static org.base.advent.util.Text.extractInt;
 
 /**
  * <a href="https://adventofcode.com/2022/day/15">Day 15</a>

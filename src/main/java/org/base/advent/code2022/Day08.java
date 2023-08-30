@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static org.base.advent.util.Util.columns;
+import static org.base.advent.util.Text.columns;
 
 /**
  * <a href="https://adventofcode.com/2022/day/08">Day 08</a>

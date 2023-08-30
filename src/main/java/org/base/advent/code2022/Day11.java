@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-import static org.base.advent.util.Util.extractInt;
+import static org.base.advent.util.Text.extractInt;
 
 /**
  * <a href="https://adventofcode.com/2022/day/11">Day 11</a>

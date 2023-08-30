@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 import static java.lang.Math.floorDiv;
 import static org.base.advent.util.Util.combinations;
-import static org.base.advent.util.Util.extractInt;
+import static org.base.advent.util.Text.extractInt;
 
 /**
  * <a href="https://adventofcode.com/2022/day/16">Day 16</a>
