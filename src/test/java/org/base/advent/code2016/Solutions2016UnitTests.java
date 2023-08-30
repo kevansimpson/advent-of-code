@@ -33,6 +33,13 @@ public class Solutions2016UnitTests extends PuzzleTester {
                 501, Day04.RoomSectorInfo::northPoleSector);
     }
 
+    @Test
+    public void verifyDay05() {
+        testSolutions(new Day05(), "uqwqemis",
+                "1a3099aa", Day05.TwoPasswords::first,
+                "694190cd", Day05.TwoPasswords::second);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2016);

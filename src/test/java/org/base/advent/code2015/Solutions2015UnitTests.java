@@ -29,7 +29,9 @@ public class Solutions2015UnitTests extends PuzzleTester {
 
     @Test
     public void verifyDay04() {
-        testSolutions(new Day04(), "bgvyzdsv", 254575L, 1038736L);
+        testSolutions(new Day04(), "bgvyzdsv",
+                254575L, Day04.HashedPswdIndexes::first,
+                1038736L, Day04.HashedPswdIndexes::second);
     }
 
     @Test
