@@ -54,6 +54,11 @@ public class Solutions2016UnitTests extends PuzzleTester {
                 260, Day07.SecureIpCount::sslCount);
     }
 
+    @Test
+    public void verifyDay08() {
+        testSolutions(new Day08(), readLines("/2016/input08.txt"), 116, "UPOJFLBCEZ");
+    }
+
     @BeforeAll
     public static void start() {
         banner(2016);
