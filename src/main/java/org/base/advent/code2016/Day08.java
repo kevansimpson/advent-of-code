@@ -6,7 +6,6 @@ import org.base.advent.util.Point;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 
 import static org.base.advent.util.Text.extractLong;
 
@@ -62,9 +61,9 @@ public class Day08 implements Solution<List<String>> {
         for (long y = 0; y < HEIGHT; y++) {
             System.out.println();
             for (long x = 0; x < WIDTH; x++) {
-                System.out.print(grid.contains(Point.of(x, y)) ? "#" : ".");
+                System.out.print(grid.contains(Point.of(x, y)) ? "#" : " ");
             }
         }
-        System.out.println("\n---");
+        System.out.println("\n--- Day08,2016");
     }
 }
