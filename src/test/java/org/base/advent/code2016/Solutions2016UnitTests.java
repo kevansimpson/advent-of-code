@@ -59,6 +59,11 @@ public class Solutions2016UnitTests extends PuzzleTester {
         testSolutions(new Day08(), readLines("/2016/input08.txt"), 116, "UPOJFLBCEZ");
     }
 
+    @Test
+    public void verifyDay09() {
+        testSolutions(new Day09(), readInput("/2016/input09.txt"), 123908L, 10755693147L);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2016);
