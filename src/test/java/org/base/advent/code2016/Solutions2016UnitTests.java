@@ -71,6 +71,13 @@ public class Solutions2016UnitTests extends PuzzleTester {
                 23903, Day10.RobotChips::chipProduct);
     }
 
+    @Test
+    public void verifyDay11() {
+        testSolutions(new Day11(), readLines("/2016/input11.txt"),
+                37L, Day11.FactorySteps::fewest,
+                61L, Day11.FactorySteps::fewestWithExtra);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2016);
