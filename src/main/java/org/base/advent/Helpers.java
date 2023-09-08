@@ -2,7 +2,9 @@ package org.base.advent;
 
 import org.apache.commons.lang3.BooleanUtils;
 
+import java.time.Duration;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -29,4 +31,16 @@ public interface Helpers {
             //noinspection UseOfSystemOutOrSystemErr
             System.out.printf(message + "%n", args);
     }
+
+
+    default String readableTime(Duration duration) {
+        long nanos = duration.toNanos();
+        if (nanos > 1000000L)
+            return String.format("%d millis", TimeUnit.NANOSECONDS.toMillis(nanos));
+        else if (nanos > 1000L)
+            return String.format("%d micros", TimeUnit.NANOSECONDS.toMicros(nanos));
+        else
+            return String.format("%d nanos", nanos);
+    }
+
 }

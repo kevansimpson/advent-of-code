@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -57,15 +56,5 @@ public class PuzzleTester implements PuzzleReader {
         Duration duration = Duration.of(System.nanoTime() - start, ChronoUnit.NANOS);
         printTime(name, duration);
         return duration.toNanos();
-    }
-
-    static String readableTime(Duration duration) {
-        long nanos = duration.toNanos();
-        if (nanos > 1000000L)
-            return String.format("%d millis", TimeUnit.NANOSECONDS.toMillis(nanos));
-        else if (nanos > 1000L)
-            return String.format("%d micros", TimeUnit.NANOSECONDS.toMicros(nanos));
-        else
-            return String.format("%d nanos", nanos);
     }
 }
