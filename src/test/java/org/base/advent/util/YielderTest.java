@@ -1,6 +1,5 @@
 package org.base.advent.util;
 
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
@@ -17,10 +16,14 @@ public class YielderTest {
     @Test
     public void testBasicFlow() throws Exception {
         final Yielder<Integer> yint = new Yielder<>() {
-            @SneakyThrows
             @Override
             public void run() {
-                for (final Integer foo : List.of(1, 2, 3)) this.yield(foo);
+                try {
+                    for (final Integer foo : List.of(1, 2, 3)) this.yield(foo);
+                }
+                catch (Exception ex) {
+                    throw new RuntimeException("testBasicFlow", ex);
+                }
             }
         };
 
