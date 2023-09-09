@@ -1,6 +1,7 @@
 package org.base.advent;
 
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -32,6 +33,9 @@ public interface Helpers {
             System.out.printf(message + "%n", args);
     }
 
+    default void printTime(String name, Duration duration) {
+        System.out.printf("\t%s: %s", name, StringUtils.leftPad(readableTime(duration), 12));
+    }
 
     default String readableTime(Duration duration) {
         long nanos = duration.toNanos();

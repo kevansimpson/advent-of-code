@@ -46,10 +46,6 @@ public class PuzzleTester implements PuzzleReader {
         System.out.printf("%n\t-----%n");
     }
 
-    private void printTime(String name, Duration duration) {
-        System.out.printf("\t%s: %s", name, StringUtils.leftPad(readableTime(duration), 12));
-    }
-
     private long stopwatch(String name, Object expected, Supplier<Object> test) {
         long start = System.nanoTime();
         assertEquals(expected, test.get(), name);
