@@ -78,6 +78,13 @@ public class Solutions2016UnitTests extends PuzzleTester {
                 61L, Day11.FactorySteps::fewestWithExtra);
     }
 
+    @Test
+    public void verifyDay12() {
+        testSolutions(new Day12(), readLines("/2016/input12.txt"),
+                318020, Day12.RegisterValues::a0,
+                9227674, Day12.RegisterValues::a1);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2016);
