@@ -5,7 +5,6 @@ import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Helpers;
 import org.base.advent.TimeSaver;
-import org.base.advent.util.Node;
 import org.base.advent.util.PuzzleProgress;
 
 import java.util.*;
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparingInt;
 import static java.util.Comparator.comparingLong;
-import static org.base.advent.util.Node.createRootNode;
 import static org.base.advent.util.PuzzleProgress.NOOP_PUBLISHER;
 import static org.base.advent.util.Util.combinations;
 
@@ -66,17 +64,16 @@ public class Day11 implements Function<List<String>, Day11.FactorySteps>, Helper
     long findFewestStepsBFS(Facility facility, SubmissionPublisher<Integer> publisher) {
         final Map<String, Integer> depthMap = new HashMap<>();
         final long target = facility.targetScore();
-        final List<Node<Facility>> nodes = new ArrayList<>();
-        nodes.add(createRootNode(facility));
+        final List<Facility> nodes = new ArrayList<>();
+        nodes.add(facility);
         AtomicInteger searchDepth = new AtomicInteger(-1);
 
         while (!nodes.isEmpty()) {
-            List<Node<Facility>> current = new ArrayList<>(nodes);
+            List<Facility> current = new ArrayList<>(nodes);
             nodes.clear();
             int depth = searchDepth.incrementAndGet();
             publisher.offer(depth, null);
-            for (Node<Facility> node : current) {
-                Facility next = node.getData();
+            for (Facility next : current) {
                 String uuid = String.format("%d-%s", next.elevatorAt, next.floors);
                 if (depthMap.containsKey(uuid) && depthMap.get(uuid) <= depth)
                     continue;
@@ -86,7 +83,7 @@ public class Day11 implements Function<List<String>, Day11.FactorySteps>, Helper
                 if (next.score() == target)
                     return depth;
                 else
-                    nextMoves(next, f -> nodes.add(node.addChild(f)));
+                    nextMoves(next, nodes::add);
             }
         }
 
@@ -153,7 +150,6 @@ public class Day11 implements Function<List<String>, Day11.FactorySteps>, Helper
                     consumer.accept(moveDown);
                 }
             }
-
     }
 
     private static final Pattern CHIP_RE = Pattern.compile("\\b(\\w+)\\b-compatible microchip");
