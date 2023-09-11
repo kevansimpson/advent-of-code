@@ -5,6 +5,10 @@ import org.base.advent.util.HashAtIndex;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
+
+import static org.apache.commons.lang3.StringUtils.startsWith;
+import static org.base.advent.util.HashAtIndex.nextWithList;
 
 /**
  * <a href="https://adventofcode.com/2016/day/5">Day 5</a>
@@ -20,7 +24,8 @@ public class Day05 implements Function<String, Day05.TwoPasswords>, TimeSaver {
         // shave a little time by starting at first matching hash OR
         // for fast solve, iterate through known hash indexes
         HashAtIndex start = new HashAtIndex(input, null, 4515058L);
-        final List<HashAtIndex> list = fastOrFull(cached, () -> start.nextWith("00000", 17));
+        Predicate<String> prefix = hash -> startsWith(hash, "00000");
+        final List<HashAtIndex> list = fastOrFull(cached, () -> nextWithList(start, prefix, 17));
 
         StringBuilder first = new StringBuilder();
         char[] second = "        ".toCharArray();

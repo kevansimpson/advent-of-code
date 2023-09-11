@@ -1,51 +1,115 @@
 package org.base.advent.util;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public record HashAtIndex(String input, String hash, long index) {
     private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
 
-    public List<HashAtIndex> nextWith(String prefix, long count) {
+    /**
+     * Returns list of {@link HashAtIndex} of length <code>count</code>
+     * matching the given predicate.
+     *
+     * @param hashAtIndex Contains md5 input and starting index, hash is ignored.
+     * @param predicate The hash predicate to determine whether to include in results.
+     * @param count The expected number of matches. Behavior is undetermined if:
+     *              end index goes beyond boundaries or {@link Long#MAX_VALUE}.
+     * @return list of matching hashes with their respective indexes.
+     */
+    public static List<HashAtIndex> nextWithList(HashAtIndex hashAtIndex,
+                                                 Predicate<String> predicate,
+                                                 long count) {
+        return nextWithList(hashAtIndex, predicate, count, Long.MAX_VALUE);
+    }
+
+    /**
+     * Returns list of {@link HashAtIndex} of length <code>count</code>
+     * matching the given predicate.
+     *
+     * @param hashAtIndex Contains md5 input and starting index, hash is ignored.
+     * @param predicate The hash predicate to determine whether to include in results.
+     * @param count The expected number of matches. Behavior is undetermined if:
+     *              end index goes beyond <code>endIndexExclusive</code>.
+     * @param endIndexExclusive The upper range to search for matching hashes.
+     * @return list of matching hashes with their respective indexes.
+     */
+    public static List<HashAtIndex> nextWithList(HashAtIndex hashAtIndex,
+                                                 Predicate<String> predicate,
+                                                 long count,
+                                                 long endIndexExclusive) {
         try {
             final List<HashAtIndex> list = new ArrayList<>();
             final MessageDigest digest = MessageDigest.getInstance("MD5");
-            HashAtIndex next = this;
+            HashAtIndex next = hashAtIndex;
             for (long i = 0; i < count; i++) {
-                next = next.nextWith(digest, prefix);
+                next = nextWith(next, digest, predicate, endIndexExclusive);
                 digest.reset();
                 if (next != null)
                     list.add(next);
                 else
                     break;
             }
+
             return list;
         }
-        catch (final Exception ex) {
+        catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    public HashAtIndex nextWith(String prefix) {
-        final List<HashAtIndex> list = nextWith(prefix, 1L);
+    /**
+     * Returns next {@link HashAtIndex} matching the given predicate or <code>null</code>.
+     *
+     * @param hashAtIndex Contains md5 input and starting index, hash is ignored.
+     * @param predicate The hash predicate to determine whether to include in results.
+     * @return the next match or <code>null</code>.
+     */
+    public static HashAtIndex nextWith(HashAtIndex hashAtIndex, Predicate<String> predicate) {
+        return nextWith(hashAtIndex, predicate, Long.MAX_VALUE);
+    }
+
+    /**
+     * Returns next {@link HashAtIndex} matching the given predicate or <code>null</code>.
+     *
+     * @param hashAtIndex Contains md5 input and starting index, hash is ignored.
+     * @param predicate The hash predicate to determine whether to include in results.
+     * @param endIndexExclusive The upper range to search for matching hashes.
+     * @return the next match or <code>null</code>.
+     */
+    public static HashAtIndex nextWith(HashAtIndex hashAtIndex,
+                                       Predicate<String> predicate,
+                                       long endIndexExclusive) {
+        final List<HashAtIndex> list = nextWithList(hashAtIndex, predicate, 1L, endIndexExclusive);
         return list.isEmpty() ? null : list.get(0);
     }
 
-    HashAtIndex nextWith(MessageDigest digest, String prefix) {
-        for (long i = index + 1L; i < Long.MAX_VALUE; i += 1L) {
-            final String result = convertToMD5ThenHex(digest, input + i);
-            if (StringUtils.startsWith(result, prefix)) {
-                return new HashAtIndex(input, result, i);
+
+    /**
+     * Returns next {@link HashAtIndex} matching the given predicate or <code>null</code>.
+     *
+     * @param hashAtIndex Contains md5 input and starting index, hash is ignored.
+     * @param digest A new or reset {@link MessageDigest}.
+     * @param predicate The hash predicate to determine whether to include in results.
+     * @param endIndexExclusive The upper range to search for matching hashes.
+     * @return the next match or <code>null</code>.
+     */
+    static HashAtIndex nextWith(HashAtIndex hashAtIndex,
+                                MessageDigest digest,
+                                Predicate<String> predicate,
+                                long endIndexExclusive) {
+        for (long i = hashAtIndex.index + 1L; i < endIndexExclusive; i += 1L) {
+            final String result = convertToMD5ThenHex(digest, hashAtIndex.input + i);
+            if (predicate.test(result)) {
+                return new HashAtIndex(hashAtIndex.input, result, i);
             }
         }
 
         return null;
     }
 
-    public static String bytesToHex(final byte[] bytes) {
+    static String bytesToHex(final byte[] bytes) {
         final char[] hexChars = new char[bytes.length * 2];
         for ( int j = 0; j < bytes.length; j++ ) {
             final int v = bytes[j] & 0xFF;
@@ -55,7 +119,14 @@ public record HashAtIndex(String input, String hash, long index) {
         return new String(hexChars);
     }
 
-    private static String convertToMD5ThenHex(MessageDigest digest, final String text) {
+    /**
+     * Hashes given text and converts to hexidecimal.
+     *
+     * @param digest A new or reset {@link MessageDigest}.
+     * @param text The text to convert.
+     * @return hexidecimal hash of given text.
+     */
+    public static String convertToMD5ThenHex(MessageDigest digest, final String text) {
         return bytesToHex(digest.digest(text.getBytes()));
     }
 }
