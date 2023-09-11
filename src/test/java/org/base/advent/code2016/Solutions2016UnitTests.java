@@ -102,6 +102,13 @@ public class Solutions2016UnitTests extends PuzzleTester {
                 20606, Day14.HashKeyIndexes::stretchedKey64);
     }
 
+    @Test
+    public void verifyDay15() {
+        testSolutions(new Day15(), readLines("/2016/input15.txt"),
+                121834, Day15.CapsuleDrop::firstTime,
+                3208099, Day15.CapsuleDrop::part2);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2016);
