@@ -85,12 +85,21 @@ public class Solutions2016UnitTests extends PuzzleTester {
                 9227674, Day12.RegisterValues::a1);
     }
 
-
     @Test
     public void verifyDay13() {
         testSolutions(new Day13(), 1362,
                 82, Day13.CubicleMaze::fewestSteps,
                 138L, Day13.CubicleMaze::withinRange);
+    }
+
+    @Test
+    public void verifyDay14() {
+        testSolutions(new Day14(), "abc",
+                22728, Day14.HashKeyIndexes::key64,
+                22551, Day14.HashKeyIndexes::stretchedKey64);
+        testSolutions(new Day14(), "cuanljph",
+                23769, Day14.HashKeyIndexes::key64,
+                20606, Day14.HashKeyIndexes::stretchedKey64);
     }
 
     @BeforeAll
