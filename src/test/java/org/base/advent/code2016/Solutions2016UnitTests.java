@@ -109,6 +109,13 @@ public class Solutions2016UnitTests extends PuzzleTester {
                 3208099, Day15.CapsuleDrop::part2);
     }
 
+    @Test
+    public void verifyDay16() {
+        testSolutions(new Day16(), "11110010111001001",
+                "01110011101111011", Day16.DragonCurve::checksum1,
+                "11001111011000111", Day16.DragonCurve::checksum2);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2016);
