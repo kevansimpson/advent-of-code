@@ -1,12 +1,25 @@
 package org.base.advent.util;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static org.base.advent.util.HashCache.newMD5;
+
 public record HashAtIndex(String input, String hash, long index) {
     private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
+
+    /**
+     * Converts the given hex character to its base 10 numeric value.
+     * @param ch A single character.
+     * @return character's base 10 numeric value or -1.
+     */
+    public static int hexCharToInt(char ch) {
+        return ArrayUtils.indexOf(HEX_ARRAY, ch);
+    }
 
     /**
      * Returns list of {@link HashAtIndex} of length <code>count</code>
@@ -39,24 +52,19 @@ public record HashAtIndex(String input, String hash, long index) {
                                                  Predicate<String> predicate,
                                                  long count,
                                                  long endIndexExclusive) {
-        try {
-            final List<HashAtIndex> list = new ArrayList<>();
-            final MessageDigest digest = MessageDigest.getInstance("MD5");
-            HashAtIndex next = hashAtIndex;
-            for (long i = 0; i < count; i++) {
-                next = nextWith(next, digest, predicate, endIndexExclusive);
-                digest.reset();
-                if (next != null)
-                    list.add(next);
-                else
-                    break;
-            }
+        final List<HashAtIndex> list = new ArrayList<>();
+        final MessageDigest digest = newMD5();
+        HashAtIndex next = hashAtIndex;
+        for (long i = 0; i < count; i++) {
+            next = nextWith(next, digest, predicate, endIndexExclusive);
+            digest.reset();
+            if (next != null)
+                list.add(next);
+            else
+                break;
+        }
 
-            return list;
-        }
-        catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+        return list;
     }
 
     /**

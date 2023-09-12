@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 import static org.apache.commons.lang3.StringUtils.leftPad;
 import static org.base.advent.util.HashAtIndex.convertToMD5ThenHex;
 import static org.base.advent.util.HashAtIndex.nextWith;
+import static org.base.advent.util.HashCache.newMD5;
 import static org.base.advent.util.Text.findAll;
 
 /**
@@ -102,14 +103,11 @@ public class Day14 implements Function<String, Day14.HashKeyIndexes>, TimeSaver 
             if (!f.exists()) {
                 System.out.printf("Writing stretch file for Day14, 2016 at %s\n", f.getAbsolutePath());
                 try (PrintWriter writer = new PrintWriter(new FileWriter(f))) {
-                    final MessageDigest digest = MessageDigest.getInstance("MD5");
+                    final MessageDigest digest = newMD5();
                     for (int i = 0; i < 25000; i++)
                         writer.printf("%s\n", stretch(input + i, digest));
 
                     Thread.sleep(5000);
-                }
-                catch (Exception ex) {
-                    throw new RuntimeException("Day14, 2016", ex);
                 }
             }
 

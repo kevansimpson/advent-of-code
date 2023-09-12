@@ -16,7 +16,7 @@ public class ProgressBar extends JPanel implements Flow.Subscriber<Integer> {
     public ProgressBar(int expectedCount) {
         super(new BorderLayout());
         count = expectedCount;
-        latch = new CountDownLatch(count);
+        latch = new CountDownLatch(count - 1);
         initUI();
     }
 
@@ -36,8 +36,8 @@ public class ProgressBar extends JPanel implements Flow.Subscriber<Integer> {
 
     @Override
     public void onNext(Integer item) {
-        latch.countDown();
         tally(item);
+        latch.countDown();
         subscription.request(1);
     }
 
@@ -55,10 +55,13 @@ public class ProgressBar extends JPanel implements Flow.Subscriber<Integer> {
 
         try {
             latch.await();
+            javax.swing.SwingUtilities.invokeAndWait(() -> {
+                frame.setVisible(false);
+                frame.dispose(); // otherwise EDT will hang in certain scenarios
+            });
         }
         catch (Exception ignored) {}
 
-        frame.setVisible(false);
         return percent;
     }
 

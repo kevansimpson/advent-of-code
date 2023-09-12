@@ -81,7 +81,6 @@ public class Point {
 
     public BigDecimal distance(final Point point) {
         final double dist = Math.hypot(Math.abs(point.y - y), Math.abs(point.x - x));
-//        System.out.println(this +" - "+ point +" = "+ dist);
         return BigDecimal.valueOf(dist);
     }
 
@@ -98,13 +97,13 @@ public class Point {
      * @return Cardinal directional points, starting from directly up (12 o'clock position).
      */
     public List<Point> cardinal() {
-        final List<Point> surrounding = new ArrayList<>();
-        surrounding.add(up(1));
-        surrounding.add(right(1));
-        surrounding.add(down(1));
-        surrounding.add(left(1));
+        final List<Point> cardinal = new ArrayList<>();
+        cardinal.add(up(1));
+        cardinal.add(right(1));
+        cardinal.add(down(1));
+        cardinal.add(left(1));
 
-        return surrounding;
+        return cardinal;
     }
 
     /**

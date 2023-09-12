@@ -8,10 +8,12 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.SubmissionPublisher;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.base.advent.util.HashAtIndex.convertToMD5ThenHex;
 
@@ -34,9 +36,10 @@ public class HashCache implements PuzzleReader, List<String> {
             File f = new File(String.format("./src/main/resources%s", filename));
             System.out.printf("Writing HashCache for %s at:\n\t%s\n", input, f.getAbsolutePath());
             try (PrintWriter writer = new PrintWriter(new FileWriter(f))) {
-                final MessageDigest digest = MessageDigest.getInstance("MD5");
+                final MessageDigest digest = newMD5();
                 String hash = convertToMD5ThenHex(digest, input + "0");
                 writer.print(hash); // write first w/o \n
+                latch.countDown();
                 for (int i = 1; i < count; i++) {
                     hash = convertToMD5ThenHex(digest, input + i);
                     writer.printf("\n%s", hash);
@@ -44,9 +47,6 @@ public class HashCache implements PuzzleReader, List<String> {
                     publisher.offer(i, null);
                     latch.countDown();
                 }
-            }
-            catch (Exception ex) {
-                throw new RuntimeException("HashCache"+ filename, ex);
             }
             latch.await();
             return true;
@@ -56,15 +56,42 @@ public class HashCache implements PuzzleReader, List<String> {
         }
     }
 
-    public static void main(String[] args) {
-        try (PuzzleProgress progress = new PuzzleProgress()) {
-            CompletableFuture<Boolean> day14 = progress.start(
-                    "Day14 Puzzle, 2016", 25000,
-                    (p) -> writeHashCache("cuanljph", 2016, 25000, p));
-            CompletableFuture<Boolean> day14abc = progress.start(
-                    "Day14 Example, 2016", 25000,
-                    (p) -> writeHashCache("abc", 2016, 25000, p));
-
+    public static MessageDigest newMD5() {
+        try {
+            return MessageDigest.getInstance("MD5");
+        }
+        catch (Exception ex) {
+            throw new RuntimeException("MD5 go boom", ex);
         }
     }
+
+    public static void main(String[] args) {
+        List<PuzzleCache> caches = List.of(
+                new PuzzleCache("Day14 Puzzle, 2016", 25000,
+                        (p) -> writeHashCache("cuanljph", 2016, 25000, p)),
+                new PuzzleCache("Day14 Example, 2016", 30000,
+                        (p) -> writeHashCache("abc", 2016, 30000, p)));
+
+        try (PuzzleProgress progress = new PuzzleProgress()) {
+            caches.parallelStream()
+                    .map(pc -> Map.entry(pc.description,
+                            progress.start(pc.description, pc.count, pc.puzzle)))
+                    .collect(Collectors.toMap(Map.Entry::getKey, e -> {
+                        try {
+                            return e.getValue().completeOnTimeout(false, 15, TimeUnit.SECONDS).get();
+                        }
+                        catch (Exception ex) {
+                            ex.printStackTrace();
+                            return ex.getMessage();
+                        }}))
+                    .forEach((k, v) -> System.out.printf("HashCache %s done: %s\n", k, v));
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    record PuzzleCache(String description,
+                       int count,
+                       Function<SubmissionPublisher<Integer>, Boolean> puzzle) {}
 }
