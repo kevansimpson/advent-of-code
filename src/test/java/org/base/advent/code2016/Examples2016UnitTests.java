@@ -1,5 +1,6 @@
 package org.base.advent.code2016;
 
+import org.base.advent.PuzzleTester;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -11,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 /**
  * Unit tests for 2016 daily puzzle examples.
  */
-public class Examples2016UnitTests {
+public class Examples2016UnitTests extends PuzzleTester {
     @Test
     public void testDay02Examples() {
         final Day02 day02 = new Day02();
@@ -25,5 +26,18 @@ public class Examples2016UnitTests {
     public void testDay03Examples() {
         final Day03 day03 = new Day03();
         assertFalse(day03.validTriangle(5, 10, 25));
+    }
+
+    @Test
+    public void testDay17Examples() {
+        testSolutions(new Day17(), "ihgpwlah",
+                "DDRRRD", Day17.VaultPaths::shortest,
+                370, Day17.VaultPaths::longest);
+        testSolutions(new Day17(), "kglvqrro",
+                "DDUDRLRRUDRD", Day17.VaultPaths::shortest,
+                492, Day17.VaultPaths::longest);
+        testSolutions(new Day17(), "ulqzkmiv",
+                "DRURDRUDDLLDLUURRDULRLDUUDDDRR", Day17.VaultPaths::shortest,
+                830, Day17.VaultPaths::longest);
     }
 }

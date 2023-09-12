@@ -116,6 +116,13 @@ public class Solutions2016UnitTests extends PuzzleTester {
                 "11001111011000111", Day16.DragonCurve::checksum2);
     }
 
+    @Test
+    public void verifyDay17() {
+        testSolutions(new Day17(), "awrkjxxr",
+                "RDURRDDLRD", Day17.VaultPaths::shortest,
+                526, Day17.VaultPaths::longest);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2016);
