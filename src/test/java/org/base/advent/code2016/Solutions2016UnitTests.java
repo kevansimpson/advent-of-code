@@ -142,6 +142,13 @@ public class Solutions2016UnitTests extends PuzzleTester {
                 104L, Day20.UnblockedIP::unblocked);
     }
 
+    @Test
+    public void verifyDay21() {
+        testSolutions(new Day21(), readLines("/2016/input21.txt"),
+                "dgfaehcb", Day21.ScrambledPasswords::first,
+                "fdhgacbe", Day21.ScrambledPasswords::second);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2016);

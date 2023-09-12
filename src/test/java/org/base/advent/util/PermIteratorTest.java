@@ -21,7 +21,6 @@ public class PermIteratorTest {
         int count = 0, expected = Util.factorial(items.length).intValue();
         final PermIterator<T> permIterator = new PermIterator<>(items);
         for (final List<T> perm : permIterator) {
-            //            final List<T> perm = permIterator.next();
             assertNotNull(perm);
             System.out.println("test => "+ perm);
             assertEquals(items.length, perm.size());

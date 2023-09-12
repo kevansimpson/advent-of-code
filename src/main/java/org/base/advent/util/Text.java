@@ -42,11 +42,25 @@ public class Text {
     }
 
     public static String rotateLeft(String str, int rotations) {
-        return str.substring(rotations) + str.substring(0, rotations);
+        if (rotations >= str.length()) {
+            for (int i = 0; i < rotations; i++)
+                str = rotateLeft(str, 1);
+
+            return str;
+        }
+        else
+            return str.substring(rotations) + str.substring(0, rotations);
     }
 
     public static String rotateRight(String str, int rotations) {
-        return rotateLeft(str, str.length() - rotations);
+        if (rotations >= str.length()) {
+            for (int i = 0; i < rotations; i++)
+                str = rotateRight(str, 1);
+
+            return str;
+        }
+        else
+            return rotateLeft(str, str.length() - rotations);
     }
 
     public static String shiftText(String str, int shift) {
