@@ -10,6 +10,7 @@ import org.base.advent.util.Point;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -44,18 +45,18 @@ public class Day15 implements Function<List<String>, Day15.HandheldDevice>, Time
                 .filter(Objects::nonNull)
                 .sorted((a, b) -> Math.toIntExact(a.getMinimum() - b.getMinimum()))
                 .toList();
-        final Range<Long>[] overlap = new Range[] { Range.of(0L, 0L) };
+        final AtomicReference<Range<Long>> overlap = new AtomicReference<>(Range.of(0L, 0L));
         for (Range<Long> range : ranges) {
-            Pair<Range<Long>, Range<Long>> pair = merge(overlap[0], range);
+            Pair<Range<Long>, Range<Long>> pair = merge(overlap.get(), range);
             if (pair.getRight() != null) {
                 if (pair.getRight().getMinimum() - 2L == pair.getLeft().getMaximum()) // GAP!
                     throw new Answer((pair.getRight().getMinimum() - 1L) * 4000000L + row);
             }
-            overlap[0] = pair.getLeft();
+            overlap.set(pair.getLeft());
         }
 
-        long remove = beacons.stream().filter(b -> (b.y == row) && overlap[0].contains((long) b.x)).count();
-        return (overlap[0].getMaximum() - overlap[0].getMinimum() + 1L) - remove;
+        long remove = beacons.stream().filter(b -> (b.y == row) && overlap.get().contains(b.x)).count();
+        return (overlap.get().getMaximum() - overlap.get().getMinimum() + 1L) - remove;
     }
 
     private static class Sensor {

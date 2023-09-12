@@ -41,6 +41,14 @@ public class Text {
         return list;
     }
 
+    public static String rotateLeft(String str, int rotations) {
+        return str.substring(rotations) + str.substring(0, rotations);
+    }
+
+    public static String rotateRight(String str, int rotations) {
+        return rotateLeft(str, str.length() - rotations);
+    }
+
     public static String shiftText(String str, int shift) {
         return Stream.of(str.split("")).map(ch -> {
             if (alphabet.contains(ch))
