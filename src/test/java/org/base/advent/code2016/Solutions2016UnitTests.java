@@ -130,6 +130,11 @@ public class Solutions2016UnitTests extends PuzzleTester {
                 20008491, Day18.SafeTiles::rows400000);
     }
 
+    @Test
+    public void verifyDay19() {
+        testSolutions(new Day19(), 3014603, 1834903, 1420280);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2016);
