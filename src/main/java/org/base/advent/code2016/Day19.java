@@ -2,9 +2,6 @@ package org.base.advent.code2016;
 
 import org.base.advent.Solution;
 
-import java.util.List;
-import java.util.function.Function;
-
 /**
  * <a href="https://adventofcode.com/2016/day/19">Day 19</a>
  */

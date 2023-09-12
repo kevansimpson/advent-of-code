@@ -135,6 +135,13 @@ public class Solutions2016UnitTests extends PuzzleTester {
         testSolutions(new Day19(), 3014603, 1834903, 1420280);
     }
 
+    @Test
+    public void verifyDay20() {
+        testSolutions(new Day20(), readLines("/2016/input20.txt"),
+                17348574L, Day20.UnblockedIP::lowest,
+                104L, Day20.UnblockedIP::unblocked);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2016);

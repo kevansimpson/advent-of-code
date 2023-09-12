@@ -1,5 +1,8 @@
 package org.base.advent.util;
 
+import org.apache.commons.lang3.Range;
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,6 +56,34 @@ public class Util {
                 }
             }
             return result;
+        }
+    }
+
+    /**
+     * Merges two {@link Range} into a single one, unless there's no overlap.
+     * The merged <code>Range</code> will usually be the {@link Pair#getLeft()} of returned <code>Pair</code>.
+     * If there's no overlap, the <code>Range</code> parameters are returned in sorted order in a {@link Pair}.
+     *
+     * @param one the first <code>Range</code> parameter.
+     * @param two the second <code>Range</code> parameter.
+     * @return a pair of <code>Range</code>, one of which will be <code>null</code> unless there's overlap.
+     */
+    public static Pair<Range<Long>, Range<Long>> merge(Range<Long> one, Range<Long> two) {
+        if (one.getMinimum() <= two.getMinimum()) {
+            if (one.getMaximum() >= two.getMaximum())       // one contains two
+                return Pair.of(one, null);
+            else if (one.getMaximum() < two.getMinimum())   // no overlap
+                return Pair.of(one, two);
+            else                                            // one + two
+                return Pair.of(Range.of(one.getMinimum(), two.getMaximum()), null);
+        }
+        else {
+            if (one.getMaximum() <= two.getMaximum())       // two contains one
+                return Pair.of(two, null);
+            else if (one.getMinimum() > two.getMaximum())   // no overlap
+                return Pair.of(two, one);
+            else                                            // two + one
+                return Pair.of(Range.of(two.getMinimum(), one.getMaximum()), null);
         }
     }
 }

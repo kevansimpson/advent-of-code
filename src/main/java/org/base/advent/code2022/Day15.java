@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.Math.abs;
 import static org.base.advent.util.Text.extractInt;
+import static org.base.advent.util.Util.merge;
 
 /**
  * <a href="https://adventofcode.com/2022/day/15">Day 15</a>
@@ -55,34 +56,6 @@ public class Day15 implements Function<List<String>, Day15.HandheldDevice>, Time
 
         long remove = beacons.stream().filter(b -> (b.y == row) && overlap[0].contains((long) b.x)).count();
         return (overlap[0].getMaximum() - overlap[0].getMinimum() + 1L) - remove;
-    }
-
-    /**
-     * Merges two {@link Range} into a single one, unless there's no overlap.
-     * The merged <code>Range</code> will usually be the {@link Pair#getLeft()} of returned <code>Pair</code>.
-     * If there's no overlap, the <code>Range</code> parameters are returned in sorted order in a {@link Pair}.
-     *
-     * @param one the first <code>Range</code> parameter.
-     * @param two the second <code>Range</code> parameter.
-     * @return a pair of <code>Range</code>, one of which will be <code>null</code> unless there's overlap.
-     */
-    static Pair<Range<Long>, Range<Long>> merge(Range<Long> one, Range<Long> two) {
-        if (one.getMinimum() <= two.getMinimum()) {
-            if (one.getMaximum() >= two.getMaximum())       // one contains two
-                return Pair.of(one, null);
-            else if (one.getMaximum() < two.getMinimum())   // no overlap
-                return Pair.of(one, two);
-            else                                            // one + two
-                return Pair.of(Range.of(one.getMinimum(), two.getMaximum()), null);
-        }
-        else {
-            if (one.getMaximum() <= two.getMaximum())       // two contains one
-                return Pair.of(two, null);
-            else if (one.getMinimum() > two.getMaximum())   // no overlap
-                return Pair.of(two, one);
-            else                                            // two + one
-                return Pair.of(Range.of(two.getMinimum(), one.getMaximum()), null);
-        }
     }
 
     private static class Sensor {
