@@ -123,6 +123,13 @@ public class Solutions2016UnitTests extends PuzzleTester {
                 526, Day17.VaultPaths::longest);
     }
 
+    @Test
+    public void verifyDay18() {
+        testSolutions(new Day18(), readInput("/2016/input18.txt"),
+                2005, Day18.SafeTiles::rows40,
+                20008491, Day18.SafeTiles::rows400000);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2016);
