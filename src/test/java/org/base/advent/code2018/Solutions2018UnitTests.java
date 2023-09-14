@@ -45,6 +45,11 @@ public class Solutions2018UnitTests extends PuzzleTester {
                 46542, Day06.GridAreas::safest);
     }
 
+    @Test
+    public void verifyDay07() {
+        testSolutions(new Day07(), readLines("/2018/input07.txt"), "ACHOQRXSEKUGMYIWDZLNBFTJVP", 985);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2018);

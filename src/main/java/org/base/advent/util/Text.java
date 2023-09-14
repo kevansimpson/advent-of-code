@@ -76,4 +76,8 @@ public class Text {
         return new HashSet<>(str.chars().mapToObj(c -> (char) c).toList());
     }
 
+    public static int azInt(char ch) {
+        return (ch >= 'A' && ch <= 'Z') ? ((int) ch) - 64
+                : (ch >= 'a' && ch <= 'z') ? ((int) ch) - 96 : -1;
+    }
 }
