@@ -47,7 +47,15 @@ public class Solutions2018UnitTests extends PuzzleTester {
 
     @Test
     public void verifyDay07() {
-        testSolutions(new Day07(), readLines("/2018/input07.txt"), "ACHOQRXSEKUGMYIWDZLNBFTJVP", 985);
+        testSolutions(new Day07(),
+                readLines("/2018/input07.txt"), "ACHOQRXSEKUGMYIWDZLNBFTJVP", 985);
+    }
+
+    @Test
+    public void verifyDay08() {
+        testSolutions(new Day08(), readInput("/2018/input08.txt"),
+                38722L, Day08.LicenseTree::metadataSum,
+                13935L, Day08.LicenseTree::rootNodeValue);
     }
 
     @BeforeAll

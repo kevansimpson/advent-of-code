@@ -1,5 +1,6 @@
 package org.base.advent.code2018;
 
+import org.base.advent.PuzzleTester;
 import org.base.advent.util.Point;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Unit tests for daily puzzle examples.
  */
-public class Examples2018UnitTests {
+public class Examples2018UnitTests extends PuzzleTester {
 
     @Test
     public void testDay01Examples() {
@@ -109,5 +110,12 @@ public class Examples2018UnitTests {
         assertEquals(17, day06.findLargestArea(points));
         // part 2
         assertEquals(16, day06.findSafestArea(points, 32));
+    }
+
+    @Test
+    public void testDay08Examples() {
+        testSolutions(new Day08(), "2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2",
+                138L, Day08.LicenseTree::metadataSum,
+                66L, Day08.LicenseTree::rootNodeValue);
     }
 }
