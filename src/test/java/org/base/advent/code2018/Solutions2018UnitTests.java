@@ -64,6 +64,13 @@ public class Solutions2018UnitTests extends PuzzleTester {
                 new Day09.MarbleGame(465, 71498), 383475L, 3148209772L);
     }
 
+    @Test
+    public void verifyDay10() {
+        testSolutions(new Day10(), readLines("/2018/input10.txt"),
+                "ERCXLAJL", Day10.NavMessage::message,
+                10813, Day10.NavMessage::when);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2018);
