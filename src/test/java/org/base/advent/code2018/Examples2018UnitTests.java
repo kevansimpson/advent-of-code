@@ -118,4 +118,15 @@ public class Examples2018UnitTests extends PuzzleTester {
                 138L, Day08.LicenseTree::metadataSum,
                 66L, Day08.LicenseTree::rootNodeValue);
     }
+
+    @Test
+    public void testDay09Examples() {
+        final Day09 day09 = new Day09();
+        assertEquals(32, day09.playGame(new Day09.MarbleGame(9, 25)));
+        assertEquals(8317, day09.playGame(new Day09.MarbleGame(10, 1618)));
+        assertEquals(146373, day09.playGame(new Day09.MarbleGame(13, 7999)));
+        assertEquals(2764, day09.playGame(new Day09.MarbleGame(17, 1104)));
+        assertEquals(54718, day09.playGame(new Day09.MarbleGame(21, 6111)));
+        assertEquals(37305, day09.playGame(new Day09.MarbleGame(30, 5807)));
+    }
 }

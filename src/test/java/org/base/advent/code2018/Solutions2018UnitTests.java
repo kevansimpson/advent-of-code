@@ -58,6 +58,12 @@ public class Solutions2018UnitTests extends PuzzleTester {
                 13935L, Day08.LicenseTree::rootNodeValue);
     }
 
+    @Test
+    public void verifyDay09() {
+        testSolutions(new Day09(),
+                new Day09.MarbleGame(465, 71498), 383475L, 3148209772L);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2018);
