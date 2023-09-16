@@ -1,6 +1,7 @@
 package org.base.advent.code2018;
 
 import org.base.advent.PuzzleTester;
+import org.base.advent.util.Point;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -69,6 +70,11 @@ public class Solutions2018UnitTests extends PuzzleTester {
         testSolutions(new Day10(), readLines("/2018/input10.txt"),
                 "ERCXLAJL", Day10.NavMessage::message,
                 10813, Day10.NavMessage::when);
+    }
+
+    @Test
+    public void verifyDay11() {
+        testSolutions(new Day11(), 6042, Point.of(21, 61), "232,251,12");
     }
 
     @BeforeAll
