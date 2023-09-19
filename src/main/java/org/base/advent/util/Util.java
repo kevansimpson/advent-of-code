@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -84,6 +85,15 @@ public class Util {
                 return Pair.of(two, one);
             else                                            // two + one
                 return Pair.of(Range.of(two.getMinimum(), one.getMaximum()), null);
+        }
+    }
+
+    public static <T> T safeGet(CompletableFuture<T> future) {
+        try {
+            return future.get();
+        }
+        catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 }

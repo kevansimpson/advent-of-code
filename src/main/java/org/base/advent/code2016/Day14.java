@@ -12,7 +12,6 @@ import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -35,9 +34,9 @@ public class Day14 implements Function<String, Day14.HashKeyIndexes>, TimeSaver 
     public HashKeyIndexes apply(String input) {
         int key64;
         if (isFullSolve()) {
-            ConcurrentLinkedDeque<Integer> keys = new ConcurrentLinkedDeque<>();
+            List<Integer> keys = new ArrayList<>();
             HashAtIndex next = new HashAtIndex(input, null, 0L);
-            while (keys.size() <= 64) {
+            while (keys.size() < 64) {
                 next = nextWith(next, hash -> TRIPLE_FULL.matcher(hash).matches());
                 if (next != null)
                     lookForKey(next, keys);
@@ -53,7 +52,7 @@ public class Day14 implements Function<String, Day14.HashKeyIndexes>, TimeSaver 
         return new HashKeyIndexes(key64, lookForCachedKey(cacheStretched(input)));
     }
 
-    void lookForKey(HashAtIndex tripleHash, ConcurrentLinkedDeque<Integer> keys) {
+    void lookForKey(HashAtIndex tripleHash, List<Integer> keys) {
         List<String> matches = findAll(TRIPLE, tripleHash.hash());
         String triple = matches.get(0);
         String quintuple = leftPad("", 5, triple.charAt(0));

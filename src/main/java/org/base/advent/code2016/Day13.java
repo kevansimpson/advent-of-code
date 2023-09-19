@@ -26,7 +26,7 @@ public class Day13 implements Function<Integer, Day13.CubicleMaze> {
         final Map<Point, Integer> depthMap = new HashMap<>();
         final List<Point> search = new ArrayList<>(List.of(Point.of(1, 1)));
 
-        while (!search.isEmpty()) {
+        maze: while (!search.isEmpty()) {
             depth++;
             List<Point> current = new ArrayList<>(search);
             search.clear();
@@ -37,10 +37,8 @@ public class Day13 implements Function<Integer, Day13.CubicleMaze> {
                 else
                     depthMap.put(pt, isWall(pt, input) ? WALL : depth);
 
-                if (TARGET.equals(pt)) {
-                    search.clear();
-                    break;
-                }
+                if (TARGET.equals(pt))
+                    break maze;
 
                 List<Point> next = pt.cardinal().stream()
                         .filter(n -> isOpenSpace(n, input)).toList();

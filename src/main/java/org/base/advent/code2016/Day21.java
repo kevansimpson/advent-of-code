@@ -28,10 +28,8 @@ public class Day21 implements Function<List<String>, Day21.ScrambledPasswords> {
                 new Character[] {'a','b','c','d','e','f','g','h'});
         for (List<Character> perm : iterator) {
             String pswd = perm.stream().map(String::valueOf).collect(Collectors.joining());
-            if ("fbgdceah".equals(unscramble(pswd, input))) {
-                System.out.println(pswd);
+            if ("fbgdceah".equals(unscramble(pswd, input)))
                 return pswd;
-            }
         }
 
         return null;

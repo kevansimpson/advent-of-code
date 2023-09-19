@@ -11,6 +11,9 @@ public interface TimeSaver  {
     default boolean isFullSolve() {
         return BooleanUtils.toBoolean(System.getProperty("full"));
     }
+    default void enableFullSolve() {
+        System.setProperty("full", "true");
+    }
 
     default <T> T fastOrFull(T fast, Supplier<T> full) {
         if (isFullSolve())
