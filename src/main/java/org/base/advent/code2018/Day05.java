@@ -2,10 +2,7 @@ package org.base.advent.code2018;
 
 import org.base.advent.Solution;
 
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Stack;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -47,7 +44,7 @@ public class Day05 implements Solution<String> {
 
     private String formPolymer(final String input, final Map<Character, Character> rxns) {
         final char[] polymers = input.toCharArray();
-        final Stack<Character> stack = new Stack<>();
+        final Deque<Character> stack = new ArrayDeque<>();
 
         for (final Character ch : polymers)
             if (!stack.isEmpty() && rxns.get(ch) == stack.peek())

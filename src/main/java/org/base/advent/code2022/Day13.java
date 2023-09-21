@@ -1,12 +1,10 @@
 package org.base.advent.code2022;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static java.util.Objects.requireNonNull;
 import static java.util.function.Predicate.not;
 
 /**
@@ -71,7 +69,7 @@ public class Day13 implements Function<List<String>, Day13.DistressSignal> {
     }
 
     private static List<Object> parse(final String nested) {
-        Stack<List<Object>> stack = new Stack<>();
+        Deque<List<Object>> stack = new ArrayDeque<>();
         stack.push(new ArrayList<>());
         StringBuilder str = new StringBuilder();
 
@@ -84,11 +82,11 @@ public class Day13 implements Function<List<String>, Day13.DistressSignal> {
                         top.add(Integer.parseInt(str.toString()));
                         str = new StringBuilder();
                     }
-                    stack.peek().add(top);
+                    requireNonNull(stack.peek()).add(top);
                 }
                 case ',' -> {
                     if (!str.isEmpty()) {
-                        stack.peek().add(Integer.parseInt(str.toString()));
+                        requireNonNull(stack.peek()).add(Integer.parseInt(str.toString()));
                         str = new StringBuilder();
                     }
                 }

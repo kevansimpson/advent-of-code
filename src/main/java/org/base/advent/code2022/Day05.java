@@ -2,10 +2,7 @@ package org.base.advent.code2022;
 
 import org.base.advent.util.Text;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -35,7 +32,7 @@ public class Day05 implements Function<List<String>, Day05.MovedCrate> {
     }
 
     void rearrangeCrates(final Crate crate) {
-        Stack<Character> stack = new Stack<>();
+        Deque<Character> stack = new ArrayDeque<>();
         for (int s = 0; s < crate.qty; s++)
             if (!crate.from.isEmpty())
                 stack.push(crate.from.pop());
