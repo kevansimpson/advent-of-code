@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.base.advent.code2019.Day05.waitForDiagnostic;
 import static org.base.advent.util.Util.split;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,16 +74,16 @@ public class Examples2019UnitTests {
 
     @Test
     public void testDay05Examples() {
-        assertEquals(1138, Program.runProgram(() -> 1138,3,0,4,0,99).getOutput());
-        assertEquals(0, Program.runProgram(() -> 1138,1002,4,3,4,33).getOutput());
+        assertEquals(1138, waitForDiagnostic(1138,3,0,4,0,99));
+        assertEquals(0, waitForDiagnostic(1138,1002,4,3,4,33));
         // part 2
         final int[] codes = new int[] {
                 3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,
                 1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,
                 999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99 };
-        assertEquals(999, Program.runProgram(() -> 1, codes).getOutput());
-        assertEquals(1000, Program.runProgram(() -> 8, codes).getOutput());
-        assertEquals(1001, Program.runProgram(() -> 1138, codes).getOutput());
+        assertEquals(999, waitForDiagnostic(1, codes));
+        assertEquals(1000, waitForDiagnostic(8, codes));
+        assertEquals(1001, waitForDiagnostic(1138, codes));
     }
 
     @Test

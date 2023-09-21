@@ -1,12 +1,12 @@
 package org.base.advent.code2019.intCode;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.function.IntSupplier;
+import java.util.Deque;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  * Represents an {@link org.base.advent.code2019.Day02 IntCode} program.
@@ -14,78 +14,120 @@ import java.util.function.IntSupplier;
 @Getter
 public class Program implements Runnable {
     private final int[] result;
-    private int index = 0;
-    @Setter
-    private IntSupplier input;
-    @Setter(AccessLevel.PROTECTED)
-    private int output = 0;
+    private Deque<Integer> input;
+    private Deque<Integer> output;
 
-    public Program(final int... c) {
+    public Program(final int[] c, Deque<Integer> in, Deque<Integer> out) {
         result = Arrays.copyOf(c, c.length);
+        input = in;
+        output = out;
     }
 
-    public Program(final IntSupplier userInput, final int... c) {
-        this(c);
-        setInput(userInput);
+    public Program(final int... c) {
+        this(c, new ArrayDeque<>(), new ArrayDeque<>());
     }
 
     @Override
     public void run() {
+        int index = 0;
         while (index < result.length) {
             final int baseOpCode = result[index];
-            final String fullOpCode = StringUtils.leftPad(String.valueOf(result[index]), 5, '0');
-            final int param1 = param(1, fullOpCode, 2);
-            final int param2 = param(2, fullOpCode, 1);
+            final String fullOpCode = StringUtils.leftPad(String.valueOf(result[index]), 4, '0');
             switch (baseOpCode % 100) {
-                case 1: // add
-                    result[result[index + 3]] = param1 + param2;
-                    index += 4;
-                    break;
-                case 2: // multiply
-                    result[result[index + 3]] = param1 * param2;
-                    index += 4;
-                    break;
-                case 3: // input
-                    if ('0' == fullOpCode.charAt(2)) result[result[index + 1]] = getInput().getAsInt();
-                    else result[index + 1] = getInput().getAsInt();
-                    index += 2;
-                    break;
-                case 4: // output
-                    setOutput(param1);
-                    index += 2;
-                    break;
-                case 5: // jump-if-true
-                    if (param1 != 0) index = param2;
-                    else index += 3;
-                    break;
-                case 6: // jump-if-false
-                    if (param1 == 0) index = param2;
-                    else index += 3;
-                    break;
-                case 7: // less-than
-                    result[result[index + 3]] = param1 < param2 ? 1 : 0;
-                    index += 4;
-                    break;
-                case 8: // equals
-                    result[result[index + 3]] = param1 == param2 ? 1 : 0;
-                    index += 4;
-                    break;
-                case 99:
+                case 1 -> { // add
+                    index = add(index, fullOpCode);
+                }
+                case 2 -> { // multiply
+                    index = multiply(index, fullOpCode);
+                }
+                case 3 -> { // input
+                    index = acceptInput(index);
+                }
+                case 4 -> { // output
+                    index = sendOutput(index, fullOpCode);
+                }
+                case 5 -> { // jump-if-true
+                    index = jumpIfTrue(index, fullOpCode);
+                }
+                case 6 -> { // jump-if-false
+                    index = jumpIfFalse(index, fullOpCode);
+                }
+                case 7 -> { // less-than
+                    index = lessThan(index, fullOpCode);
+                }
+                case 8 -> { // equals
+                    index = equalTo(index, fullOpCode);
+                }
+                case 99 -> {
                     return;
+                }
             }
         }
     }
 
-    int param(final int offset, final String fullOpCode, final int opCodeIndex) {
-        try {
-            return ('0' == fullOpCode.charAt(opCodeIndex)) ? result[result[index + offset]] : result[index + offset];
-        }
-        catch (Exception ex) {
-            return opCodeIndex;
-        }
+    int param(final int index, final int offset, final String fullOpCode, final int opCodeIndex) {
+        return ('0' == fullOpCode.charAt(opCodeIndex)) ? result[result[index + offset]] : result[index + offset];
     }
 
-    /** Runs the given codes and returns the result. */
+    int add(final int index, final String fullOpCode) {
+        final int a = param(index, 1, fullOpCode, 1);
+        final int b = param(index, 2, fullOpCode, 0);
+        result[result[index + 3]] = a + b;
+        return index + 4;
+    }
+
+    int multiply(final int index, final String fullOpCode) {
+        final int a = param(index, 1, fullOpCode, 1);
+        final int b = param(index, 2, fullOpCode, 0);
+        result[result[index + 3]] = a * b;
+        return index + 4;
+    }
+
+    int acceptInput(final int index) {
+        Integer input = getInput().pollLast();
+        if (input != null)
+            result[result[index + 1]] = input;
+        return index + 2;
+    }
+
+    int sendOutput(final int index, final String fullOpCode) {
+        getOutput().addFirst(param(index, 1, fullOpCode, 1));
+        return index + 2;
+    }
+
+    int jumpIfTrue(final int index, final String fullOpCode) {
+        final int a = param(index, 1, fullOpCode, 1);
+        final int b = param(index, 2, fullOpCode, 0);
+        if (a != 0)
+            return b;
+        else
+            return index + 3;
+    }
+
+    int jumpIfFalse(final int index, final String fullOpCode) {
+        final int a = param(index, 1, fullOpCode, 1);
+        final int b = param(index, 2, fullOpCode, 0);
+        if (a == 0)
+            return b;
+        else
+            return index + 3;
+    }
+
+    int lessThan(final int index, final String fullOpCode) {
+        final int a = param(index, 1, fullOpCode, 1);
+        final int b = param(index, 2, fullOpCode, 0);
+        result[result[index + 1]] = a < b ? 1 : 0;
+        return index + 4;
+    }
+
+    int equalTo(final int index, final String fullOpCode) {
+        final int a = param(index, 1, fullOpCode, 1);
+        final int b = param(index, 2, fullOpCode, 0);
+        result[result[index + 1]] = a == b ? 1 : 0;
+        return index + 4;
+    }
+
+    /** Runs the given codes and returns the result codes. */
     public static int[] runProgram(final int... codes) {
         final Program program = new Program(codes);
         program.run();
@@ -93,9 +135,24 @@ public class Program implements Runnable {
     }
 
     /** Runs the given codes with the specified input and returns the run Program. */
-    public static Program runProgram(final IntSupplier input, final int... codes) {
-        final Program program = new Program(input, codes);
+    public static Program runProgram(final int[] codes,
+                                     final Deque<Integer> input,
+                                     final Deque<Integer> output) {
+        final Program program = new Program(codes, input, output);
         program.run();
         return program;
+    }
+
+    public static Deque<Integer> simpleChannel(final int... values) {
+        return newChannel(new ArrayDeque<>(), values);
+    }
+    public static Deque<Integer> concurrentChannel(final int... values) {
+        return newChannel(new ConcurrentLinkedDeque<>(), values);
+    }
+    private static Deque<Integer> newChannel(Deque<Integer> channel, final int... values) {
+        for (int v : values) {
+            channel.addFirst(v);
+        }
+        return channel;
     }
 }
