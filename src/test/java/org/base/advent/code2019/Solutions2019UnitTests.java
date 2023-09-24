@@ -20,7 +20,7 @@ public class Solutions2019UnitTests extends PuzzleTester {
     @Test
     public void verifyDay02() {
         testSolutions(new Day02(),
-                readNumbersCSV("/2019/input02.txt"), 4570637, 5485);
+                readLongsCSV("/2019/input02.txt"), 4570637L, 5485);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class Solutions2019UnitTests extends PuzzleTester {
     @Test
     public void verifyDay05() {
         testSolutions(new Day05(),
-                readNumbersCSV("/2019/input05.txt"), 13285749, 5000972);
+                readLongsCSV("/2019/input05.txt"), 13285749L, 5000972L);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class Solutions2019UnitTests extends PuzzleTester {
     @Test
     public void verifyDay07() {
         testSolutions(new Day07(),
-                readNumbersCSV("/2019/input07.txt"), 75228, 79846026);
+                readLongsCSV("/2019/input07.txt"), 75228L, 79846026L);
     }
 
     /*

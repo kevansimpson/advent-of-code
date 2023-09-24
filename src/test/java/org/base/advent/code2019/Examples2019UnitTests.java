@@ -36,12 +36,12 @@ public class Examples2019UnitTests {
 
     @Test
     public void testDay02Examples() {
-        assertArrayEquals(new int[] { 3500,9,10,70,2,3,11,0,99,30,40,50 },
+        assertArrayEquals(new long[] { 3500,9,10,70,2,3,11,0,99,30,40,50 },
                 Program.runProgram(1,9,10,3,2,3,11,0,99,30,40,50));
-        assertArrayEquals(new int[] { 2,0,0,0,99 }, Program.runProgram(1,0,0,0,99));
-        assertArrayEquals(new int[] { 2,3,0,6,99 }, Program.runProgram(2,3,0,3,99));
-        assertArrayEquals(new int[] { 2,4,4,5,99,9801 }, Program.runProgram(2,4,4,5,99,0));
-        assertArrayEquals(new int[] { 30,1,1,4,2,5,6,0,99 }, Program.runProgram(1,1,1,4,99,5,6,0,99));
+        assertArrayEquals(new long[] { 2,0,0,0,99 }, Program.runProgram(1,0,0,0,99));
+        assertArrayEquals(new long[] { 2,3,0,6,99 }, Program.runProgram(2,3,0,3,99));
+        assertArrayEquals(new long[] { 2,4,4,5,99,9801 }, Program.runProgram(2,4,4,5,99,0));
+        assertArrayEquals(new long[] { 30,1,1,4,2,5,6,0,99 }, Program.runProgram(1,1,1,4,99,5,6,0,99));
     }
 
     @Test
@@ -74,16 +74,16 @@ public class Examples2019UnitTests {
 
     @Test
     public void testDay05Examples() {
-        assertEquals(1138, waitForDiagnostic(1138,3,0,4,0,99));
-        assertEquals(0, waitForDiagnostic(1138,1002,4,3,4,33));
+        assertEquals(1138L, waitForDiagnostic(1138,3,0,4,0,99));
+        assertEquals(0L, waitForDiagnostic(1138,1002,4,3,4,33));
         // part 2
-        final int[] codes = new int[] {
+        final long[] codes = new long[] {
                 3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,
                 1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,
                 999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99 };
-        assertEquals(999, waitForDiagnostic(1, codes));
-        assertEquals(1000, waitForDiagnostic(8, codes));
-        assertEquals(1001, waitForDiagnostic(1138, codes));
+        assertEquals(999L, waitForDiagnostic(1, codes));
+        assertEquals(1000L, waitForDiagnostic(8, codes));
+        assertEquals(1001L, waitForDiagnostic(1138, codes));
     }
 
     @Test
@@ -100,23 +100,23 @@ public class Examples2019UnitTests {
     @Test
     public void testDay07Examples() {
         final Day07 day07 = new Day07();
-        final int[] codes1a = new int[] { 3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0 };
-        assertEquals(43210, day07.calcThrust(false, List.of(4,3,2,1,0), codes1a));
-        final int[] codes1b = new int[] { 3,23,3,24,1002,24,10,24,1002,23,-1,23,101,5,23,23,1,24,23,23,4,23,99,0,0 };
-        assertEquals(54321, day07.calcThrust(false, List.of(0,1,2,3,4), codes1b));
-        final int[] codes1c = new int[] {
+        final long[] codes1a = new long[] { 3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0 };
+        assertEquals(43210, day07.calcThrust(false, List.of(4L,3L,2L,1L,0L), codes1a));
+        final long[] codes1b = new long[] { 3,23,3,24,1002,24,10,24,1002,23,-1,23,101,5,23,23,1,24,23,23,4,23,99,0,0 };
+        assertEquals(54321, day07.calcThrust(false, List.of(0L,1L,2L,3L,4L), codes1b));
+        final long[] codes1c = new long[] {
                 3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,
                 1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0 };
-        assertEquals(65210, day07.calcThrust(false, List.of(1,0,4,3,2), codes1c));
+        assertEquals(65210L, day07.calcThrust(false, List.of(1L,0L,4L,3L,2L), codes1c));
         // part 2
-        final int[] codes2a = new int[] {
+        final long[] codes2a = new long[] {
                 3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5 };
-        assertEquals(139629729, day07.calcThrust(true, List.of(9,8,7,6,5), codes2a));
-        final int[] codes2b = new int[] {
+        assertEquals(139629729, day07.calcThrust(true, List.of(9L,8L,7L,6L,5L), codes2a));
+        final long[] codes2b = new long[] {
                 3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,
                 -5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,
                 53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10 };
-        assertEquals(18216, day07.calcThrust(true, List.of(9,7,8,5,6), codes2b));
+        assertEquals(18216, day07.calcThrust(true, List.of(9L,7L,8L,5L,6L), codes2b));
     }
 
     @Test

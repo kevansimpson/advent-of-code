@@ -44,4 +44,8 @@ public interface PuzzleReader extends Helpers {
     default int[] readNumbersCSV(final String filename) {
         return Stream.of(readInput(filename).split("\\s*,\\s*")).mapToInt(Integer::parseInt).toArray();
     }
+
+    default long[] readLongsCSV(final String filename) {
+        return Stream.of(readInput(filename).split("\\s*,\\s*")).mapToLong(Long::parseLong).toArray();
+    }
 }
