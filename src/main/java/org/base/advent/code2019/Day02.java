@@ -9,6 +9,8 @@ import java.util.Arrays;
  * <a href="https://adventofcode.com/2019/day/02">Day 02</a>
  */
 public class Day02 implements Solution<int[]> {
+    private static final int TARGET = 19690720;
+
     @Override
     public Object solvePart1(final int[] input) {
         // before running the program,
@@ -19,14 +21,14 @@ public class Day02 implements Solution<int[]> {
 
     @Override
     public Object solvePart2(final int[] input) {
-        return targetOutput(19690720, input);
+        return targetOutput(input);
     }
 
-    int targetOutput(final int target, final int... codes) {
+    int targetOutput(final int... codes) {
         final int[] copy = Arrays.copyOf(codes, codes.length);
         for (int n = 0; n < 100; n++)
             for (int v = 0; v < 100; v++)
-                if (target == gravityAssist(n, v, copy)[0]) return 100 * n + v;
+                if (TARGET == gravityAssist(n, v, copy)[0]) return 100 * n + v;
         return -1;
     }
 

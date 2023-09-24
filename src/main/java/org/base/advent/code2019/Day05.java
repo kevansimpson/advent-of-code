@@ -1,11 +1,10 @@
 package org.base.advent.code2019;
 
 import org.base.advent.Solution;
+import org.base.advent.code2019.intCode.Program.Channel;
 
-import java.util.Deque;
-
+import static org.base.advent.code2019.intCode.Program.newChannel;
 import static org.base.advent.code2019.intCode.Program.runProgram;
-import static org.base.advent.code2019.intCode.Program.simpleChannel;
 
 /**
  * <a href="https://adventofcode.com/2019/day/05">Day 05</a>
@@ -22,8 +21,8 @@ public class Day05 implements Solution<int[]> {
     }
 
     public static int waitForDiagnostic(int input, final int... codes) {
-        Deque<Integer> output = simpleChannel();
-        runProgram(codes, simpleChannel(input), output);
+        Channel output = newChannel(1);
+        runProgram(codes, newChannel(1, input), output);
         return output.stream().filter(it -> it != 0).findFirst().orElseThrow();
     }
 }

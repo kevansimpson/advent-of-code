@@ -13,17 +13,20 @@ import java.util.stream.IntStream;
 public class Solutions2019UnitTests extends PuzzleTester {
     @Test
     public void verifyDay01() {
-        testSolutions(new Day01(), readNumbers("/2019/input01.txt"), 3266288, 4896582);
+        testSolutions(new Day01(),
+                readNumbers("/2019/input01.txt"), 3266288, 4896582);
     }
 
     @Test
     public void verifyDay02() {
-        testSolutions(new Day02(), readNumbersCSV("/2019/input02.txt"), 4570637, 5485);
+        testSolutions(new Day02(),
+                readNumbersCSV("/2019/input02.txt"), 4570637, 5485);
     }
 
     @Test
     public void verifyDay03() {
-        testSolutions(new Day03(), readCSVLines("/2019/input03.txt"), 352L, 43848L);
+        testSolutions(new Day03(),
+                readCSVLines("/2019/input03.txt"), 352L, 43848L);
     }
 
     @Test
@@ -35,12 +38,20 @@ public class Solutions2019UnitTests extends PuzzleTester {
 
     @Test
     public void verifyDay05() {
-        testSolutions(new Day05(), readNumbersCSV("/2019/input05.txt"), 13285749, 5000972);
+        testSolutions(new Day05(),
+                readNumbersCSV("/2019/input05.txt"), 13285749, 5000972);
     }
 
     @Test
     public void verifyDay06() {
-        testSolutions(new Day06(), readLines("/2019/input06.txt"), 249308, 349);
+        testSolutions(new Day06(),
+                readLines("/2019/input06.txt"), 249308, 349);
+    }
+
+    @Test
+    public void verifyDay07() {
+        testSolutions(new Day07(),
+                readNumbersCSV("/2019/input07.txt"), 75228, 79846026);
     }
 
     /*
