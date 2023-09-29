@@ -3,7 +3,6 @@ package org.base.advent.util;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.Range;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -73,15 +72,6 @@ public class Point {
             case "R", "E", ">" -> right(delta);
             default -> this;
         };
-    }
-    public double angle(Point target) { // starts pointing up when cartesian graph is upside down
-        double angle = Math.toDegrees(Math.atan2(target.y - y, target.x - x)) + 90.0d;
-        return (angle < 0) ? angle + 360 : angle;
-    }
-
-    public BigDecimal distance(final Point point) {
-        final double dist = Math.hypot(Math.abs(point.y - y), Math.abs(point.x - x));
-        return BigDecimal.valueOf(dist);
     }
 
     public long getManhattanDistance() {

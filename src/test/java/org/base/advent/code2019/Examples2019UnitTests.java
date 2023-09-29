@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.base.advent.code2019.Day05.waitForDiagnostic;
 import static org.base.advent.code2019.intCode.Channel.newChannel;
@@ -143,25 +144,26 @@ public class Examples2019UnitTests {
     @Test
     public void testDay10Examples() {
         final Day10 day10 = new Day10();
-        assertEquals(8, day10.maxAsteroids(".#..#", ".....", "#####", "....#", "...##"));
-        assertEquals(33, day10.maxAsteroids(
+        assertEquals(8, day10.maxAsteroids(
+                day10.mapVisibleAsteroids(List.of(".#..#", ".....", "#####", "....#", "...##"))));
+        assertEquals(33, day10.maxAsteroids(day10.mapVisibleAsteroids(List.of(
                 "......#.#.", "#..#.#....", "..#######.", ".#.#.###..", ".#..#.....",
-                "..#....#.#", "#..#....#.", ".##.#..###", "##...#..#.", ".#....####"));
-        assertEquals(35, day10.maxAsteroids(
+                "..#....#.#", "#..#....#.", ".##.#..###", "##...#..#.", ".#....####"))));
+        assertEquals(35, day10.maxAsteroids(day10.mapVisibleAsteroids(List.of(
                 "#.#...#.#.", ".###....#.", ".#....#...", "##.#.#.#.#", "....#.#.#.",
-                ".##..###.#", "..#...##..", "..##....##", "......#...", ".####.###."));
-        assertEquals(41, day10.maxAsteroids(
+                ".##..###.#", "..#...##..", "..##....##", "......#...", ".####.###."))));
+        assertEquals(41, day10.maxAsteroids(day10.mapVisibleAsteroids(List.of(
                 ".#..#..###", "####.###.#", "....###.#.", "..###.##.#", "##.##.#.#.",
-                "....###..#", "..#.#..#.#", "#..#.#.###", ".##...##.#", ".....#.#.."));
-        final String[] input = {
+                "....###..#", "..#.#..#.#", "#..#.#.###", ".##...##.#", ".....#.#.."))));
+        final Map<Point, Integer> asteroids = day10.mapVisibleAsteroids(List.of(
                 ".#..##.###...#######", "##.############..##.", ".#.######.########.#", ".###.#######.####.#.",
                 "#####.##.#.##.###.##", "..#####..#.#########", "####################", "#.####....###.#.#.##",
                 "##.#################", "#####.##.###..####..", "..######..##.#######", "####.##.####...##..#",
                 ".#####..#.######.###", "##...#.##########...", "#.##########.#######", ".####.#.###.###.#.##",
-                "....##.##.###..#####", ".#.#.###########.###", "#.#.#.#####.####.###", "###.##.####.##.#..##"};
-        assertEquals(210, day10.maxAsteroids(input));
+                "....##.##.###..#####", ".#.#.###########.###", "#.#.#.#####.####.###", "###.##.####.##.#..##"));
+        assertEquals(210, day10.maxAsteroids(asteroids));
         // part 2
-        assertEquals(Point.of(8,2), day10.vaporize(input));
+        assertEquals(Point.of(8,2), day10.vaporize(asteroids));
     }
 
     @Test
