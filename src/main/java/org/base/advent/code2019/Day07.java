@@ -1,8 +1,8 @@
 package org.base.advent.code2019;
 
 import org.base.advent.Solution;
+import org.base.advent.code2019.intCode.Channel;
 import org.base.advent.code2019.intCode.Program;
-import org.base.advent.code2019.intCode.Program.Channel;
 import org.base.advent.util.PermIterator;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.base.advent.code2019.intCode.Program.newChannel;
+import static org.base.advent.code2019.intCode.Channel.newChannel;
 
 /**
  * <a href="https://adventofcode.com/2019/day/07">Day 07</a>
@@ -35,7 +35,7 @@ public class Day07 implements Solution<long[]> {
         try (ExecutorService pool = Executors.newFixedThreadPool(5)) {
             amps.values().forEach(pool::execute);
             // To start the process, a 0 signal is sent to amplifier A's input exactly once.
-            amps.get("A").getInput().sendOutput(0L);
+            amps.get("A").getInput().send(0L);
         }
 
         Program e = amps.get("E");
@@ -62,7 +62,7 @@ public class Day07 implements Solution<long[]> {
         Channel de = newChannel(2, boosts.get(4));
         Channel outE = newChannel(2);
         Channel inA = feedback ? outE : newChannel(2);
-        inA.sendOutput(boosts.get(0));
+        inA.send(boosts.get(0));
         amps.put("A", new Program(codes, inA, ab).setName("A"));
         amps.put("B", new Program(codes, ab, bc).setName("B"));
         amps.put("C", new Program(codes, bc, cd).setName("C"));

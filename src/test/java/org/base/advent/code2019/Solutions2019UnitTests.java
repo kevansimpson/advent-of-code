@@ -69,6 +69,12 @@ public class Solutions2019UnitTests extends PuzzleTester {
     }
 
     @Test
+    public void verifyDay09() {
+        testSolutions(new Day09(),
+                readLongsCSV("/2019/input09.txt"), 2453265701L, 80805L);
+    }
+
+    @Test
     public void verifyDay10() {
         testSolutions(new Day10(), readLines("/2019/input10.txt"),
                 329, Day10.Asteroids::max,

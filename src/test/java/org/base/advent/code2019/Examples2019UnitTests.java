@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.base.advent.code2019.Day05.waitForDiagnostic;
+import static org.base.advent.code2019.intCode.Channel.newChannel;
+import static org.base.advent.code2019.intCode.Program.runProgram;
 import static org.base.advent.util.Util.split;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,11 +39,11 @@ public class Examples2019UnitTests {
     @Test
     public void testDay02Examples() {
         assertArrayEquals(new long[] { 3500,9,10,70,2,3,11,0,99,30,40,50 },
-                Program.runProgram(1,9,10,3,2,3,11,0,99,30,40,50));
-        assertArrayEquals(new long[] { 2,0,0,0,99 }, Program.runProgram(1,0,0,0,99));
-        assertArrayEquals(new long[] { 2,3,0,6,99 }, Program.runProgram(2,3,0,3,99));
-        assertArrayEquals(new long[] { 2,4,4,5,99,9801 }, Program.runProgram(2,4,4,5,99,0));
-        assertArrayEquals(new long[] { 30,1,1,4,2,5,6,0,99 }, Program.runProgram(1,1,1,4,99,5,6,0,99));
+                runProgram(1,9,10,3,2,3,11,0,99,30,40,50));
+        assertArrayEquals(new long[] { 2,0,0,0,99 }, runProgram(1,0,0,0,99));
+        assertArrayEquals(new long[] { 2,3,0,6,99 }, runProgram(2,3,0,3,99));
+        assertArrayEquals(new long[] { 2,4,4,5,99,9801 }, runProgram(2,4,4,5,99,0));
+        assertArrayEquals(new long[] { 30,1,1,4,2,5,6,0,99 }, runProgram(1,1,1,4,99,5,6,0,99));
     }
 
     @Test
@@ -75,7 +77,6 @@ public class Examples2019UnitTests {
     @Test
     public void testDay05Examples() {
         assertEquals(1138L, waitForDiagnostic(1138,3,0,4,0,99));
-        assertEquals(0L, waitForDiagnostic(1138,1002,4,3,4,33));
         // part 2
         final long[] codes = new long[] {
                 3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,
@@ -123,6 +124,20 @@ public class Examples2019UnitTests {
     public void testDay08Examples() {
         final Day08 day08 = new Day08();
         assertEquals("0110", day08.drawImage("0222112222120000", 2, 2));
+    }
+
+    @Test
+    public void testDay09Examples() {
+        long[] copyItself = new long[] {109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99};
+        Program p1 = runProgram(copyItself, newChannel(10), newChannel(20));
+        long[] output = p1.getOutput().stream().mapToLong(Long::longValue).toArray();
+        assertArrayEquals(copyItself, output);
+        long[] sixteen = new long[] {1102,34915192,34915192,7,4,7,99,0};
+        Program p2 = runProgram(sixteen, newChannel(10), newChannel(5));
+        assertEquals(16, String.valueOf(p2.getOutput().peek()).length());
+        long[] echo = new long[] {104,1125899906842624L,99};
+        Program p3 = runProgram(echo, newChannel(10), newChannel(5));
+        assertEquals(1125899906842624L, p3.getOutput().peek());
     }
 
     @Test

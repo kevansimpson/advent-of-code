@@ -5,25 +5,34 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import static java.lang.Integer.parseInt;
+import static java.util.concurrent.CompletableFuture.runAsync;
+import static org.base.advent.code2019.intCode.Channel.newChannel;
+import static org.base.advent.util.Util.safeGet;
 
 /**
  * Represents an {@link org.base.advent.code2019.Day02 IntCode} program.
  */
-@Getter
 public class Program implements Runnable {
-    private final long[] result;
+    final Map<Long, Long> result = new TreeMap<>();
+    @Getter
     private final Channel input;
+    @Getter
     private final Channel output;
-    @Setter @Accessors(chain = true)
+    @Getter @Setter @Accessors(chain = true)
     private String name;
+    long relativeBase = 0L;
+    long index = 0;
 
-    public Program(final long[] c, final Channel in, final Channel out) {
-        result = Arrays.copyOf(c, c.length);
+
+    public Program(final long[] codes, final Channel in, final Channel out) {
+        for (int c = 0; c < codes.length; c++)
+            result.put((long) c, codes[c]);
         input = in;
         output = out;
     }
@@ -34,91 +43,42 @@ public class Program implements Runnable {
 
     @Override
     public void run() {
-        int index = 0;
         do {
-            final String fullOpCode = StringUtils.leftPad(String.valueOf(result[index]), 4, '0');
-            int opCode = parseInt(fullOpCode.substring(3));
-            switch (opCode) {
-                case 3 ->
-                        index = acceptInput(index);
-                case 4 ->
-                        index = sendOutput(index, fullOpCode);
+            Parameters params = new Parameters(this);
+            switch (params.opCode()) {
+                case 1 -> assign(params.c3(), params.a() + params.b());
+                case 2 -> assign(params.c3(), params.a() * params.b());
+                case 3 -> assign(params.c1(), getInput().accept());
+                case 4 -> getOutput().send(params.a());
+                case 5 -> params.jump(params.a() != 0, params.b());
+                case 6 -> params.jump(params.a() == 0, params.b());
+                case 7 -> assign(params.c3(), params.a() < params.b() ? 1L : 0L);
+                case 8 -> assign(params.c3(), params.a() == params.b() ? 1L : 0L);
+                case 9 -> relativeBase += params.a();
                 case 99 -> {
                     return;
                 }
-                default -> {
-                    final long a = param(index, 1, fullOpCode, 1);
-                    final long b = param(index, 2, fullOpCode, 0);
-
-                    switch (opCode) {
-                        case 1 ->
-                                index = add(a, b, index);
-                        case 2 ->
-                                index = multiply(a, b, index);
-                        case 5 ->
-                                index = jumpIfTrue(a, b, index);
-                        case 6 ->
-                                index = jumpIfFalse(a, b, index);
-                        case 7 ->
-                                index = lessThan(a, b, index);
-                        case 8 ->
-                                index = equalTo(a, b, index);
-                    }
-                }
             }
-        } while (result[index] != 99);
+            index = params.nextIndex();
+        } while (get(index) != 99L);
     }
 
-    long param(final int index, final int offset, final String fullOpCode, final int opCodeIndex) {
-        return ('0' == fullOpCode.charAt(opCodeIndex)) ? result[get(index + offset)] : result[index + offset];
+    void assign(final long index, final long value) {
+        result.put(index, value);
     }
 
-    int add(final long a, final long b, final int index) {
-        result[get(index + 3)] = a + b;
-        return index + 4;
-    }
-
-    int multiply(final long a, final long b, final int index) {
-        result[get(index + 3)] = a * b;
-        return index + 4;
-    }
-
-    int acceptInput(final int index) {
-        result[get(index + 1)] = getInput().acceptInput();
-        return index + 2;
-    }
-
-    int sendOutput(final int index, final String fullOpCode) {
-        getOutput().sendOutput(param(index, 1, fullOpCode, 1));
-        return index + 2;
-    }
-
-    int jumpIfTrue(final long a, final long b, final int index) {
-        return (a != 0) ? (int) b : index + 3;
-    }
-
-    int jumpIfFalse(final long a, final long b, final int index) {
-        return (a == 0) ? (int) b : index + 3;
-    }
-
-    int lessThan(final long a, final long b, final int index) {
-        result[get(index + 3)] = a < b ? 1 : 0;
-        return index + 4;
-    }
-
-    int equalTo(final long a, final long b, final int index) {
-        result[get(index + 3)] = a == b ? 1 : 0;
-        return index + 4;
-    }
-
-    private int get(final int index) {
-        return (int) result[index];
+    long get(final long index) {
+        return result.getOrDefault(index, 0L);
     }
 
     @Override
     public String toString() {
         return String.format("%s,in=%s,out=%s",
                 StringUtils.defaultIfBlank(getName(), "Program"), getInput(), getOutput());
+    }
+
+    public long[] getResult() {
+        return result.values().stream().mapToLong(Long::longValue).toArray();
     }
 
     /** Runs the given codes and returns the result codes. */
@@ -137,35 +97,15 @@ public class Program implements Runnable {
         return program;
     }
 
-    public static Channel newChannel(int capacity, final long... values) {
-        Channel channel = new Channel(capacity);
-        for (long v : values) {
-            channel.sendOutput(v);
-        }
-        return channel;
-    }
-
-    public static class Channel extends ArrayBlockingQueue<Long> {
-        public Channel(int capacity) {
-            super(capacity);
-        }
-
-        public void sendOutput(Long o) {
-            try {
-                super.put(o);
-            }
-            catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        public Long acceptInput() {
-            try {
-                return super.poll(5, TimeUnit.MINUTES);
-            }
-            catch (InterruptedException ex) {
-                throw new RuntimeException("Channel.poll", ex);
-            }
+    public static Channel boostProgram(long[] codes, long... signals) {
+        try (ExecutorService pool = Executors.newFixedThreadPool(1)) {
+            Program p = new Program(codes, newChannel(10), newChannel(100));
+            CompletableFuture<?> future = runAsync(p, pool);
+            if (signals != null)
+                for (long signal : signals)
+                    p.getInput().send(signal);
+            safeGet(future);
+            return p.getOutput();
         }
     }
 }
