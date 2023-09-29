@@ -55,7 +55,7 @@ public class Parameters {
             case '0' -> program.get(get(offset));
             case '1' -> get(offset);
             case '2' -> program.get(get(offset) + program.relativeBase);
-            default -> throw new RuntimeException("index");
+            default -> throw new RuntimeException("read");
         };
     }
 
@@ -63,7 +63,7 @@ public class Parameters {
         return switch (fullOpCode.charAt(opCodeIndex)) {
             case '0', '1' -> get(offset);
             case '2' -> get(offset) + program.relativeBase;
-            default -> throw new RuntimeException("index");
+            default -> throw new RuntimeException("write");
         };
     }
 
