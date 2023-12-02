@@ -22,8 +22,12 @@ public class Text {
                         Stream.concat(col1.stream(), col2.stream()).toList()));
     }
 
+    public static int[] stringsToInts(List<String> strings) {
+        return strings.stream().mapToInt(Integer::valueOf).toArray();
+    }
+
     public static int[] extractInt(String str) {
-        return findAll(numberPattern, str).stream().mapToInt(Integer::valueOf).toArray();
+        return stringsToInts(findAll(numberPattern, str));
     }
 
     public static long[] extractLong(String str) {

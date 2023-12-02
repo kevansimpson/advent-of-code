@@ -1,0 +1,29 @@
+package org.base.advent.code2023;
+
+import org.base.advent.PuzzleTester;
+import org.base.advent.code2022.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+/**
+ * Verify answers for AoC days in 2023.
+ */
+public class Solutions2023UnitTests extends PuzzleTester {
+    @Test
+    public void verifyDay01() {
+        testSolutions(new Day01(), readLines("/2023/input01.txt"),
+                54667, Day01.DocSum::sum1,
+                54203, Day01.DocSum::sum2);
+    }
+
+    @BeforeAll
+    public static void start() {
+        banner(2023);
+    }
+
+    @AfterAll
+    public static void stop() {
+        banner(2023);
+    }
+}
