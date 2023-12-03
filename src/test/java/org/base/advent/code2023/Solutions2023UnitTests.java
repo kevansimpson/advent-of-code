@@ -17,6 +17,13 @@ public class Solutions2023UnitTests extends PuzzleTester {
                 54203, Day01.DocSum::sum2);
     }
 
+    @Test
+    public void verifyDay02() {
+        testSolutions(new Day02(), readLines("/2023/input02.txt"),
+                2593, Day02.CubeBag::sum,
+                54699, Day02.CubeBag::power);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2023);
