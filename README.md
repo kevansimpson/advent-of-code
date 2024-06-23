@@ -140,9 +140,11 @@ Solution comparisons by year and language:
 
 ### 2023
 
-| Description                                  | Java                                                                                                                | Kotlin                                                                                                             |
-|----------------------------------------------|---------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-| [Day01](https://adventofcode.com/2023/day/1) | [Day01](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2023/Day01.java) | [Day01](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2023/Day01.kt) |
-| [Day02](https://adventofcode.com/2023/day/2) | [Day02](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2023/Day02.java) | [Day02](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2023/Day02.kt) |
+| Description                                  | Java                                                                                                                        | Kotlin                                                                                                             |
+|----------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| [Day01](https://adventofcode.com/2023/day/1) | [Day01](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2023/Day01.java)         | [Day01](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2023/Day01.kt) |
+| [Day02](https://adventofcode.com/2023/day/2) | [Day02](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2023/Day02.java)         | [Day02](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2023/Day02.kt) |
+| [Day03](https://adventofcode.com/2023/day/3) | [Day03, Part 1](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2023/Day03.java) |                                                                                                                    |
+| [Day04](https://adventofcode.com/2023/day/4) | [Day04](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2023/Day04.java)         | [Day04](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2023/Day04.kt) |
 
 [Back to top](#comparisons)

@@ -24,6 +24,13 @@ public class Solutions2023UnitTests extends PuzzleTester {
                 54699, Day02.CubeBag::power);
     }
 
+    @Test
+    public void verifyDay04() {
+        testSolutions(new Day04(), readLines("/2023/input04.txt"),
+                21088, Day04.Scratchcards::score,
+                6874754, Day04.Scratchcards::count);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2023);
