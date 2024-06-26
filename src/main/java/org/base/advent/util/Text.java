@@ -1,5 +1,7 @@
 package org.base.advent.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -74,6 +76,14 @@ public class Text {
             else
                 return ch;
         }).collect(Collectors.joining());
+    }
+
+    public static Map<Character, Integer> charCounts(String str) {
+        Map<Character, Integer> counts = new HashMap<>();
+        for (char ch : str.toCharArray())
+            if (!counts.containsKey(ch))
+                counts.put(ch, StringUtils.countMatches(str, ch));
+        return counts;
     }
 
     public static Set<Character> stringToSet(String str) {
