@@ -42,6 +42,37 @@ public class Util {
         return result;
     }
 
+    public static long lowestCommonMultiple(long[] elements) {
+        long lcm = 1L;
+        long divisor = 2L;
+        while (true) {
+            int counter = 0;
+            boolean divisible = false;
+            for (int i = 0; i < elements.length; i++) {
+                if (elements[i] == 0L)
+                    return 0L;
+                else if (elements[i] < 0L)
+                    elements[i] *= -1L;
+
+                if (elements[i] == 1L)
+                    counter++;
+
+                if (elements[i] % divisor == 0L) {
+                    divisible = true;
+                    elements[i] /= divisor;
+                }
+            }
+
+            if (divisible)
+                lcm *= divisor;
+            else
+                divisor += 1L;
+
+            if (counter == elements.length)
+                return lcm;
+        }
+    }
+
     public static <T> List<List<T>> combinations(List<T> list, int len) {
         if (len == 0) { // can't replace w/ List.of b/c it needs to be modifiable
             return new ArrayList<>(Arrays.asList(new ArrayList<>()));
