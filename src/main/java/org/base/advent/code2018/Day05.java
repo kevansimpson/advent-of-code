@@ -3,7 +3,6 @@ package org.base.advent.code2018;
 import org.base.advent.Solution;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * <a href="https://adventofcode.com/2018/day/05">Day 05</a>
@@ -46,13 +45,17 @@ public class Day05 implements Solution<String> {
         final char[] polymers = input.toCharArray();
         final Deque<Character> stack = new ArrayDeque<>();
 
-        for (final Character ch : polymers)
+        for (final Character ch : polymers) {
             if (!stack.isEmpty() && rxns.get(ch) == stack.peek())
                 stack.pop();
             else
                 stack.push(ch);
+        }
 
-        return stack.stream().map(String::valueOf).collect(Collectors.joining());
+        StringBuilder bldr = new StringBuilder(stack.size());
+        while (!stack.isEmpty())
+            bldr.append(stack.removeLast());
+        return bldr.toString();
     }
 
     Map<Character, Character> buildReactionMap() {
