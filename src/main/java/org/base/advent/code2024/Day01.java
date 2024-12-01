@@ -21,19 +21,17 @@ public class Day01 implements Function<List<String>, Day01.DiffScore> {
         Collections.sort(left);
         Collections.sort(right);
 
-        return new DiffScore(compareLists(left, right), similarityScore(left, right));
+        int diff = 0, score = 0;
+        Map<Integer, Integer> counts = getCounts(right);
+        for (int i = 0; i < left.size(); i++) {
+            diff += Math.abs(left.get(i) - right.get(i));
+            score += left.get(i) * counts.getOrDefault(left.get(i), 0);
+        }
+
+        return new DiffScore(diff, score);
     }
 
-    private int compareLists(List<Integer> left, List<Integer> right) {
-        int sum = 0;
-        for (int i = 0; i < left.size(); i++)
-            sum += Math.abs(left.get(i) - right.get(i));
-
-        return sum;
-    }
-
-    private int similarityScore(List<Integer> left, List<Integer> right) {
-        int sum = 0;
+    private Map<Integer, Integer> getCounts(List<Integer> right) {
         Map<Integer, Integer> counts = new TreeMap<>();
         for (int val : right) {
             if (counts.containsKey(val))
@@ -42,10 +40,7 @@ public class Day01 implements Function<List<String>, Day01.DiffScore> {
                 counts.put(val, 1);
         }
 
-        for (int i = 0; i < left.size(); i++)
-            sum += left.get(i) * counts.getOrDefault(left.get(i), 0);
-
-        return sum;
+        return counts;
     }
 }
 
