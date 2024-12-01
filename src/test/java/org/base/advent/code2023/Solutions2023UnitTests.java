@@ -1,7 +1,6 @@
 package org.base.advent.code2023;
 
 import org.base.advent.PuzzleTester;
-import org.base.advent.code2022.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
