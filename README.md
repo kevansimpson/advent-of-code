@@ -17,7 +17,7 @@ mvn verify -Dfull=true
 
 ## Comparisons
 Solution comparisons by year and language:
-[2015](#2015) - [2016](#2016) - [2018](#2018) - [2019](#2019) - [2022](#2022) - [2023](#2023)
+[2015](#2015) - [2016](#2016) - [2018](#2018) - [2019](#2019) - [2022](#2022) - [2023](#2023) - [2024](#2024)
 
 ### Sans Comparison
 | Year | Language | Notes                                                           |
@@ -149,5 +149,13 @@ Solution comparisons by year and language:
 | [Day05](https://adventofcode.com/2023/day/5) | [Day05](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2023/Day05.java)         | [Day05](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2023/Day05.kt) |
 | [Day06](https://adventofcode.com/2023/day/6) | [Day06](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2023/Day06.java)         | [Day06](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2023/Day06.kt) |
 | [Day07](https://adventofcode.com/2023/day/7) | [Day07](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2023/Day07.java)         | [Day07](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2023/Day07.kt) |
+
+[Back to top](#comparisons)
+
+### 2024
+
+| Description                                  | Java                                                                                                                | Kotlin                                                                                                             |
+|----------------------------------------------|---------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| [Day01](https://adventofcode.com/2024/day/1) | [Day01](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2024/Day01.java) | [Day01](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2024/Day01.kt) |
 
 [Back to top](#comparisons)
