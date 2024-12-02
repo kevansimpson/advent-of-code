@@ -157,5 +157,6 @@ Solution comparisons by year and language:
 | Description                                  | Java                                                                                                                | Kotlin                                                                                                             |
 |----------------------------------------------|---------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
 | [Day01](https://adventofcode.com/2024/day/1) | [Day01](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2024/Day01.java) | [Day01](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2024/Day01.kt) |
+| [Day02](https://adventofcode.com/2024/day/2) | [Day02](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2024/Day02.java) | [Day02](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2024/Day02.kt) |
 
 [Back to top](#comparisons)

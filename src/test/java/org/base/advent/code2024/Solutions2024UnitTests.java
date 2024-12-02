@@ -17,6 +17,12 @@ public class Solutions2024UnitTests extends PuzzleTester {
                 23177084, Day01.DiffScore::score);
     }
 
+    @Test
+    public void verifyDay02() {
+        testSolutions(new Day02(), readLines("/2024/input02.txt"),
+                534, Day02.Levels::safe,
+                577, Day02.Levels::singleBad);
+    }
 
     @BeforeAll
     public static void start() {
