@@ -5,7 +5,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -75,7 +74,7 @@ public class Util {
 
     public static <T> List<List<T>> combinations(List<T> list, int len) {
         if (len == 0) { // can't replace w/ List.of b/c it needs to be modifiable
-            return new ArrayList<>(Arrays.asList(new ArrayList<>()));
+            return new ArrayList<>(new ArrayList<>(new ArrayList<>()));
         }
         else {
             List<List<T>> result = new ArrayList<>();
@@ -89,6 +88,18 @@ public class Util {
             }
             return result;
         }
+    }
+
+    public static int[] reverse(int[] arr) {
+        int n = arr.length;
+        int[] reversed = new int[n];
+        int j = n;
+        for (int k : arr) {
+            reversed[j - 1] = k;
+            j = j - 1;
+        }
+
+        return reversed;
     }
 
     /**
