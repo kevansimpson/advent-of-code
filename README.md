@@ -1,8 +1,6 @@
 # Advent of Code (Java)
 Solutions for various [Advent of Code](https://adventofcode.com/) in Java.<br/>
-The tables below contain links for solutions in other languages to demonstrate proficiency,
-but mostly shows my learning curve and that, even in my spare time, there will be tests and
-measurements to ensure performant code. ;-)
+The tables below contain links for solutions in other languages to demonstrate proficiency and reasonable performance. ;-)
 
 ## Run Solutions
 To run expedited solutions:
@@ -154,10 +152,10 @@ Solution comparisons by year and language:
 
 ### 2024
 
-| Description                                  | Java                                                                                                                | Kotlin                                                                                                             |
-|----------------------------------------------|---------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
-| [Day01](https://adventofcode.com/2024/day/1) | [Day01](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2024/Day01.java) | [Day01](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2024/Day01.kt) |
-| [Day02](https://adventofcode.com/2024/day/2) | [Day02](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2024/Day02.java) | [Day02](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2024/Day02.kt) |
-| [Day03](https://adventofcode.com/2024/day/3) | [Day03](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2024/Day03.java) | [Day03](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2024/Day03.kt) |
+| Description                                  | Java                                                                                                                | Kotlin                                                                                                             | Typescript/NodeJS                                                                     |
+|----------------------------------------------|---------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| [Day01](https://adventofcode.com/2024/day/1) | [Day01](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2024/Day01.java) | [Day01](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2024/Day01.kt) | [Day01](https://github.com/kevansimpson/advent-of-node/blob/master/src/2024/day01.ts) |
+| [Day02](https://adventofcode.com/2024/day/2) | [Day02](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2024/Day02.java) | [Day02](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2024/Day02.kt) | [Day02](https://github.com/kevansimpson/advent-of-node/blob/master/src/2024/day02.ts) |
+| [Day03](https://adventofcode.com/2024/day/3) | [Day03](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2024/Day03.java) | [Day03](https://github.com/kevansimpson/advent-of-kotlin/blob/main/src/main/kotlin/org/base/advent/k2024/Day03.kt) | [Day03](https://github.com/kevansimpson/advent-of-node/blob/master/src/2024/day03.ts) |
 
 [Back to top](#comparisons)
