@@ -24,6 +24,13 @@ public class Solutions2024UnitTests extends PuzzleTester {
                 577, Day02.Levels::singleBad);
     }
 
+    @Test
+    public void verifyDay03() {
+        testSolutions(new Day03(), readInput("/2024/input03.txt"),
+                184122457, Day03.MulProducts::all,
+                107862689, Day03.MulProducts::enabled);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2024);
