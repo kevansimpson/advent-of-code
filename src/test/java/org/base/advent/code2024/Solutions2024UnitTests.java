@@ -31,6 +31,13 @@ public class Solutions2024UnitTests extends PuzzleTester {
                 107862689, Day03.MulProducts::enabled);
     }
 
+    @Test
+    public void verifyDay04() {
+        testSolutions(new Day04(), readLines("/2024/input04.txt"),
+                2530, Day04.Xmas::count,
+                1921, Day04.Xmas::cross);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2024);
