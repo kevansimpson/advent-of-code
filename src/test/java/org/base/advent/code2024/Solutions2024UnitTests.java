@@ -38,6 +38,13 @@ public class Solutions2024UnitTests extends PuzzleTester {
                 1921, Day04.Xmas::cross);
     }
 
+    @Test
+    public void verifyDay05() {
+        testSolutions(new Day05(), readLines("/2024/input05.txt"),
+                6612, Day05.SafetyManual::middleSum,
+                4944, Day05.SafetyManual::corrected);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2024);
