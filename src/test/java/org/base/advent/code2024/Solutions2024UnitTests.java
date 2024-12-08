@@ -45,6 +45,13 @@ public class Solutions2024UnitTests extends PuzzleTester {
                 4944, Day05.SafetyManual::corrected);
     }
 
+    @Test
+    public void verifyDay06() {
+        testSolutions(new Day06(), readLines("/2024/input06.txt"),
+                4454, Day06.GuardSteps::unique,
+                1503, Day06.GuardSteps::loops);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2024);

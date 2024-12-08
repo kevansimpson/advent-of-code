@@ -42,4 +42,23 @@ public class Examples2024UnitTests {
         assertEquals(143, xmas.middleSum());
         assertEquals(123, xmas.corrected());
     }
+
+    @Test
+    public void testDay06Examples() {
+        final List<String> testData = Arrays.asList(
+                "....#.....",
+                ".........#",
+                "..........",
+                "..#.......",
+                ".......#..",
+                "..........",
+                ".#..^.....",
+                "........#.",
+                "#.........",
+                "......#...");
+        final Day06 day06 = new Day06();
+        Day06.GuardSteps path = day06.apply(testData);
+        assertEquals(41, path.unique());
+        assertEquals(6, path.loops());
+    }
 }

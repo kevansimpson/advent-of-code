@@ -58,6 +58,12 @@ public class Point {
         return Point.of(x + move, y);
     }
 
+    public Point move(final char dir) {
+        return move(dir, 1);
+    }
+    public Point move(final char dir, final int delta) {
+        return move(String.valueOf(dir), delta);
+    }
     public Point move(final int deltaX, final int deltaY) {
         return Point.of(x + deltaX, y + deltaY);
     }
