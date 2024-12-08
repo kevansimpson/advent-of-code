@@ -52,6 +52,13 @@ public class Solutions2024UnitTests extends PuzzleTester {
                 1503, Day06.GuardSteps::loops);
     }
 
+    @Test
+    public void verifyDay07() {
+        testSolutions(new Day07(), readLines("/2024/input07.txt"),
+                42283209483350L, Day07.RopeBridge::calibration,
+                1026766857276279L, Day07.RopeBridge::concatenation);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2024);
