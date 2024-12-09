@@ -73,20 +73,25 @@ public class Util {
     }
 
     public static <T> List<List<T>> combinations(List<T> list, int len) {
-        if (len == 0) { // can't replace w/ List.of b/c it needs to be modifiable
-            return new ArrayList<>(new ArrayList<>(new ArrayList<>()));
-        }
+        List<List<T>> allCombos = new ArrayList<>();
+        comboUtil(list, allCombos, new ArrayList<>(), 0, len);
+        return allCombos;
+    }
+
+    static <T> void comboUtil(List<T> data, List<List<T>> allCombos, List<T> combo,
+                              int index, int missing) {
+        if (missing == 0)
+            allCombos.add(combo);
         else {
-            List<List<T>> result = new ArrayList<>();
-            for (int i = 0, max = (list.size() - len); i <= max; i++) {
-                List<T> foo = new ArrayList<>(list.stream().skip(i + 1).limit(list.size() - 1).toList());
-                List<List<T>> sub = combinations(foo, len - 1);
-                for (List<T> perm : sub) {
-                    List<T> add = new ArrayList<>(Stream.concat(Stream.of(list.get(i)), perm.stream()).toList());
-                    result.add(add);
-                }
+            for (int i = index; i <= data.size() - missing; i++) {
+                List<T> newCombo;
+                if (i == data.size() - missing)
+                    newCombo = combo;
+                else
+                    newCombo = new ArrayList<>(combo);
+                newCombo.add(data.get(i));
+                comboUtil(data, allCombos, newCombo, i + 1, missing - 1);
             }
-            return result;
         }
     }
 
