@@ -23,11 +23,13 @@ public class Day07 implements Function<List<String>, Day07.RopeBridge> {
         withConcatenation.add((a, b) -> Long.parseLong(String.format("%d%d", a, b)));
         for (String equation : input) {
             long[] values = Text.extractLong(equation);
-            if (canBeCalibrated(values, OPERATORS))
+            if (canBeCalibrated(values, OPERATORS)) {
                 calibration += values[0];
-            if (canBeCalibrated(values, withConcatenation))
+            }
+            else if (canBeCalibrated(values, withConcatenation))
                 concatenation += values[0];
         }
+        concatenation += calibration;
         return new RopeBridge(calibration, concatenation);
     }
 
