@@ -79,4 +79,25 @@ public class Examples2024UnitTests {
         assertEquals(3749, path.calibration());
         assertEquals(11387, path.concatenation());
     }
+
+    @Test
+    public void testDay08Examples() {
+        final List<String> testData = Arrays.asList(
+                "............",
+                "........0...",
+                ".....0......",
+                ".......0....",
+                "....0.......",
+                "......A.....",
+                "............",
+                "............",
+                "........A...",
+                ".........A..",
+                "............",
+                "............");
+        final Day08 day08 = new Day08();
+        Day08.Antinodes nodes = day08.apply(testData);
+        assertEquals(14L, nodes.count());
+        assertEquals(34, nodes.harmonics());
+    }
 }

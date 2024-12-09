@@ -59,6 +59,13 @@ public class Solutions2024UnitTests extends PuzzleTester {
                 1026766857276279L, Day07.RopeBridge::concatenation);
     }
 
+    @Test
+    public void verifyDay08() {
+        testSolutions(new Day08(), readLines("/2024/input08.txt"),
+                327L, Day08.Antinodes::count,
+                1233, Day08.Antinodes::harmonics);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2024);
