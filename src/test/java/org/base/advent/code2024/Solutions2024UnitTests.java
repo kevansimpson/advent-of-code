@@ -11,7 +11,6 @@ import java.util.concurrent.Executors;
 /**
  * Verify answers for AoC days in 2024.
  */
-
 public class Solutions2024UnitTests extends PuzzleTester {
     private final ExecutorService pool = Executors.newFixedThreadPool(5);
 
@@ -74,7 +73,7 @@ public class Solutions2024UnitTests extends PuzzleTester {
 
     @Test
     public void verifyDay09() {
-        testSolutions(new Day09(), readInput("/2024/input09.txt"),
+        testSolutions(new Day09(pool), readInput("/2024/input09.txt"),
                 6334655979668L, Day09.FileSystem::checksum1,
                 6349492251099L, Day09.FileSystem::checksum2);
     }

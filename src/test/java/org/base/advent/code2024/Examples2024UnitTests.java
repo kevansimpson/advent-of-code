@@ -108,7 +108,7 @@ public class Examples2024UnitTests {
     @Test
     public void testDay09Examples() {
         final String testData = "2333133121414131402";
-        final Day09 day09 = new Day09();
+        final Day09 day09 = new Day09(pool);
         Day09.FileSystem nodes = day09.apply(testData);
         assertEquals(1928L, nodes.checksum1());
         assertEquals(2858L, nodes.checksum2());

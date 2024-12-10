@@ -1,16 +1,25 @@
 package org.base.advent.code2024;
 
+import lombok.AllArgsConstructor;
 import org.base.advent.Helpers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import java.util.function.Function;
+
+import static java.util.concurrent.CompletableFuture.supplyAsync;
+import static org.base.advent.util.Util.safeGet;
 
 /**
  * <a href="https://adventofcode.com/2024/day/9">Day 9</a>
  */
+@AllArgsConstructor
 public class Day09 implements Function<String, Day09.FileSystem>, Helpers {
     public record FileSystem(long checksum1, long checksum2) {}
+
+    private final ExecutorService pool;
 
     record Block(int id, int length) {}
 
@@ -38,13 +47,23 @@ public class Day09 implements Function<String, Day09.FileSystem>, Helpers {
             freeSpace = !freeSpace;
         }
 
-        debug("Disk1 Before: %s", diskToString(disk1));
-        defragDisk(disk1);
-        debug("Disk1 Defrag: %s", diskToString(disk1));
-        debug("Disk2 Before: %s", blocksToString(disk2));
-        defragBlocks(disk2);
-        debug("Disk2 Defrag: %s", blocksToString(disk2));
-        return new FileSystem(checksum(disk1), checksumBlocks(disk2));
+        CompletableFuture<Long> checksum1 = supplyAsync(() -> compute(disk1), pool);
+        CompletableFuture<Long> checksum2 = supplyAsync(() -> computeBlocks(disk2), pool);
+        return new FileSystem(safeGet(checksum1), safeGet(checksum2));
+    }
+
+    private long compute(List<Integer> disk) {
+        debug("Disk1 Before: %s", diskToString(disk));
+        defragDisk(disk);
+        debug("Disk1 Defrag: %s", diskToString(disk));
+        return checksum(disk);
+    }
+
+    private long computeBlocks(List<Block> disk) {
+        debug("Disk2 Before: %s", blocksToString(disk));
+        defragBlocks(disk);
+        debug("Disk2 Defrag: %s", blocksToString(disk));
+        return checksumBlocks(disk);
     }
 
     private void defragDisk(List<Integer> disk) {
