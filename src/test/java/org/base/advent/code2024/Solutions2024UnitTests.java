@@ -5,11 +5,17 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Verify answers for AoC days in 2024.
  */
 
 public class Solutions2024UnitTests extends PuzzleTester {
+    private final ExecutorService pool = Executors.newFixedThreadPool(5);
+
+
     @Test
     public void verifyDay01() {
         testSolutions(new Day01(), readLines("/2024/input01.txt"),
@@ -71,6 +77,13 @@ public class Solutions2024UnitTests extends PuzzleTester {
         testSolutions(new Day09(), readInput("/2024/input09.txt"),
                 6334655979668L, Day09.FileSystem::checksum1,
                 6349492251099L, Day09.FileSystem::checksum2);
+    }
+
+    @Test
+    public void verifyDay10() {
+        testSolutions(new Day10(pool), readLines("/2024/input10.txt"),
+                733, Day10.Trailheads::sum,
+                1514, Day10.Trailheads::rating);
     }
 
     @BeforeAll

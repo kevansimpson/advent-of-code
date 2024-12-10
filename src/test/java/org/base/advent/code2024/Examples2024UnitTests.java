@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Unit tests for 2024 daily puzzle examples.
  */
 public class Examples2024UnitTests {
+    private final ExecutorService pool = Executors.newSingleThreadExecutor();
+
     @Test
     public void testDay04Examples() {
         final List<String> testData = Arrays.asList(
@@ -108,5 +112,22 @@ public class Examples2024UnitTests {
         Day09.FileSystem nodes = day09.apply(testData);
         assertEquals(1928L, nodes.checksum1());
         assertEquals(2858L, nodes.checksum2());
+    }
+
+    @Test
+    public void testDay10Examples() {
+        final List<String> testData = Arrays.asList(
+                "89010123",
+                "78121874",
+                "87430965",
+                "96549874",
+                "45678903",
+                "32019012",
+                "01329801",
+                "10456732");
+        final Day10 day10 = new Day10(pool);
+        Day10.Trailheads trailheads = day10.apply(testData);
+        assertEquals(36, trailheads.sum());
+        assertEquals(81, trailheads.rating());
     }
 }
