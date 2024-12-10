@@ -66,6 +66,13 @@ public class Solutions2024UnitTests extends PuzzleTester {
                 1233, Day08.Antinodes::harmonics);
     }
 
+    @Test
+    public void verifyDay09() {
+        testSolutions(new Day09(), readInput("/2024/input09.txt"),
+                6334655979668L, Day09.FileSystem::checksum1,
+                6349492251099L, Day09.FileSystem::checksum2);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2024);

@@ -33,6 +33,10 @@ public interface Helpers {
             System.out.printf(message + "%n", args);
     }
 
+    default void setDebug(boolean enabled) {
+        System.setProperty("aoc.debug", String.valueOf(enabled));
+    }
+
     default void printTime(String name, Duration duration) {
         System.out.printf("\t%s: %s", name, StringUtils.leftPad(readableTime(duration), 12));
     }
