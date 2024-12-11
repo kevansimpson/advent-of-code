@@ -1,6 +1,7 @@
 package org.base.advent.code2024;
 
 import lombok.Getter;
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.util.Point;
 
 import java.util.ArrayList;
@@ -14,15 +15,13 @@ import static org.base.advent.util.Point.inGrid;
 /**
  * <a href="https://adventofcode.com/2024/day/4">Day 4</a>
  */
-public class Day04 implements Function<List<String>, Day04.Xmas> {
-    public record Xmas(int count, int cross) {}
-
+public class Day04 implements Function<List<String>, Pair<Integer, Integer>> {
     private static final String XMAS = "XMAS";
     private static final int[] DX = {0, 1, 1, 1, 0, -1, -1, -1};
     private static final int[] DY = {-1, -1, 0, 1, 1, 1, 0, -1};
 
     @Override
-    public Xmas apply(List<String> input) {
+    public Pair<Integer, Integer> apply(List<String> input) {
         int count = 0, size = input.size();
         List<Point> xCandidates = new ArrayList<>();
         List<Point> mCandidates = new ArrayList<>();
@@ -49,7 +48,7 @@ public class Day04 implements Function<List<String>, Day04.Xmas> {
                 gridMas.isXmas(pt, 1, DX[i], DY[i]);
             }
         }
-        return new Xmas(count, gridMas.getCrossCount());
+        return Pair.of(count, gridMas.getCrossCount());
     }
 
 

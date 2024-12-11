@@ -1,5 +1,6 @@
 package org.base.advent.code2024;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.util.Point;
 
 import java.util.*;
@@ -11,11 +12,11 @@ import static org.base.advent.util.Util.combinations;
 /**
  * <a href="https://adventofcode.com/2024/day/8">Day 8</a>
  */
-public class Day08 implements Function<List<String>, Day08.Antinodes> {
+public class Day08 implements Function<List<String>, Pair<Long, Integer>> {
     public record Antinodes(long count, int harmonics) {}
 
     @Override
-    public Antinodes apply(List<String> input) {
+    public Pair<Long, Integer> apply(List<String> input) {
         final int size = input.size();
         Map<Character, List<Point>> scan = scanAntennas(input);
         Set<Point> nodes = new HashSet<>(), harmonics = new HashSet<>();
@@ -42,7 +43,7 @@ public class Day08 implements Function<List<String>, Day08.Antinodes> {
             }
         }
         long count = nodes.stream().filter(pt -> inGrid(pt, size, size)).count();
-        return new Antinodes(count, harmonics.size());
+        return Pair.of(count, harmonics.size());
     }
 
     private Map<Character, List<Point>> scanAntennas(List<String> input) {

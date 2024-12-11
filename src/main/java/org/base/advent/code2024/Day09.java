@@ -1,6 +1,7 @@
 package org.base.advent.code2024;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.Helpers;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import static org.base.advent.util.Util.safeGet;
  * <a href="https://adventofcode.com/2024/day/9">Day 9</a>
  */
 @AllArgsConstructor
-public class Day09 implements Function<String, Day09.FileSystem>, Helpers {
+public class Day09 implements Function<String, Pair<Long, Long>>, Helpers {
     public record FileSystem(long checksum1, long checksum2) {}
 
     private final ExecutorService pool;
@@ -24,7 +25,7 @@ public class Day09 implements Function<String, Day09.FileSystem>, Helpers {
     record Block(int id, int length) {}
 
     @Override
-    public FileSystem apply(String input) {
+    public Pair<Long, Long> apply(String input) {
         List<Integer> disk1 = new ArrayList<>();
         List<Block> disk2 = new ArrayList<>();
         int fileId = 0;
@@ -49,7 +50,7 @@ public class Day09 implements Function<String, Day09.FileSystem>, Helpers {
 
         CompletableFuture<Long> checksum1 = supplyAsync(() -> compute(disk1), pool);
         CompletableFuture<Long> checksum2 = supplyAsync(() -> computeBlocks(disk2), pool);
-        return new FileSystem(safeGet(checksum1), safeGet(checksum2));
+        return Pair.of(safeGet(checksum1), safeGet(checksum2));
     }
 
     private long compute(List<Integer> disk) {

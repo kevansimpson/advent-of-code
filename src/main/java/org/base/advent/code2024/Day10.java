@@ -1,6 +1,7 @@
 package org.base.advent.code2024;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.util.Point;
 
 import java.util.ArrayList;
@@ -18,15 +19,13 @@ import static org.base.advent.util.Util.safeGet;
  * <a href="https://adventofcode.com/2024/day/10">Day 10</a>
  */
 @AllArgsConstructor
-public class Day10 implements Function<List<String>, Day10.Trailheads> {
-    public record Trailheads(int sum, int rating) {}
-
+public class Day10 implements Function<List<String>, Pair<Integer, Integer>> {
     private final ExecutorService pool;
 
     @Override
-    public Trailheads apply(List<String> input) {
+    public Pair<Integer, Integer> apply(List<String> input) {
         final int size = input.size();
-        List<CompletableFuture<Trailheads>> trails = new ArrayList<>();
+        List<CompletableFuture<Pair<Integer, Integer>>> trails = new ArrayList<>();
         for (int r = size - 1; r >= 0; r--) {
             for (int c = 0; c < size; c++) {
                 if (input.get(r).charAt(c) == '0') {
@@ -37,15 +36,15 @@ public class Day10 implements Function<List<String>, Day10.Trailheads> {
         }
 
         int sum = 0, rating = 0;
-        for (CompletableFuture<Trailheads> cf : trails) {
-            Trailheads t = safeGet(cf);
-            sum += t.sum();
-            rating += t.rating();
+        for (CompletableFuture<Pair<Integer, Integer>> cf : trails) {
+            Pair<Integer, Integer> t = safeGet(cf);
+            sum += t.getLeft();
+            rating += t.getRight();
         }
-        return new Trailheads(sum, rating);
+        return Pair.of(sum, rating);
     }
 
-    private Trailheads ascendTrail(Point head, List<String> allTrails, final int size) {
+    private Pair<Integer, Integer> ascendTrail(Point head, List<String> allTrails, final int size) {
         int height = 0;
         List<Point> steps = List.of(head);
         while (!steps.isEmpty() && height < 9) {
@@ -61,7 +60,7 @@ public class Day10 implements Function<List<String>, Day10.Trailheads> {
             steps = next;
         }
 
-        return new Trailheads(new HashSet<>(steps).size(), steps.size());
+        return Pair.of(new HashSet<>(steps).size(), steps.size());
     }
 }
 

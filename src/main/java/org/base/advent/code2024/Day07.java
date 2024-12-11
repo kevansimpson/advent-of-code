@@ -1,5 +1,6 @@
 package org.base.advent.code2024;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.util.Text;
 
 import java.util.ArrayList;
@@ -10,14 +11,14 @@ import java.util.function.Function;
 /**
  * <a href="https://adventofcode.com/2024/day/7">Day 7</a>
  */
-public class Day07 implements Function<List<String>, Day07.RopeBridge> {
+public class Day07 implements Function<List<String>, Pair<Long, Long>> {
     public record RopeBridge(long calibration, long concatenation) {}
 
     private static final List<BiFunction<Long, Long, Long>> OPERATORS =
             List.of(Long::sum, (a, b) -> a * b);
 
     @Override
-    public RopeBridge apply(List<String> input) {
+    public Pair<Long, Long> apply(List<String> input) {
         long calibration = 0L, concatenation = 0L;
         List<BiFunction<Long, Long, Long>> withConcatenation = new ArrayList<>(OPERATORS);
         withConcatenation.add((a, b) -> Long.parseLong(String.format("%d%d", a, b)));
@@ -30,7 +31,7 @@ public class Day07 implements Function<List<String>, Day07.RopeBridge> {
                 concatenation += values[0];
         }
         concatenation += calibration;
-        return new RopeBridge(calibration, concatenation);
+        return Pair.of(calibration, concatenation);
     }
 
     private boolean canBeCalibrated(long[] values, List<BiFunction<Long, Long, Long>> operators) {

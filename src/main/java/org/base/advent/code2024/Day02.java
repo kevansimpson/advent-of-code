@@ -1,5 +1,7 @@
 package org.base.advent.code2024;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -10,11 +12,9 @@ import static org.base.advent.util.Util.reverse;
 /**
  * <a href="https://adventofcode.com/2024/day/2">Day 2</a>
  */
-public class Day02 implements Function<List<String>, Day02.Levels> {
-    public record Levels(int safe, int singleBad) {}
-
+public class Day02 implements Function<List<String>, Pair<Integer, Integer>> {
     @Override
-    public Levels apply(List<String> input) {
+    public Pair<Integer, Integer> apply(List<String> input) {
         int safe = 0, singleBad = 0;
         for (String line : input) {
             int[] levels = Stream.of(line.split("\\s+")).mapToInt(Integer::parseInt).toArray();
@@ -23,7 +23,7 @@ public class Day02 implements Function<List<String>, Day02.Levels> {
             if (isSingleBad(levels))
                 singleBad++;
         }
-        return new Levels(safe, singleBad);
+        return Pair.of(safe, singleBad);
     }
 
     private boolean isSafe(int[] levels) {

@@ -1,6 +1,7 @@
 package org.base.advent.code2024;
 
 import lombok.Getter;
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.util.Point;
 
 import java.util.HashSet;
@@ -12,16 +13,14 @@ import java.util.function.Function;
  * <a href="https://adventofcode.com/2024/day/6">Day 6</a>
  *
  */
-public class Day06 implements Function<List<String>, Day06.GuardSteps> {
-    public record GuardSteps(int unique, int loops) {}
-
+public class Day06 implements Function<List<String>, Pair<Integer, Integer>> {
     private static final List<Character> DIR = List.of('^','>','v','<');
 
     @Override
-    public GuardSteps apply(List<String> input) {
+    public Pair<Integer, Integer> apply(List<String> input) {
         Lab lab = new Lab(input);
         GuardPath path = lab.followGuard();
-        return new GuardSteps(path.uniqueSteps(), lab.findLoops(path.path()));
+        return Pair.of(path.uniqueSteps(), lab.findLoops(path.path()));
     }
 
     @Getter

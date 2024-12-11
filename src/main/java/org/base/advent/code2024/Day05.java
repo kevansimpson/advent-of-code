@@ -1,5 +1,7 @@
 package org.base.advent.code2024;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -11,11 +13,9 @@ import static org.base.advent.util.Util.splitByBlankLine;
 /**
  * <a href="https://adventofcode.com/2024/day/5">Day 5</a>
  */
-public class Day05 implements Function<List<String>, Day05.SafetyManual> {
-    public record SafetyManual(int middleSum, int corrected) {}
-
+public class Day05 implements Function<List<String>, Pair<Integer, Integer>> {
     @Override
-    public SafetyManual apply(List<String> input) {
+    public Pair<Integer, Integer> apply(List<String> input) {
         List<List<String>> rulesUpdates = splitByBlankLine(input);
         RulesMap rules = new RulesMap().initialize(rulesUpdates.get(0));
         int middleSum = 0, corrected = 0;
@@ -27,7 +27,7 @@ public class Day05 implements Function<List<String>, Day05.SafetyManual> {
                corrected += reorderUpdate(update, rules);
         }
 
-        return new SafetyManual(middleSum, corrected);
+        return Pair.of(middleSum, corrected);
     }
 
     private boolean inRightOrder(int[] update, RulesMap rules) {
