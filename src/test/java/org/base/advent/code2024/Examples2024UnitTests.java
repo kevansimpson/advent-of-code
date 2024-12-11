@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 /**
  * Unit tests for 2024 daily puzzle examples.
  */
@@ -105,7 +103,6 @@ public class Examples2024UnitTests extends PuzzleTester {
     @Test
     public void testDay09Examples() {
         final String testData = "2333133121414131402";
-        final Day09 day09 = new Day09(pool);
         testSolutions(new Day09(pool), testData,
                 1928L, Pair::getLeft,
                 2858L, Pair::getRight);
