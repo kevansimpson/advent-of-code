@@ -123,4 +123,13 @@ public class Examples2024UnitTests extends PuzzleTester {
                 36, Pair::getLeft,
                 81, Pair::getRight);
     }
+
+    @Test
+    public void testDay11Examples() {
+        final String testData = "125 17";
+        testSolutions(new Day11(), testData,
+                55312L, Pair::getLeft,
+                65601038650482L, Pair::getRight);
+    }
+
 }
