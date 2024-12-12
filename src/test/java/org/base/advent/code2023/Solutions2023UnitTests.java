@@ -1,5 +1,6 @@
 package org.base.advent.code2023;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.PuzzleTester;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,6 +24,13 @@ public class Solutions2023UnitTests extends PuzzleTester {
         testSolutions(new Day02(), readLines("/2023/input02.txt"),
                 2593, Day02.CubeBag::sum,
                 54699, Day02.CubeBag::power);
+    }
+
+    @Test
+    public void verifyDay03() {
+        testSolutions(new Day03(), readLines("/2023/input03.txt"),
+                549908, Pair::getLeft,
+                81166799, Pair::getRight);
     }
 
     @Test
