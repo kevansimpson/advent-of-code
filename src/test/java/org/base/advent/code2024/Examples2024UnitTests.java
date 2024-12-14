@@ -132,4 +132,25 @@ public class Examples2024UnitTests extends PuzzleTester {
                 65601038650482L, Pair::getRight);
     }
 
+    @Test
+    public void testDay12Examples() {
+        final List<String> testData = Arrays.asList(
+                "RRRRIICCFF",
+                "RRRRIICCCF",
+                "VVRRRCCFFF",
+                "VVRCCCJFFF",
+                "VVVVCJJCFE",
+                "VVIVCCJJEE",
+                "VVIIICJJEE",
+                "MIIIIIJJEE",
+                "MIIISIJEEE",
+                "MMMISSJEEE");
+        Day12 day12 = new Day12();
+        testSolutions(day12, List.of("AAAA", "BBCD", "BBCC", "EEEC"),
+                140, Pair::getLeft, 80, Pair::getRight);
+        testSolutions(day12, List.of("OOOOO", "OXOXO", "OOOOO", "OXOXO", "OOOOO"),
+                772, Pair::getLeft, 436, Pair::getRight);
+        testSolutions(day12, testData, 1930, Pair::getLeft, 1206, Pair::getRight);
+    }
+
 }

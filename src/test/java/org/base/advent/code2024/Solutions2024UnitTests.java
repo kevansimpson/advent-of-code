@@ -93,6 +93,13 @@ public class Solutions2024UnitTests extends PuzzleTester {
                 240954878211138L, Pair::getRight);
     }
 
+    @Test
+    public void verifyDay12() {
+        testSolutions(new Day12(), readLines("/2024/input12.txt"),
+                1304764, Pair::getLeft,
+                811148, Pair::getRight);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2024);
