@@ -21,7 +21,6 @@ public class Day14 implements Function<List<String>, Pair<Integer, Integer>> {
     private final int width;
     private final int height;
 
-    /*
     @Override
     public Pair<Integer, Integer> apply(List<String> input) {
         List<Robot> bots = findRobots(input);
@@ -29,11 +28,14 @@ public class Day14 implements Function<List<String>, Pair<Integer, Integer>> {
             b.move(100, width, height);
         });
         int safetyFactor = safetyFactor(bots);
-        int tree = findTree(bots); // 3895 is too low
+        int tree = 0; // examples
+        if (width > 100 && height > 100) // file input
+            tree = findTree(bots); // 3795 is too low, per AoC
 
         return Pair.of(safetyFactor, tree);
     }
-*/
+
+    /*
     @Override // working
     public Pair<Integer, Integer> apply(List<String> input) {
         List<Robot> bots = findRobots(input);
@@ -48,9 +50,9 @@ public class Day14 implements Function<List<String>, Pair<Integer, Integer>> {
 
         return Pair.of(safetyFactor, 3795);
     }
-
+*/
     private int findTree(List<Robot> bots) {
-        int count = 0;
+//        int count = 0;
         for (int s = 100; s < Integer.MAX_VALUE; s++) {
             bots.forEach(b -> b.move(1, width, height));
             Set<Point> image = new HashSet<>();
@@ -62,11 +64,11 @@ public class Day14 implements Function<List<String>, Pair<Integer, Integer>> {
             });
             if (image.size() == bots.size()) {
                 print(finalPositions, s);
-//                return s;
-                count++;
-                System.out.println("\n====> "+ s);
-                if (count > 5)
-                    return s;
+                return s;
+//                count++;
+//                System.out.println("\n====> "+ s);
+//                if (count > 5)
+//                    return s;
             }
         }
 
