@@ -24,37 +24,18 @@ public class Day14 implements Function<List<String>, Pair<Integer, Integer>> {
     @Override
     public Pair<Integer, Integer> apply(List<String> input) {
         List<Robot> bots = findRobots(input);
-        bots.forEach(b -> {
-            b.move(100, width, height);
-        });
+        bots.forEach(b -> b.move(100, width, height));
         int safetyFactor = safetyFactor(bots);
         int tree = 0; // examples
         if (width > 100 && height > 100) // file input
-            tree = findTree(bots); // 3795 is too low, per AoC
+            tree = findTree(bots);
 
         return Pair.of(safetyFactor, tree);
     }
 
-    /*
-    @Override // working
-    public Pair<Integer, Integer> apply(List<String> input) {
-        List<Robot> bots = findRobots(input);
-        int safetyFactor = 208437768; //safetyFactor(bots);
-
-        int[][] finalPositions = new int[height][width];
-        bots.forEach(b -> {
-            b.move(7492, width, height);
-            finalPositions[-b.position.iy()][b.position.ix()]++;
-        });
-        print(finalPositions, 7492);
-
-        return Pair.of(safetyFactor, 3795);
-    }
-*/
     private int findTree(List<Robot> bots) {
-//        int count = 0;
-        for (int s = 100; s < Integer.MAX_VALUE; s++) {
-            bots.forEach(b -> b.move(1, width, height));
+        // start after the first 100 seconds + 0-index offset
+        for (int s = 101; s < Integer.MAX_VALUE; s++) {
             Set<Point> image = new HashSet<>();
             int[][] finalPositions = new int[height][width];
             bots.forEach(b -> {
@@ -65,10 +46,6 @@ public class Day14 implements Function<List<String>, Pair<Integer, Integer>> {
             if (image.size() == bots.size()) {
                 print(finalPositions, s);
                 return s;
-//                count++;
-//                System.out.println("\n====> "+ s);
-//                if (count > 5)
-//                    return s;
             }
         }
 
