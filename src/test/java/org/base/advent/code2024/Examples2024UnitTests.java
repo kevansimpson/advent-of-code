@@ -194,4 +194,44 @@ public class Examples2024UnitTests extends PuzzleTester {
                 0, Pair::getRight);
     }
 
+    @Test
+    public void testDay15Examples() {
+        final List<String> vertical = Arrays.asList(
+                "#######",
+                "#...#.#",
+                "#.....#",
+                "#..OO@#",
+                "#..O..#",
+                "#.....#",
+                "#######",
+                "",
+                "<vv<<^^<<^^");
+        testParallelSolutions(new Day15(pool), vertical, 908, 618);
+
+        final List<String> testData = Arrays.asList(
+                "##########",
+                "#..O..O.O#",
+                "#......O.#",
+                "#.OO..O.O#",
+                "#..O@..O.#",
+                "#O#..O...#",
+                "#O..O..O.#",
+                "#.OO.O.OO#",
+                "#....O...#",
+                "##########",
+                "",
+                "<vv>^<v^>v>^vv^v>v<>v^v<v<^vv<<<^><<><>>v<vvv<>^v^>^<<<><<v<<<v^vv^v>^",
+                "vvv<<^>^v^^><<>>><>^<<><^vv^^<>vvv<>><^^v>^>vv<>v<<<<v<^v>^<^^>>>^<v<v",
+                "><>vv>v^v^<>><>>>><^^>vv>v<^^^>>v^v^<^^>v^^>v^<^v>v<>>v^v^<v>v^^<^^vv<",
+                "<<v<^>>^^^^>>>v^<>vvv^><v<<<>^^^vv^<vvv>^>v<^^^^v<>^>vvvv><>>v^<<^^^^^",
+                "^><^><>>><>^^<<^^v>>><^<v>^<vv>>v>>>^v><>^v><<<<v>>v<v<v>vvv>^<><<>^><",
+                "^>><>^v<><^vvv<^^<><v<<<<<><^v<<<><<<^^<v<^^^><^>>^<v^><<<^>>^v<v^v<v^",
+                ">^>>^v>vv>^<<^v<>><<><<v<<v><>v<^vv<<<>^^v^>^^>>><<^v>>v^v><^^>>^<>vv^",
+                "<><^^>^^^<><vvvvv^v<v<<>^v<v>v<<^><<><<><<<^^<<<^<<>><<><^^^>^^<>^>v<>",
+                "^^>vv<^v^v<vv>^<><v<^v>^^^>>>^^vvv^>vvv<>>>^<^>>>>>^<<^v>^vvv<>^<><<v>",
+                "v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^");
+
+//        testParallelSolutions(new Day15(pool), testData, 10092, 9021);
+    }
+
 }
