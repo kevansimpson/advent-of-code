@@ -5,7 +5,6 @@ import org.apache.commons.lang3.Range;
 
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 
 /**
@@ -18,12 +17,6 @@ public class Point {
     public static final Point ORIGIN = Point.of(0, 0);
     public static final BiFunction<Point, Point, Long> MANHATTAN_DISTANCE =
             (a, b) -> Math.abs(b.x - a.x) + Math.abs(b.y - a.y);
-
-    public static Map<String, Function<Point, Point>> MOVE_MAP = Map.of(
-        "U", pt -> pt.up(1),
-        "D", pt -> pt.down(1),
-        "L", pt -> pt.left(1),
-        "R", pt -> pt.right(1));
 
     public final long x;
     public final long y;

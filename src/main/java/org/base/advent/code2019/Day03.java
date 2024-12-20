@@ -61,7 +61,7 @@ public class Day03 implements Solution<List<String[]>> {
             final String dir = w.substring(0, 1);
             final int dist = Integer.parseInt(w.substring(1));
             for (int x = 1; x <= dist; x++) {
-                pt = Point.MOVE_MAP.get(dir).apply(pt);
+                pt = pt.move(dir);
                 path.add(pt);
                 ++count;
                 if (!steps.containsKey(pt)) steps.put(pt, count);
