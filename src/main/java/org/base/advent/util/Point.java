@@ -1,6 +1,8 @@
 package org.base.advent.util;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Range;
 
 import java.util.*;
@@ -12,6 +14,27 @@ import java.util.function.BiFunction;
  */
 @EqualsAndHashCode
 public class Point {
+    @RequiredArgsConstructor
+    @Getter
+    public enum Dir {
+        Up("^", "N"),
+        Right(">", "E"),
+        Down("v", "S"),
+        Left("<", "W");
+
+        private final String arrow;
+        private final String cardinal;
+        private final String direction = name().substring(0, 1);
+
+        private static final Dir[] array = values();
+        public Dir turnLeft() {
+            return array[(this.ordinal() + 3) % 4];
+        }
+        public Dir turnRight() {
+            return array[(this.ordinal() + 1) % 4];
+        }
+    }
+
     private static final Map<Long, Map<Long, Point>> flyweightPool = Collections.synchronizedMap(new TreeMap<>());
 
     public static final Point ORIGIN = Point.of(0, 0);
