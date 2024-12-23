@@ -307,4 +307,15 @@ public class Examples2024UnitTests extends PuzzleTester {
         testParallelSolutions(example2, testData2, 0, 117440L);
     }
 
+    @Test
+    public void testDay18Examples() {
+        final List<String> testData = Arrays.asList(
+                "5,4", "4,2", "4,5", "3,0", "2,1", "6,3", "2,4", "1,5",
+                "0,6", "3,3", "2,6", "5,1", "1,2", "5,5", "2,5", "6,5",
+                "1,4", "0,4", "6,4", "1,1", "6,1", "1,0", "0,5", "1,6", "2,0");
+        testSolutions(new Day18(7, 7, 12), testData,
+                22L, Pair::getLeft,
+                "6,1", Pair::getRight);
+    }
+
 }
