@@ -1,10 +1,10 @@
 package org.base.advent.code2024;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.Helpers;
 import org.base.advent.util.Node;
 import org.base.advent.util.Point;
-import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.util.Point.Dir;
 
 import java.util.*;
@@ -28,11 +28,7 @@ public class Day16 implements Function<List<String>, Pair<Integer, Integer>>, He
         Map<DirPoint, Integer> visited = new HashMap<>();
         DirPoint begin = new DirPoint(Dir.Right, maze.start);
         visited.put(begin, 0);
-        PriorityQueue<ScoredPath> paths = new PriorityQueue<>((a, b) -> {
-            long da = maze.end.getManhattanDistance(a.node().getData().pos());
-            long db = maze.end.getManhattanDistance(b.node().getData().pos());
-            return (int) (db - da);
-        });
+        LinkedList<ScoredPath> paths = new LinkedList<>();
 
         paths.add(new ScoredPath(Node.createRootNode(begin), 0));
         int minScore = Integer.MAX_VALUE;
