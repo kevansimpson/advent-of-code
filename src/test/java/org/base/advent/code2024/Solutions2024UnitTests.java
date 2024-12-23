@@ -127,6 +127,12 @@ public class Solutions2024UnitTests extends PuzzleTester {
                 465, Pair::getRight);
     }
 
+    @Test
+    public void verifyDay17() {
+        testParallelSolutions(new Day17(pool), readLines("/2024/input17.txt"),
+                "3,5,0,1,5,1,5,1,0", 107413700225434L);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2024);

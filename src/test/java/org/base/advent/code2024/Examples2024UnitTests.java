@@ -231,7 +231,7 @@ public class Examples2024UnitTests extends PuzzleTester {
                 "^^>vv<^v^v<vv>^<><v<^v>^^^>>>^^vvv^>vvv<>>>^<^>>>>>^<<^v>^vvv<>^<><<v>",
                 "v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^");
 
-//        testParallelSolutions(new Day15(pool), testData, 10092, 9021);
+        testParallelSolutions(new Day15(pool), testData, 10092, 9021);
     }
 
 
@@ -274,6 +274,37 @@ public class Examples2024UnitTests extends PuzzleTester {
                 "#S#.............#",
                 "#################");
         testSolutions(new Day16(), testData2, 11048, Pair::getLeft, 64, Pair::getRight);
+    }
+
+    @Test
+    public void testDay17Examples() {
+        final List<String> testData1 = Arrays.asList(
+                "Register A: 729",
+                "Register B: 0",
+                "Register C: 0",
+                "",
+                "Program: 0,1,5,4,3,0");
+        Day17 example1 = new Day17(pool) {
+            @Override
+            public Object solvePart2(List<String> input) {
+                return 0;
+            }
+        };
+        testParallelSolutions(example1, testData1, "4,6,3,5,6,3,5,2,1,0", 0);
+
+        final List<String> testData2 = Arrays.asList(
+                "Register A: 2024",
+                "Register B: 0",
+                "Register C: 0",
+                "",
+                "Program: 0,3,5,4,3,0");
+        Day17 example2 = new Day17(pool) {
+            @Override
+            public Object solvePart1(List<String> input) {
+                return 0;
+            }
+        };
+        testParallelSolutions(example2, testData2, 0, 117440L);
     }
 
 }
