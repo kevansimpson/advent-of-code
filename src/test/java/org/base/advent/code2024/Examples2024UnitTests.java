@@ -318,4 +318,20 @@ public class Examples2024UnitTests extends PuzzleTester {
                 "6,1", Pair::getRight);
     }
 
+    @Test
+    public void testDay19Examples() {
+        final List<String> testData = Arrays.asList(
+                "r, wr, b, g, bwu, rb, gb, br",
+                "",
+                "brwrr",
+                "bggr",
+                "gbbr",
+                "rrbgbr",
+                "ubwu",
+                "bwurrg",
+                "brgr",
+                "bbrgwb");
+        testSolutions(new Day19(), testData, 6, Pair::getLeft, 16L, Pair::getRight);
+    }
+
 }
