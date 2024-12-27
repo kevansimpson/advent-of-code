@@ -6,7 +6,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -135,7 +135,7 @@ public class Util {
         }
     }
 
-    public static <T> T safeGet(CompletableFuture<T> future) {
+    public static <T> T safeGet(Future<T> future) {
         try {
             return future.get();
         }
