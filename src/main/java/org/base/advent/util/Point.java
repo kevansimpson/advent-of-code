@@ -61,24 +61,30 @@ public class Point {
         return "["+ this.x +","+ this.y +"]";
     }
 
-    public Point up(final int move) {
+    public Point up(final long move) {
         return Point.of(x, y + move);
     }
-    public Point down(final int move) {
+    public Point down(final long move) {
         return Point.of(x, y - move);
     }
-    public Point left(final int move) {
+    public Point left(final long move) {
         return Point.of(x - move, y);
     }
-    public Point right(final int move) {
+    public Point right(final long move) {
         return Point.of(x + move, y);
     }
 
     public Point move(final char dir) {
         return move(dir, 1);
     }
-    public Point move(final char dir, final int delta) {
+    public Point move(final char dir, final long delta) {
         return move(String.valueOf(dir), delta);
+    }
+    public Point move(final Dir dir) {
+        return move(dir, 1);
+    }
+    public Point move(final Dir dir, final long delta) {
+        return move(dir.getArrow(), delta);
     }
     public Point move(final long deltaX, final long deltaY) {
         return Point.of(x + deltaX, y + deltaY);
@@ -86,7 +92,7 @@ public class Point {
     public Point move(final String dir) {
         return move(dir, 1);
     }
-    public Point move(final String dir, final int delta) {
+    public Point move(final String dir, final long delta) {
         return switch (dir) {
             case "U", "N", "^" -> up(delta);
             case "D", "S", "v" -> down(delta);
