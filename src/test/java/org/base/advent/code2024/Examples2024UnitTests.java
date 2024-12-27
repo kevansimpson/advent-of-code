@@ -334,4 +334,25 @@ public class Examples2024UnitTests extends PuzzleTester {
         testSolutions(new Day19(), testData, 6, Pair::getLeft, 16L, Pair::getRight);
     }
 
+    @Test
+    public void testDay20Examples() {
+        final List<String> testData = Arrays.asList(
+                "###############",
+                "#...#...#.....#",
+                "#.#.#.#.#.###.#",
+                "#S#...#.#.#...#",
+                "#######.#.#.###",
+                "#######.#.#...#",
+                "#######.#.###.#",
+                "###..E#...#...#",
+                "###.#######.###",
+                "#...###...#...#",
+                "#.#####.#.###.#",
+                "#.#...#.#.#...#",
+                "#.#.#.#.#.#.###",
+                "#...#...#...###",
+                "###############");
+        testSolutions(new Day20(50), testData, 1, Pair::getLeft, 285, Pair::getRight);
+    }
+
 }

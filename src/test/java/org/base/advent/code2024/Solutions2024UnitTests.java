@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
  * Verify answers for AoC days in 2024.
  */
 public class Solutions2024UnitTests extends PuzzleTester {
-    private static final ExecutorService pool = Executors.newFixedThreadPool(2);
+    private static final ExecutorService pool = Executors.newFixedThreadPool(20);
 
 
     @Test
@@ -145,6 +145,13 @@ public class Solutions2024UnitTests extends PuzzleTester {
         testSolutions(new Day19(), readLines("/2024/input19.txt"),
                 251, Pair::getLeft,
                 616957151871345L, Pair::getRight);
+    }
+
+    @Test
+    public void verifyDay20() {
+        testSolutions(new Day20(100), readLines("/2024/input20.txt"),
+                1454, Pair::getLeft,
+                997879, Pair::getRight);
     }
 
     @BeforeAll
