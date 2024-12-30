@@ -6,6 +6,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -152,6 +153,13 @@ public class Solutions2024UnitTests extends PuzzleTester {
         testSolutions(new Day20(100), readLines("/2024/input20.txt"),
                 1454, Pair::getLeft,
                 997879, Pair::getRight);
+    }
+
+    @Test
+    public void verifyDay21() {
+        testSolutions(new Day21(), Arrays.asList("935A", "319A", "480A", "789A", "176A"),
+                188398L, Pair::getLeft,
+                230049027535970L, Pair::getRight);
     }
 
     @BeforeAll
