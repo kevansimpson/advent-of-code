@@ -362,4 +362,14 @@ public class Examples2024UnitTests extends PuzzleTester {
                 126384L, Pair::getLeft, 154115708116294L, Pair::getRight);
     }
 
+    @Test
+    public void testDay22Examples() {
+        final List<Integer> testData1 = Arrays.asList(1, 10, 100, 2024);
+        testSolutions(new Day22(), testData1,
+                37327623L, Pair::getLeft, 24, Pair::getRight);
+        final List<Integer> testData2 = Arrays.asList(1, 2, 3, 2024);
+        testSolutions(new Day22(), testData2,
+                37990510L, Pair::getLeft, 23, Pair::getRight);
+    }
+
 }
