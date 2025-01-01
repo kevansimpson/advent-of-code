@@ -372,4 +372,10 @@ public class Examples2024UnitTests extends PuzzleTester {
                 37990510L, Pair::getLeft, 23, Pair::getRight);
     }
 
+    @Test
+    public void testDay23Examples() {
+        final List<String> testData = readLines("/2024/input23-example1.txt");
+        testSolutions(new Day23(), testData, 7, Pair::getLeft, "co,de,ka,ta", Pair::getRight);
+    }
+
 }
