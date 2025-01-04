@@ -1,5 +1,7 @@
 package org.base.advent.code2016;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -7,14 +9,13 @@ import java.util.function.Function;
 /**
  * <a href="https://adventofcode.com/2016/day/10">Day 10</a>
  */
-public class Day10 implements Function<List<String>, Day10.RobotChips> {
-    public record RobotChips(int botNumber, int chipProduct) {}
-    public record Instruction(String botId, String low, String high) {}
-    public record ChipFactory(Map<String, List<Integer>> initialBots,
-                              Map<String, Instruction> instructions) {}
+public class Day10 implements Function<List<String>, Pair<Integer, Integer>> {
+    record Instruction(String botId, String low, String high) {}
+    record ChipFactory(Map<String, List<Integer>> initialBots,
+                       Map<String, Instruction> instructions) {}
 
     @Override
-    public RobotChips apply(List<String> input) {
+    public Pair<Integer, Integer> apply(List<String> input) {
         ChipFactory factory = inspectMicrochips(input);
         Map<String, List<Integer>> bots = new ConcurrentHashMap<>(factory.initialBots);
         int[] botNumber = new int[] {0};
@@ -42,7 +43,7 @@ public class Day10 implements Function<List<String>, Day10.RobotChips> {
 
         }
 
-        return new RobotChips(botNumber[0],
+        return Pair.of(botNumber[0],
                 bots.get("output0").get(0) * bots.get("output1").get(0) * bots.get("output2").get(0));
     }
 

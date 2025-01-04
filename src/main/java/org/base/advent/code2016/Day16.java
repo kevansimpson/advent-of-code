@@ -1,5 +1,7 @@
 package org.base.advent.code2016;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.function.Function;
 
 import static org.apache.commons.lang3.StringUtils.reverse;
@@ -7,12 +9,10 @@ import static org.apache.commons.lang3.StringUtils.reverse;
 /**
  * <a href="https://adventofcode.com/2016/day/16">Day 16</a>
  */
-public class Day16 implements Function<String, Day16.DragonCurve> {
-    public record DragonCurve(String checksum1, String checksum2) {}
-
+public class Day16 implements Function<String, Pair<String, String>> {
     @Override
-    public DragonCurve apply(String input) {
-        return new DragonCurve(curve(input, 272), curve(input, 35651584));
+    public Pair<String, String> apply(String input) {
+        return Pair.of(curve(input, 272), curve(input, 35651584));
     }
 
     String curve(String data, int targetLength) {

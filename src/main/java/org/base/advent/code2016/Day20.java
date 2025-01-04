@@ -14,11 +14,9 @@ import static org.base.advent.util.Util.merge;
 /**
  * <a href="https://adventofcode.com/2016/day/20">Day 20</a>
  */
-public class Day20 implements Function<List<String>, Day20.UnblockedIP> {
-    public record UnblockedIP(long lowest, long unblocked) {}
-
+public class Day20 implements Function<List<String>, Pair<Long, Long>> {
     @Override
-    public UnblockedIP apply(List<String> input) {
+    public Pair<Long, Long> apply(List<String> input) {
         List<Range<Long>> ranges = input.stream()
                 .map(str -> Arrays.stream(str.split("-"))
                         .mapToLong(Long::parseLong).toArray())
@@ -41,6 +39,6 @@ public class Day20 implements Function<List<String>, Day20.UnblockedIP> {
                 overlap.set(pair.getLeft());
         }
 
-        return new UnblockedIP(lowest, unblocked);
+        return Pair.of(lowest, unblocked);
     }
 }

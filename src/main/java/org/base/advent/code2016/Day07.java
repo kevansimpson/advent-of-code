@@ -1,6 +1,7 @@
 package org.base.advent.code2016;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 import java.util.function.Function;
@@ -10,11 +11,9 @@ import java.util.regex.Pattern;
 /**
  * <a href="https://adventofcode.com/2016/day/7">Day 7</a>
  */
-public class Day07 implements Function<List<String>, Day07.SecureIpCount> {
-    public record SecureIpCount(int tslCount, int sslCount) {}
-
+public class Day07 implements Function<List<String>, Pair<Integer, Integer>> {
     @Override
-    public SecureIpCount apply(List<String> input) {
+    public Pair<Integer, Integer> apply(List<String> input) {
         int tls = 0, ssl = 0;
         List<List<String>> ipv7List = input.stream()
                 .map(it -> Arrays.asList(it.split("[\\[\\]]"))).toList();
@@ -25,7 +24,7 @@ public class Day07 implements Function<List<String>, Day07.SecureIpCount> {
             if (supportsSSL(ipv7))
                 ssl += 1;
         }
-        return new SecureIpCount(tls, ssl);
+        return Pair.of(tls, ssl);
     }
 
     boolean supportsTLS(List<String> ipv7) {

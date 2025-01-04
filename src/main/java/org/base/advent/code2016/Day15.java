@@ -1,5 +1,7 @@
 package org.base.advent.code2016;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -12,23 +14,22 @@ import static org.base.advent.util.Text.extractInt;
 /**
  * <a href="https://adventofcode.com/2016/day/15">Day 15</a>
  */
-public class Day15 implements Function<List<String>, Day15.CapsuleDrop> {
-    public record CapsuleDrop(int firstTime, int part2) {}
-    public record Disc(int id, int positions, int time, int atZero) {
+public class Day15 implements Function<List<String>, Pair<Integer, Integer>> {
+    record Disc(int id, int positions, int time, int atZero) {
         public int discPosition(int currentTime) {
             return (atZero + currentTime) % positions;
         }
     }
 
     @Override
-    public CapsuleDrop apply(List<String> input) {
+    public Pair<Integer, Integer> apply(List<String> input) {
         List<Disc> discs = input.stream().map(this::makeDisc).toList();
         List<Disc> extra = new ArrayList<>(discs);
         extra.add(new Disc(discs.size(), 11, 0, 0));
         try (ExecutorService pool = Executors.newFixedThreadPool(2)) {
             CompletableFuture<Integer> f1 = supplyAsync(() -> dropCapsules(discs), pool);
             CompletableFuture<Integer> f2 = supplyAsync(() -> dropCapsules(extra), pool);
-            return new CapsuleDrop(f1.get(), f2.get());
+            return Pair.of(f1.get(), f2.get());
         }
         catch (Exception ex) {
             throw new RuntimeException("Day15, 2016", ex);

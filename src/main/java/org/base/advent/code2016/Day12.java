@@ -1,5 +1,7 @@
 package org.base.advent.code2016;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,18 +16,16 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
 /**
  * <a href="https://adventofcode.com/2016/day/12">Day 12</a>
  */
-public class Day12 implements Function<List<String>, Day12.RegisterValues> {
-    public record RegisterValues(int a0, int a1) {}
-
+public class Day12 implements Function<List<String>, Pair<Integer, Integer>> {
     @Override
-    public RegisterValues apply(List<String> input) {
+    public Pair<Integer, Integer> apply(List<String> input) {
         try (ExecutorService pool = Executors.newFixedThreadPool(2)) {
             CompletableFuture<Integer> f0 = supplyAsync(() -> operateAssembunnyCode(input, 0), pool);
             CompletableFuture<Integer> f1 = supplyAsync(() -> operateAssembunnyCode(input, 1), pool);
             int a0 = f0.completeOnTimeout(-1, 5, TimeUnit.SECONDS).get();
             int a1 = f1.completeOnTimeout(-1, 5, TimeUnit.SECONDS).get();
 
-            return new RegisterValues(a0, a1);
+            return Pair.of(a0, a1);
         }
         catch (Exception ex) {
             throw new RuntimeException("Day12, 2016", ex);

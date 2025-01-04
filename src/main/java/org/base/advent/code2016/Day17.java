@@ -1,5 +1,6 @@
 package org.base.advent.code2016;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.util.Point;
 import org.base.advent.util.ReusableDigest;
 
@@ -14,16 +15,14 @@ import static org.base.advent.util.Point.inGrid;
 /**
  * <a href="https://adventofcode.com/2016/day/17">Day 17</a>
  */
-public class Day17 implements Function<String, Day17.VaultPaths> {
-    public record VaultPaths(String shortest, int longest) {}
-
+public class Day17 implements Function<String, Pair<String, Integer>> {
     record VaultAttempt(Point position, String path) {}
 
     private static final String UDLR = "UDLR";
     private final ReusableDigest digest = new ReusableDigest();
 
     @Override
-    public VaultPaths apply(String input) {
+    public Pair<String, Integer> apply(String input) {
         final Point vaultInGrid = Point.of(7, 7);
         final List<VaultAttempt> attempts = new ArrayList<>();
         attempts.add(new VaultAttempt(Point.of(1, 1), input));
@@ -56,7 +55,7 @@ public class Day17 implements Function<String, Day17.VaultPaths> {
             }
         }
 
-        return new VaultPaths(
+        return Pair.of(
                 requireNonNull(shortest).substring(input.length()),
                 requireNonNull(longest).length() - input.length());
     }

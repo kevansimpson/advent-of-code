@@ -1,6 +1,7 @@
 package org.base.advent.code2016;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.util.PermIterator;
 
 import java.util.List;
@@ -14,13 +15,10 @@ import static org.base.advent.util.Text.rotateRight;
 /**
  * <a href="https://adventofcode.com/2016/day/21">Day 21</a>
  */
-public class Day21 implements Function<List<String>, Day21.ScrambledPasswords> {
-    public record ScrambledPasswords(String first, String second) {}
-
+public class Day21 implements Function<List<String>, Pair<String, String>> {
     @Override
-    public ScrambledPasswords apply(List<String> input) {
-        return new ScrambledPasswords(
-                unscramble("abcdefgh", input), reverseScramble(input));
+    public Pair<String, String> apply(List<String> input) {
+        return Pair.of(unscramble("abcdefgh", input), reverseScramble(input));
     }
 
     String reverseScramble(List<String> input) {

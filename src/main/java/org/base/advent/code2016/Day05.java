@@ -1,5 +1,6 @@
 package org.base.advent.code2016;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.TimeSaver;
 import org.base.advent.util.HashAtIndex;
 
@@ -13,12 +14,11 @@ import static org.base.advent.util.HashAtIndex.nextWithList;
 /**
  * <a href="https://adventofcode.com/2016/day/5">Day 5</a>
  */
-public class Day05 implements Function<String, Day05.TwoPasswords>, TimeSaver {
+public class Day05 implements Function<String, Pair<String, String>>, TimeSaver {
     private static final List<Character> IN_RANGE = List.of('0', '1', '2', '3', '4', '5', '6', '7');
-    public record TwoPasswords(String first, String second) {}
 
     @Override
-    public TwoPasswords apply(String input) {
+    public Pair<String, String> apply(String input) {
         // start and count are determined in hindsight from final solution.
         // calculating md5 hashes is slow, full stop.
         // shave a little time by starting at first matching hash OR
@@ -41,7 +41,7 @@ public class Day05 implements Function<String, Day05.TwoPasswords>, TimeSaver {
             }
         }
 
-        return new TwoPasswords(first.toString(), new String(second));
+        return Pair.of(first.toString(), new String(second));
     }
 
     // hashes with prefix and indices, from prior runs; only contains hits; cached for `TimeSaver`

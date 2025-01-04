@@ -1,5 +1,6 @@
 package org.base.advent.code2016;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.util.Text;
 
 import java.util.ArrayList;
@@ -13,11 +14,9 @@ import static org.apache.commons.lang3.StringUtils.countMatches;
 /**
  * <a href="https://adventofcode.com/2016/day/6">Day 6</a>
  */
-public class Day06 implements Function<List<String>, Day06.RepetitionCode> {
-    public record RepetitionCode(String correctedVersion, String originalMessage) {}
-
+public class Day06 implements Function<List<String>, Pair<String, String>> {
     @Override
-    public RepetitionCode apply(List<String> input) {
+    public Pair<String, String> apply(List<String> input) {
         List<String> columns = Text.columns(input);
         List<Map<Character, Integer>> columnCounts = columnCounts(columns);
         char[] correctedVersion = new char[8], originalMessage = new char[8];
@@ -38,7 +37,7 @@ public class Day06 implements Function<List<String>, Day06.RepetitionCode> {
             }
         }
 
-        return new RepetitionCode(new String(correctedVersion), new String(originalMessage));
+        return Pair.of(new String(correctedVersion), new String(originalMessage));
     }
 
     List<Map<Character, Integer>> columnCounts(List<String> columns) {

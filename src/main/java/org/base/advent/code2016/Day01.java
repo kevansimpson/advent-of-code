@@ -12,14 +12,12 @@ import java.util.function.Function;
 /**
  * <a href="https://adventofcode.com/2016/day/01">Day 01</a>
  */
-public class Day01 implements Function<String, Day01.EasterBunnyHQ> {
-    public record EasterBunnyHQ(long distance, long alreadyVisited) {}
-
+public class Day01 implements Function<String, Pair<Long, Long>> {
     @Override
-    public EasterBunnyHQ apply(String input) {
+    public Pair<Long, Long> apply(String input) {
         List<String> list = Arrays.asList(input.split("\\s*,\\s*"));
         Pair<Point, Point> pair = followDirections(list);
-        return new EasterBunnyHQ(
+        return Pair.of(
                 pair.getLeft().getManhattanDistance(), pair.getRight().getManhattanDistance());
     }
 

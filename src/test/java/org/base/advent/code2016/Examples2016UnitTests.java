@@ -1,5 +1,6 @@
 package org.base.advent.code2016;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.PuzzleTester;
 import org.junit.jupiter.api.Test;
 
@@ -24,20 +25,16 @@ public class Examples2016UnitTests extends PuzzleTester {
 
     @Test
     public void testDay03Examples() {
-        final Day03 day03 = new Day03();
-        assertFalse(day03.validTriangle(5, 10, 25));
+        assertFalse(new Day03().validTriangle(5, 10, 25));
     }
 
     @Test
     public void testDay17Examples() {
         testSolutions(new Day17(), "ihgpwlah",
-                "DDRRRD", Day17.VaultPaths::shortest,
-                370, Day17.VaultPaths::longest);
+                "DDRRRD", Pair::getLeft, 370, Pair::getRight);
         testSolutions(new Day17(), "kglvqrro",
-                "DDUDRLRRUDRD", Day17.VaultPaths::shortest,
-                492, Day17.VaultPaths::longest);
+                "DDUDRLRRUDRD", Pair::getLeft, 492, Pair::getRight);
         testSolutions(new Day17(), "ulqzkmiv",
-                "DRURDRUDDLLDLUURRDULRLDUUDDDRR", Day17.VaultPaths::shortest,
-                830, Day17.VaultPaths::longest);
+                "DRURDRUDDLLDLUURRDULRLDUUDDDRR", Pair::getLeft, 830, Pair::getRight);
     }
 }

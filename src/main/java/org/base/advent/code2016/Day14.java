@@ -2,6 +2,7 @@ package org.base.advent.code2016;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.TimeSaver;
 import org.base.advent.util.HashAtIndex;
 import org.base.advent.util.HashCache;
@@ -24,14 +25,12 @@ import static org.base.advent.util.Text.findAll;
 /**
  * <a href="https://adventofcode.com/2016/day/14">Day 14</a>
  */
-public class Day14 implements Function<String, Day14.HashKeyIndexes>, TimeSaver {
-    public record HashKeyIndexes(int key64, int stretchedKey64) {}
-
+public class Day14 implements Function<String, Pair<Integer, Integer>>, TimeSaver {
     private static final Pattern TRIPLE = Pattern.compile("([a-z0-9])\\1\\1");
     private static final Pattern TRIPLE_FULL = Pattern.compile(".*([a-z0-9])\\1\\1.*");
 
     @Override
-    public HashKeyIndexes apply(String input) {
+    public Pair<Integer, Integer> apply(String input) {
         int key64;
         if (isFullSolve()) {
             List<Integer> keys = new ArrayList<>();
@@ -49,7 +48,7 @@ public class Day14 implements Function<String, Day14.HashKeyIndexes>, TimeSaver 
             key64 = lookForCachedKey(new HashCache(input, 2016));
 
         // always shortcut part 2; 20k+ * 2016 hashes = :-(
-        return new HashKeyIndexes(key64, lookForCachedKey(cacheStretched(input)));
+        return Pair.of(key64, lookForCachedKey(cacheStretched(input)));
     }
 
     void lookForKey(HashAtIndex tripleHash, List<Integer> keys) {

@@ -1,5 +1,6 @@
 package org.base.advent.code2016;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.util.Point;
 
 import java.util.ArrayList;
@@ -14,14 +15,12 @@ import static org.apache.commons.lang3.StringUtils.countMatches;
 /**
  * <a href="https://adventofcode.com/2016/day/13">Day 13</a>
  */
-public class Day13 implements Function<Integer, Day13.CubicleMaze> {
+public class Day13 implements Function<Integer, Pair<Integer, Long>> {
     private static final int WALL = -1;
     private static final Point TARGET = Point.of(31,39);
 
-    public record CubicleMaze(int fewestSteps, long withinRange) {}
-
     @Override
-    public CubicleMaze apply(Integer input) {
+    public Pair<Integer, Long> apply(Integer input) {
         int depth = - 1;
         final Map<Point, Integer> depthMap = new HashMap<>();
         final List<Point> search = new ArrayList<>(List.of(Point.of(1, 1)));
@@ -46,7 +45,7 @@ public class Day13 implements Function<Integer, Day13.CubicleMaze> {
             }
         }
 
-        return new CubicleMaze(depth, depthMap.values().stream().filter(d -> d <= 50).count());
+        return Pair.of(depth, depthMap.values().stream().filter(d -> d <= 50).count());
     }
 
     boolean isOpenSpace(Point pt, int input) {

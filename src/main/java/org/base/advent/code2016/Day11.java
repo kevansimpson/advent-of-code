@@ -3,6 +3,7 @@ package org.base.advent.code2016;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.Helpers;
 import org.base.advent.TimeSaver;
 import org.base.advent.util.PuzzleProgress;
@@ -26,11 +27,9 @@ import static org.base.advent.util.Util.combinations;
 /**
  * <a href="https://adventofcode.com/2016/day/11">Day 11</a>
  */
-public class Day11 implements Function<List<String>, Day11.FactorySteps>, Helpers, TimeSaver {
-    public record FactorySteps(long fewest, long fewestWithExtra) {}
-
+public class Day11 implements Function<List<String>, Pair<Long, Long>>, Helpers, TimeSaver {
     @Override
-    public FactorySteps apply(List<String> input) {
+    public Pair<Long, Long> apply(List<String> input) {
         Facility facility1 = new Facility(readInput(input));
         facility1.display();
         final Map<String, Integer> copy = new TreeMap<>(facility1.floors);
@@ -51,14 +50,14 @@ public class Day11 implements Function<List<String>, Day11.FactorySteps>, Helper
                 long f1 = fl1.completeOnTimeout(-1L, 5, TimeUnit.SECONDS).get();
                 long f2 = fl2.completeOnTimeout(-1L, 5, TimeUnit.MINUTES).get();
 
-                return new FactorySteps(f1, f2);
+                return Pair.of(f1, f2);
             }
             catch (Exception ex) {
                 throw new RuntimeException("Day11, 2016", ex);
             }
         }
         else
-            return new FactorySteps(findFewestStepsBFS(facility1, NOOP_PUBLISHER), 61L);
+            return Pair.of(findFewestStepsBFS(facility1, NOOP_PUBLISHER), 61L);
     }
 
     long findFewestStepsBFS(Facility facility, SubmissionPublisher<Integer> publisher) {

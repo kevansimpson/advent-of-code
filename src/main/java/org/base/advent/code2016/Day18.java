@@ -1,5 +1,7 @@
 package org.base.advent.code2016;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.function.Function;
 
 import static org.apache.commons.lang3.StringUtils.countMatches;
@@ -7,11 +9,9 @@ import static org.apache.commons.lang3.StringUtils.countMatches;
 /**
  * <a href="https://adventofcode.com/2016/day/18">Day 18</a>
  */
-public class Day18 implements Function<String, Day18.SafeTiles> {
-    public record SafeTiles(int rows40, int rows400000) {}
-
+public class Day18 implements Function<String, Pair<Integer, Integer>> {
     @Override
-    public SafeTiles apply(String input) {
+    public Pair<Integer, Integer> apply(String input) {
         final int length = input.length();
         String row = padSafe(input);
         int safe = countMatches(input, ".");
@@ -26,7 +26,7 @@ public class Day18 implements Function<String, Day18.SafeTiles> {
             safe += countMatches(row, ".") - 2;
         }
 
-        return new SafeTiles(at40rows, safe);
+        return Pair.of(at40rows, safe);
     }
 
     String nextRow(String row, int length) {

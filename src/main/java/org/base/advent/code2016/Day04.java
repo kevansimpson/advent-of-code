@@ -14,14 +14,13 @@ import static org.base.advent.util.Text.shiftText;
 /**
  * <a href="https://adventofcode.com/2016/day/4">Day 4</a>
  */
-public class Day04 implements Function<List<String>, Day04.RoomSectorInfo> {
+public class Day04 implements Function<List<String>, Pair<Integer, Integer>> {
     private static final Pattern REGEX = Pattern.compile("([\\-a-z]+)-(\\d+)\\[([a-z]+)]");
 
-    public record RoomSectorInfo(int realSectorSum, int northPoleSector) {}
-    public record Room(String name, int sectorId, String checksum) {}
+    record Room(String name, int sectorId, String checksum) {}
 
     @Override
-    public RoomSectorInfo apply(List<String> input) {
+    public Pair<Integer, Integer> apply(List<String> input) {
         int real = 0, northPoleRoomId = -1;
         for (Room room : scanRooms(input)) {
             if (isReal(room))
@@ -31,7 +30,7 @@ public class Day04 implements Function<List<String>, Day04.RoomSectorInfo> {
                 northPoleRoomId = room.sectorId;
         }
 
-        return new RoomSectorInfo(real, northPoleRoomId);
+        return Pair.of(real, northPoleRoomId);
     }
 
     boolean isReal(Room room) {
