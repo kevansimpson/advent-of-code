@@ -81,6 +81,7 @@ Solution comparisons by year and language:
 | [Day19](https://adventofcode.com/2016/day/19) | [Day19](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2016/Day19.java) | n/a                                                                                                                | n/a                                                                              | 
 | [Day20](https://adventofcode.com/2016/day/20) | [Day20](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2016/Day20.java) | n/a                                                                                                                | n/a                                                                              | 
 | [Day21](https://adventofcode.com/2016/day/21) | [Day21](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2016/Day21.java) | n/a                                                                                                                | n/a                                                                              | 
+| [Day22](https://adventofcode.com/2016/day/22) | [Day22](https://github.com/kevansimpson/advent-of-code/blob/main/src/main/java/org/base/advent/code2016/Day22.java) | n/a                                                                                                                | n/a                                                                              | 
 
 [Back to top](#comparisons)
 
