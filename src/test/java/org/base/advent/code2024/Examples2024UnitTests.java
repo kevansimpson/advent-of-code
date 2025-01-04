@@ -398,4 +398,10 @@ public class Examples2024UnitTests extends PuzzleTester {
         };
         testSolutions(part2, testData2, 0L, "z00,z01,z02,z05");
     }
+
+    @Test
+    public void testDay25Examples() {
+        final List<String> testData1 = readLines("/2024/input25-example1.txt");
+        testSolutions(new Day25(), testData1, 3, Pair::getLeft, 0, Pair::getRight);
+    }
 }
