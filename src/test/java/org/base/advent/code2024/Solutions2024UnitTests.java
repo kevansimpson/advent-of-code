@@ -176,6 +176,12 @@ public class Solutions2024UnitTests extends PuzzleTester {
                 "dm,do,fr,gf,gh,gy,iq,jb,kt,on,rg,xf,ze", Pair::getRight);
     }
 
+    @Test
+    public void verifyDay24() {
+        testSolutions(new Day24(8), readLines("/2024/input24.txt"),
+                57588078076750L, "kcd,pfn,shj,tpk,wkb,z07,z23,z27");
+    }
+
     @BeforeAll
     public static void start() {
         banner(2024);

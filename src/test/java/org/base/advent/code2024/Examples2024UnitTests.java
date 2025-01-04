@@ -378,4 +378,24 @@ public class Examples2024UnitTests extends PuzzleTester {
         testSolutions(new Day23(), testData, 7, Pair::getLeft, "co,de,ka,ta", Pair::getRight);
     }
 
+    @Test
+    public void testDay24Examples() {
+        final List<String> testData1 = readLines("/2024/input24-example1.txt");
+        Day24 part1 = new Day24(0) {
+            @Override
+            public Object solvePart2(List<String> input) {
+                return "";
+            }
+        };
+        testSolutions(part1, testData1, 2024L, "");
+
+        final List<String> testData2 = readLines("/2024/input24-example2.txt");
+        Day24 part2 = new Day24(4) {
+            @Override
+            public Object solvePart1(List<String> input) {
+                return 0L;
+            }
+        };
+        testSolutions(part2, testData2, 0L, "z00,z01,z02,z05");
+    }
 }
