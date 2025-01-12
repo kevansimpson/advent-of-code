@@ -3,23 +3,22 @@ package org.base.advent.code2016;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.Helpers;
+import org.base.advent.ParallelSolution;
 import org.base.advent.TimeSaver;
 import org.base.advent.util.PuzzleProgress;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static java.util.Comparator.comparingInt;
 import static java.util.Comparator.comparingLong;
 import static org.base.advent.util.PuzzleProgress.NOOP_PUBLISHER;
 import static org.base.advent.util.Util.combinations;
@@ -27,76 +26,53 @@ import static org.base.advent.util.Util.combinations;
 /**
  * <a href="https://adventofcode.com/2016/day/11">Day 11</a>
  */
-public class Day11 implements Function<List<String>, Pair<Long, Long>>, Helpers, TimeSaver {
+public class Day11 extends ParallelSolution<List<String>> implements Helpers, TimeSaver {
+    public Day11(ExecutorService pool) {
+        super(pool);
+    }
+
     @Override
-    public Pair<Long, Long> apply(List<String> input) {
+    public Object solvePart1(List<String> input) {
         Facility facility1 = new Facility(readInput(input));
-        facility1.display();
+        if (debug())
+            facility1.display();
+        return findFewestStepsPQ(facility1, NOOP_PUBLISHER);
+    }
+
+    @Override
+    public Object solvePart2(List<String> input) {
+        enableFullSolve();
+        Facility facility1 = new Facility(readInput(input));
         final Map<String, Integer> copy = new TreeMap<>(facility1.floors);
         copy.putAll(Map.of("EG", 1, "EM", 1, "DG", 1, "DM", 1));
         Facility facility2 = new Facility(copy);
-        facility2.display();
+        if (debug())
+            facility2.display();
 
-        // part 2 takes 3-4 MINUTES!!
+        // part 2 takes approximately 1min
         if (isFullSolve()) {
             try (PuzzleProgress progress = new PuzzleProgress()) {
-                CompletableFuture<Long> fl1 = progress.start(
-                        "Day11 Part 1", 38, // PQ=211480
-                        (p) -> findFewestStepsBFS(facility1, p));
                 CompletableFuture<Long> fl2 = progress.start(
-                        "Day11 Part 2", 6221979,
+                        "Day11 Part 2", 2283674,
                         (p) -> findFewestStepsPQ(facility2, p));
 
-                long f1 = fl1.completeOnTimeout(-1L, 5, TimeUnit.SECONDS).get();
-                long f2 = fl2.completeOnTimeout(-1L, 5, TimeUnit.MINUTES).get();
-
-                return Pair.of(f1, f2);
+                return fl2.completeOnTimeout(-1L, 75, TimeUnit.SECONDS).get();
             }
             catch (Exception ex) {
                 throw new RuntimeException("Day11, 2016", ex);
             }
         }
         else
-            return Pair.of(findFewestStepsBFS(facility1, NOOP_PUBLISHER), 61L);
-    }
-
-    long findFewestStepsBFS(Facility facility, SubmissionPublisher<Integer> publisher) {
-        final Map<String, Integer> depthMap = new HashMap<>();
-        final long target = facility.targetScore();
-        final List<Facility> nodes = new ArrayList<>();
-        nodes.add(facility);
-        AtomicInteger searchDepth = new AtomicInteger(-1);
-
-        while (!nodes.isEmpty()) {
-            List<Facility> current = new ArrayList<>(nodes);
-            nodes.clear();
-            int depth = searchDepth.incrementAndGet();
-            publisher.offer(depth, null);
-            for (Facility next : current) {
-                String uuid = String.format("%d-%s", next.elevatorAt, next.floors);
-                if (depthMap.containsKey(uuid) && depthMap.get(uuid) <= depth)
-                    continue;
-                else
-                    depthMap.put(uuid, depth);
-
-                if (next.score() == target)
-                    return depth;
-                else
-                    nextMoves(next, nodes::add);
-            }
-        }
-
-        return -1;
+            return 61L;
     }
 
     long findFewestStepsPQ(Facility facility, SubmissionPublisher<Integer> publisher) {
         final Map<String, Integer> depthMap = new HashMap<>();
         final long target = facility.targetScore();
-        final PriorityQueue<Facility> queue = new PriorityQueue<>(
-                comparingInt(Facility::getSteps)
-                        .thenComparing(comparingLong(Facility::score).reversed()));
+        final PriorityQueue<Facility> queue = new PriorityQueue<>(comparingLong(Facility::score).reversed());
         queue.add(facility);
         AtomicInteger count = new AtomicInteger(0);
+        long fewestSteps = 62L; // just higher than part2 answer to improve performance
 
         while (!queue.isEmpty()) {
             publisher.offer(count.incrementAndGet(), null);
@@ -107,13 +83,13 @@ public class Day11 implements Function<List<String>, Pair<Long, Long>>, Helpers,
             else
                 depthMap.put(uuid, current.steps);
 
-            if (current.score() == target)
+            if (current.score() == target && fewestSteps > current.steps)
                 return current.steps;
             else
                 nextMoves(current, queue::add);
         }
 
-        return -1;
+        return fewestSteps;
     }
 
     void nextMoves(Facility facility, Consumer<Facility> consumer) {
