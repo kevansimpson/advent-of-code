@@ -1,35 +1,28 @@
 package org.base.advent.code2016;
 
-import org.apache.commons.lang3.tuple.Pair;
+import org.base.advent.ParallelSolution;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-
-import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 /**
  * <a href="https://adventofcode.com/2016/day/12">Day 12</a>
  */
-public class Day12 implements Function<List<String>, Pair<Integer, Integer>> {
-    @Override
-    public Pair<Integer, Integer> apply(List<String> input) {
-        try (ExecutorService pool = Executors.newFixedThreadPool(2)) {
-            CompletableFuture<Integer> f0 = supplyAsync(() -> operateAssembunnyCode(input, 0), pool);
-            CompletableFuture<Integer> f1 = supplyAsync(() -> operateAssembunnyCode(input, 1), pool);
-            int a0 = f0.completeOnTimeout(-1, 5, TimeUnit.SECONDS).get();
-            int a1 = f1.completeOnTimeout(-1, 5, TimeUnit.SECONDS).get();
+public class Day12 extends ParallelSolution<List<String>> {
+    public Day12(ExecutorService pool) {
+        super(pool);
+    }
 
-            return Pair.of(a0, a1);
-        }
-        catch (Exception ex) {
-            throw new RuntimeException("Day12, 2016", ex);
-        }
+    @Override
+    public Object solvePart1(List<String> input) {
+        return operateAssembunnyCode(input, 0);
+    }
+
+    @Override
+    public Object solvePart2(List<String> input) {
+        return operateAssembunnyCode(input, 1);
     }
 
     int operateAssembunnyCode(List<String> input, int initialC) {
