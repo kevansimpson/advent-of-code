@@ -6,21 +6,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.base.advent.Helpers;
 import org.base.advent.ParallelSolution;
 import org.base.advent.TimeSaver;
-import org.base.advent.util.PuzzleProgress;
+import org.base.advent.util.Node;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.SubmissionPublisher;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
+import static java.lang.Long.parseLong;
+import static java.lang.Long.toBinaryString;
 import static java.util.Comparator.comparingLong;
-import static org.base.advent.util.PuzzleProgress.NOOP_PUBLISHER;
+import static java.util.Comparator.naturalOrder;
+import static org.apache.commons.lang3.StringUtils.leftPad;
+import static org.apache.commons.lang3.StringUtils.rightPad;
+import static org.base.advent.util.Node.createRootNode;
 import static org.base.advent.util.Util.combinations;
 
 /**
@@ -36,12 +35,11 @@ public class Day11 extends ParallelSolution<List<String>> implements Helpers, Ti
         Facility facility1 = new Facility(readInput(input));
         if (debug())
             facility1.display();
-        return findFewestStepsPQ(facility1, NOOP_PUBLISHER);
+        return facility1.fewestSteps();
     }
 
     @Override
     public Object solvePart2(List<String> input) {
-        enableFullSolve();
         Facility facility1 = new Facility(readInput(input));
         final Map<String, Integer> copy = new TreeMap<>(facility1.floors);
         copy.putAll(Map.of("EG", 1, "EM", 1, "DG", 1, "DM", 1));
@@ -49,82 +47,7 @@ public class Day11 extends ParallelSolution<List<String>> implements Helpers, Ti
         if (debug())
             facility2.display();
 
-        // part 2 takes approximately 1min
-        if (isFullSolve()) {
-            try (PuzzleProgress progress = new PuzzleProgress()) {
-                CompletableFuture<Long> fl2 = progress.start(
-                        "Day11 Part 2", 2283674,
-                        (p) -> findFewestStepsPQ(facility2, p));
-
-                return fl2.completeOnTimeout(-1L, 75, TimeUnit.SECONDS).get();
-            }
-            catch (Exception ex) {
-                throw new RuntimeException("Day11, 2016", ex);
-            }
-        }
-        else
-            return 61L;
-    }
-
-    long findFewestStepsPQ(Facility facility, SubmissionPublisher<Integer> publisher) {
-        final Map<String, Integer> depthMap = new HashMap<>();
-        final long target = facility.targetScore();
-        final PriorityQueue<Facility> queue = new PriorityQueue<>(comparingLong(Facility::score).reversed());
-        queue.add(facility);
-        AtomicInteger count = new AtomicInteger(0);
-        long fewestSteps = 62L; // just higher than part2 answer to improve performance
-
-        while (!queue.isEmpty()) {
-            publisher.offer(count.incrementAndGet(), null);
-            Facility current = Objects.requireNonNull(queue.poll());
-            String uuid = String.format("%d-%s", current.elevatorAt, current.floors);
-            if (depthMap.containsKey(uuid) && depthMap.get(uuid) <= current.steps)
-                continue;
-            else
-                depthMap.put(uuid, current.steps);
-
-            if (current.score() == target && fewestSteps > current.steps)
-                return current.steps;
-            else
-                nextMoves(current, queue::add);
-        }
-
-        return fewestSteps;
-    }
-
-    void nextMoves(Facility facility, Consumer<Facility> consumer) {
-        List<String> currentFloor = facility.currentFloor();
-        int minFloor = facility.floors.values().stream().min(Integer::compareTo).orElseThrow();
-        List<List<String>> pairs = combinations(currentFloor, 2);
-        boolean movePairDown = true;
-        for (List<String> pair : pairs) {
-            Facility moveUp = facility.moveElevator(1, pair.get(0), pair.get(1));
-            if (moveUp.isValid(minFloor)) {
-                consumer.accept(moveUp);
-                movePairDown = false;
-            }
-        }
-
-        for (String gm : currentFloor) {
-            Facility moveUp = facility.moveElevator(1, gm);
-            if (moveUp.isValid(minFloor)) {
-                consumer.accept(moveUp);
-                movePairDown = false;
-            }
-            Facility moveDown = facility.moveElevator(-1, gm);
-            if (moveDown.isValid(minFloor)) {
-                consumer.accept(moveDown);
-                movePairDown = false;
-            }
-        }
-
-        if (movePairDown)
-            for (List<String> pair : pairs) {
-                Facility moveDown = facility.moveElevator(-1, pair.get(0), pair.get(1));
-                if (moveDown.isValid(minFloor)) {
-                    consumer.accept(moveDown);
-                }
-            }
+        return facility2.fewestSteps();
     }
 
     private static final Pattern CHIP_RE = Pattern.compile("\\b(\\w+)\\b-compatible microchip");
@@ -132,9 +55,14 @@ public class Day11 extends ParallelSolution<List<String>> implements Helpers, Ti
 
     @AllArgsConstructor
     private static class Facility {
+        private static final Long fewestSteps = 62L; // just higher than part2 answer to improve performance
+
         private final Map<String, Integer> floors;
         private final List<String> rtgChipList;
-        private final int size;
+        private final long size;
+        private final long maxSize;
+        private final int sizeInt;
+        private final int maxSizeInt;
         private int elevatorAt;
         @Getter
         private int steps;
@@ -146,25 +74,90 @@ public class Day11 extends ParallelSolution<List<String>> implements Helpers, Ti
         public Facility(final Map<String, Integer> f, final int elAt, final int s) {
             floors = f;
             rtgChipList = new ArrayList<>(floors.keySet());
+            rtgChipList.sort(naturalOrder());
             size = rtgChipList.size();
+            sizeInt = (int) size;
+            maxSize = size * 4L;
+            maxSizeInt = (int) maxSize;
             elevatorAt = elAt;
             steps = s;
         }
 
-        Facility moveElevator(int floorChange, String... inElevator) {
-            final Map<String, Integer> copy = new TreeMap<>(floors);
-            for (String gm : inElevator) {
-                int floor = copy.remove(gm);
-                copy.put(gm, floor + floorChange);
+        long fewestSteps() {
+            Map<Long, Long> visited = new HashMap<>();
+            long target = targetScore();
+            long[] twos = generateTwos();
+            long[] elevatorScores = elevatorScores();
+            PriorityQueue<Node<Long>> queue = new PriorityQueue<>(
+                    comparingLong(n -> ((long) ((Node<?>) n).getData())).reversed());
+            queue.add(createRootNode(score()));
+
+            while (!queue.isEmpty()) {
+                Node<Long> node = queue.poll();
+                long score = node.getData();
+                if (!visited.containsKey(score) || node.getDepth() < visited.get(score)) {
+                    visited.put(score, node.getDepth());
+                    if (score == target) {
+                        if (node.getDepth() - 1 < fewestSteps)
+                            return node.getDepth() - 1;
+                    }
+
+                    int elevator = (int) (score >> maxSize);
+                    long allFloors = score - elevatorScores[elevator];
+                    String allFloorsBin = leftPad(toBinaryString(allFloors), maxSizeInt, '0');
+                    int start = (4 - elevator) * sizeInt, end = start + sizeInt;
+                    List<Long> currentFloor = new ArrayList<>();
+                    for (int i = start; i < end; i++)
+                        if (allFloorsBin.charAt(i) == '1')
+                            currentFloor.add(twos[i]);
+
+                    boolean movePairDown = true;
+                    List<List<Long>> pairs = combinations(currentFloor, 2);
+                    if (elevator < 4) {
+                        // move pair up
+                        for (List<Long> pair : pairs) {
+                            long sum = pair.get(0) + pair.get(1);
+                            long upScore = allFloors - sum + (sum << size);
+                            if (isValid(upScore)) {
+                                queue.add(node.addChild(upScore + elevatorScores[elevator + 1]));
+                                movePairDown = false;
+                            }
+                        }
+
+                        // move single up
+                        for (long gc : currentFloor) {
+                            long upScore = allFloors - gc + (gc << size);
+                            if (isValid(upScore)) {
+                                queue.add(node.addChild(upScore + elevatorScores[elevator + 1]));
+                                movePairDown = false;
+                            }
+                        }
+                    }
+
+                    if (elevator > 1) {
+                        // move single down
+                        for (long gc : currentFloor) {
+                            long downScore = allFloors - gc + (gc >> size);
+                            if (isValid(downScore)) {
+                                queue.add(node.addChild(downScore + elevatorScores[elevator - 1]));
+                                movePairDown = false;
+                            }
+                        }
+
+                        if (movePairDown) {
+                            for (List<Long> pair : pairs) {
+                                long sum = pair.get(0) + pair.get(1);
+                                long downScore = allFloors - sum + (sum >> size);
+                                if (isValid(downScore)) {
+                                    queue.add(node.addChild(downScore + elevatorScores[elevator - 1]));
+                                }
+                            }
+
+                        }
+                    }
+                }
             }
-
-            return new Facility(copy, elevatorAt + floorChange, steps + 1);
-        }
-
-        List<String> currentFloor() {
-            return floors.entrySet().stream()
-                    .collect(Collectors.groupingBy(Map.Entry::getValue))
-                    .get(elevatorAt).stream().map(Map.Entry::getKey).toList();
+            return -1L;
         }
 
         void display() {
@@ -178,42 +171,56 @@ public class Day11 extends ParallelSolution<List<String>> implements Helpers, Ti
             System.out.println();
         }
 
-        boolean isValid(int minFloor) {
-            if (minFloor < 1 || elevatorAt > 4 || elevatorAt < minFloor)
-                return false;
+        boolean isValid(long score) {
+            return isValid(leftPad(toBinaryString(score), maxSizeInt, '0'));
+        }
 
-            int[] rtgByFloor = new int[] {0,0,0,0};
-            for (int i = 0; i < size; i += 2) {
-                rtgByFloor[floors.get(rtgChipList.get(i)) - 1] += 1;
-            }
-
-            for (int i = 1; i < size; i += 2) {
-                String chip = rtgChipList.get(i);
-                int chipOnFloor = floors.get(chip);
-                if (chipOnFloor != floors.get(chip.charAt(0) + "G") && rtgByFloor[chipOnFloor - 1] > 0) {
-                    return false;
+        boolean isValid(String facility) {
+            for (int f = 0; f < 4; f++) {
+                String floor = facility.substring(f * sizeInt, (f + 1) * sizeInt);
+                int gens = 0, unprotectedChips = 0;
+                for (int i = 0; i < floor.length(); i += 2) {
+                    if (floor.charAt(i) == '1')
+                        gens++;
+                    else if (floor.charAt(i + 1) == '1')
+                        unprotectedChips++;
                 }
+                if (unprotectedChips > 0 && gens > 0)
+                    return false;
             }
-
             return true;
         }
 
-        public long score() {
-            int[][] scores = new int[][]{{0,0,0,0}, {0,0,0,0}};
-            int ix = 0;
-            for (int floor : floors.values()) {
-                scores[ix++ % 2][floor - 1] += 1;
+        // score is binary representation of floors,
+        // concatenated from 4th to 1st and prefixed by elevator
+        long score() {
+            StringBuilder score = new StringBuilder().append(toBinaryString(elevatorAt));
+            for (int floor = 4; floor >= 1; floor--) {
+                for (String gc : rtgChipList)
+                    score.append((floor == floors.get(gc) ? 1 : 0));
             }
-            return Long.parseLong(String.format("%d%d%d%d%d%d%d%d%d", elevatorAt,
-                    scores[0][3], scores[1][3], scores[0][2], scores[1][2],
-                    scores[0][1], scores[1][1], scores[0][0], scores[1][0]));
+            return parseLong(score.toString(), 2);
         }
 
-        // score is number of rtg/chip per floor, concatenated in pairs,
-        // then all together, before parsing to Long
         long targetScore() {
-            final int half = size / 2;
-            return Long.parseLong(String.format("4%d%d000000", half, half));
+            String full4thFloor = rightPad(leftPad("", sizeInt, '1'), maxSizeInt, '0');
+            return parseLong(String.format("0100%s", full4thFloor), 2);
+        }
+
+        long[] generateTwos() {
+            long[] twos = new long[maxSizeInt];
+            twos[maxSizeInt - 1] = 1L;
+            for (int i = maxSizeInt - 2; i >= 0; i--)
+                twos[i] = 2L * twos[i + 1];
+            return twos;
+        }
+
+        long[] elevatorScores() {
+            long[] scores = new long[5];
+            for (long i = 0L; i < 5L; i += 1L) {
+                scores[(int) i] = i << maxSize;
+            }
+            return scores;
         }
     }
 
