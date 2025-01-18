@@ -135,8 +135,8 @@ public class Solutions2016UnitTests extends PuzzleTester {
 
     @Test
     public void verifyDay21() {
-        testSolutions(new Day21(), readLines("/2016/input21.txt"),
-                "dgfaehcb", Pair::getLeft, "fdhgacbe", Pair::getRight);
+        testParallelSolutions(new Day21(pool), readLines("/2016/input21.txt"),
+                "dgfaehcb", "fdhgacbe");
     }
 
     @Test

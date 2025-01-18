@@ -1,11 +1,11 @@
 package org.base.advent.code2016;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
+import org.base.advent.ParallelSolution;
 import org.base.advent.util.PermIterator;
 
 import java.util.List;
-import java.util.function.Function;
+import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 import static java.lang.Integer.*;
@@ -15,10 +15,19 @@ import static org.base.advent.util.Text.rotateRight;
 /**
  * <a href="https://adventofcode.com/2016/day/21">Day 21</a>
  */
-public class Day21 implements Function<List<String>, Pair<String, String>> {
+public class Day21 extends ParallelSolution<List<String>> {
+    public Day21(ExecutorService pool) {
+        super(pool);
+    }
+
     @Override
-    public Pair<String, String> apply(List<String> input) {
-        return Pair.of(unscramble("abcdefgh", input), reverseScramble(input));
+    public Object solvePart1(List<String> input) {
+        return unscramble("abcdefgh", input);
+    }
+
+    @Override
+    public Object solvePart2(List<String> input) {
+        return reverseScramble(input);
     }
 
     String reverseScramble(List<String> input) {
