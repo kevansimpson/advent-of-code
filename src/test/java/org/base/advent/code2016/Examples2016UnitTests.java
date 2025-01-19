@@ -2,11 +2,13 @@ package org.base.advent.code2016;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.PuzzleTester;
+import org.base.advent.code2016.Day12.MonorailComputer;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static java.util.Collections.emptyMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -36,5 +38,13 @@ public class Examples2016UnitTests extends PuzzleTester {
                 "DDUDRLRRUDRD", Pair::getLeft, 492, Pair::getRight);
         testSolutions(new Day17(), "ulqzkmiv",
                 "DRURDRUDDLLDLUURRDULRLDUUDDDRR", Pair::getLeft, 830, Pair::getRight);
+    }
+
+    @Test
+    public void testDay23Examples() {
+        MonorailComputer computer = new MonorailComputer(List.of(
+                "cpy 2 a", "tgl a", "tgl a", "tgl a", "cpy 1 a", "dec a", "dec a"
+        ), emptyMap());
+        assertEquals(3, computer.operateAssembunnyCode());
     }
 }
