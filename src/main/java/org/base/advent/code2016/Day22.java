@@ -24,16 +24,12 @@ public class Day22 extends ParallelSolution<List<String>> {
 
     @Override
     public Object solvePart1(List<String> input) {
-        List<StorageNode> nodeList = input.subList(2, input.size()).stream()
-                .map(Text::extractInt).map(StorageNode::new).toList();
-        return countViable(nodeList);
+        return countViable(toNodeList(input));
     }
 
     @Override
     public Object solvePart2(List<String> input) {
-        List<StorageNode> nodeList = input.subList(2, input.size()).stream()
-                .map(Text::extractInt).map(StorageNode::new).toList();
-        NodeMap nodeMap = new NodeMap(nodeList.stream()
+        NodeMap nodeMap = new NodeMap(toNodeList(input).stream()
                 .collect(Collectors.toMap(StorageNode::getPosition, Function.identity())));
         if (debug())
             nodeMap.display();
@@ -59,21 +55,18 @@ public class Day22 extends ParallelSolution<List<String>> {
     }
 
     int countSteps(NodeMap nodeMap, Point start, Point target, int steps, Set<Point> visited) {
-//        System.out.printf("counting from %s => %s @ %d steps%n", start, target, steps);
         if (start.equals(target))
             return steps;
         else
             visited.add(start);
 
         StorageNode current = nodeMap.get(start);
-//        System.out.println("\nCURRENT = "+ current);
         List<Point> moves = nodeMap.moves(start);
         moves.sort(DIST.apply(target));
         for (Point next : moves) {
             if (visited.contains(next) || next.equals(nodeMap.goal))
                 continue;
             StorageNode node = nodeMap.get(next);
-//            System.out.println("NEXT = "+ node);
             current.move(node);
             int path = countSteps(nodeMap, next, target, steps + 1, visited);
             if (path > 0)
@@ -103,6 +96,10 @@ public class Day22 extends ParallelSolution<List<String>> {
 
     boolean isViable(StorageNode nodeA, StorageNode nodeB) {
         return !nodeA.equals(nodeB) && nodeA.used > 0 && nodeA.used <= nodeB.available;
+    }
+
+    List<StorageNode> toNodeList(List<String> input) {
+        return input.subList(2, input.size()).stream().map(Text::extractInt).map(StorageNode::new).toList();
     }
 
     @ToString
