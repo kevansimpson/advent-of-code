@@ -1,6 +1,5 @@
 package org.base.advent.code2024;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.Helpers;
 import org.base.advent.util.Node;
@@ -28,7 +27,8 @@ public class Day16 implements Function<List<String>, Pair<Integer, Integer>>, He
         Map<DirPoint, Integer> visited = new HashMap<>();
         DirPoint begin = new DirPoint(Dir.Right, maze.start);
         visited.put(begin, 0);
-        LinkedList<ScoredPath> paths = new LinkedList<>();
+        PriorityQueue<ScoredPath> paths =
+                new PriorityQueue<>(Comparator.comparingInt(ScoredPath::score));
 
         paths.add(new ScoredPath(Node.createRootNode(begin), 0));
         int minScore = Integer.MAX_VALUE;
@@ -39,7 +39,8 @@ public class Day16 implements Function<List<String>, Pair<Integer, Integer>>, He
             int score = path.score();
             DirPoint data = node.getData();
             // only proceed if not visited or this path has a lower score
-            if (!visited.containsKey(data) || score <= visited.get(data)) {
+            Integer existingScore = visited.get(data);
+            if (existingScore == null || score <= existingScore) {
                 visited.put(data, score);
 
                 if (data.pos().equals(maze.end)) {
@@ -59,12 +60,12 @@ public class Day16 implements Function<List<String>, Pair<Integer, Integer>>, He
                         paths.add(new ScoredPath(node.addChild(forward), score + 1));
                     }
                     // turns
-                    DirPoint left = new DirPoint(data.dir().turnLeft(), data.pos());
-                    if (canTurn(left, maze, visited, score))
-                        paths.add(new ScoredPath(node.addChild(left), score + 1000));
-                    DirPoint right = new DirPoint(data.dir().turnRight(), data.pos());
-                    if (canTurn(right, maze, visited, score))
-                        paths.add(new ScoredPath(node.addChild(right), score + 1000));
+                    for (Dir newDir : List.of(data.dir().turnLeft(), data.dir().turnRight())) {
+                        DirPoint rotated = new DirPoint(newDir, data.pos());
+                        if (canTurn(rotated, maze, visited, score)) {
+                            paths.offer(new ScoredPath(node.addChild(rotated), score + 1000));
+                        }
+                    }
                 }
             }
         }
@@ -81,9 +82,9 @@ public class Day16 implements Function<List<String>, Pair<Integer, Integer>>, He
     }
 
     int placesToSit(List<Node<DirPoint>> solutionList) {
-        Collection<Point> seats = getSeats(solutionList.get(0));
+        Set<Point> seats = new HashSet<>(getSeats(solutionList.get(0)));
         for (int i = 1; i < solutionList.size(); i++) {
-            seats = CollectionUtils.union(seats, getSeats(solutionList.get(i)));
+            seats.addAll(getSeats(solutionList.get(i)));
         }
 
         return seats.size();
