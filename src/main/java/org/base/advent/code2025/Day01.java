@@ -18,7 +18,8 @@ public class Day01 implements Function<List<String>, Pair<Integer, Integer>> {
             String turn = instr.substring(0, 1);
             int clicks = parseInt(instr.substring(1));
             int dir = "L".equals(turn) ? -1 : 1;
-            for (int i = 0; i < clicks; i++) {
+            passesZero += clicks / 100;
+            for (int i = 0; i < clicks % 100; i++) {
                 dial += dir;
                 if (dial == 100) dial = 0;
                 else if (dial == -1) dial = 99;
