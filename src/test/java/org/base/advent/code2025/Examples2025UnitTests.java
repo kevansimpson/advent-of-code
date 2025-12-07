@@ -28,8 +28,17 @@ public class Examples2025UnitTests extends PuzzleTester {
                 "L99",
                 "R14",
                 "L82");
-        testSolutions(new Day01(), testData,
-                3, Pair::getLeft,
-                6, Pair::getRight);
+        testSolutions(new Day01(), testData, 3, Pair::getLeft, 6, Pair::getRight);
+    }
+
+    @Test
+    public void testDay02Examples() {
+        final String testData =
+                "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,"
+                + "1698522-1698528,446443-446449,38593856-38593862,565653-565659,"
+                + "824824821-824824827,2121212118-2121212124";
+        testSolutions(new Day02(), testData,
+                1227775554L, Pair::getLeft,
+                4174379265L, Pair::getRight);
     }
 }

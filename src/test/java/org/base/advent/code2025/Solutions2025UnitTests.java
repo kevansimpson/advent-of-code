@@ -2,12 +2,10 @@ package org.base.advent.code2025;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.base.advent.PuzzleTester;
-import org.base.advent.code2024.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,6 +21,13 @@ public class Solutions2025UnitTests extends PuzzleTester {
         testSolutions(new Day01(), readLines("/2025/input01.txt"),
                 1177, Pair::getLeft,
                 6768, Pair::getRight);
+    }
+
+    @Test
+    public void verifyDay02() {
+        testSolutions(new Day02(), readInput("/2025/input02.txt"),
+                54234399924L, Pair::getLeft,
+                70187097315L, Pair::getRight);
     }
 
     @BeforeAll
