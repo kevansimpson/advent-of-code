@@ -33,7 +33,14 @@ public class Solutions2025UnitTests extends PuzzleTester {
     public void verifyDay03() {
         testSolutions(new Day03(), readLines("/2025/input03.txt"),
                 17100L, Pair::getLeft,
-                170418192256861L, Pair::getRight); // TBD
+                170418192256861L, Pair::getRight);
+    }
+
+    @Test
+    public void verifyDay04() {
+        testSolutions(new Day04(), readLines("/2025/input04.txt"),
+                1351, Pair::getLeft,
+                8345, Pair::getRight);
     }
 
     @BeforeAll

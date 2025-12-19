@@ -53,4 +53,22 @@ public class Examples2025UnitTests extends PuzzleTester {
                 357L, Pair::getLeft,
                 3121910778619L, Pair::getRight);
     }
+
+    @Test
+    public void testDay04Examples() {
+        final List<String> testData = Arrays.asList(
+                "..@@.@@@@.",
+                "@@@.@.@.@@",
+                "@@@@@.@.@@",
+                "@.@@@@..@.",
+                "@@.@@@@.@@",
+                ".@@@@@@@.@",
+                ".@.@.@.@@@",
+                "@.@@@.@@@@",
+                ".@@@@@@@@.",
+                "@.@.@@@.@.");
+        testSolutions(new Day04(), testData,
+                13, Pair::getLeft,
+                43, Pair::getRight);
+    }
 }
