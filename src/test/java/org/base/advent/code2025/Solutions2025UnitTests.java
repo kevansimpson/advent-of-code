@@ -15,7 +15,6 @@ import java.util.concurrent.Executors;
 public class Solutions2025UnitTests extends PuzzleTester {
     private static final ExecutorService pool = Executors.newFixedThreadPool(20);
 
-
     @Test
     public void verifyDay01() {
         testSolutions(new Day01(), readLines("/2025/input01.txt"),
@@ -28,6 +27,13 @@ public class Solutions2025UnitTests extends PuzzleTester {
         testSolutions(new Day02(), readInput("/2025/input02.txt"),
                 54234399924L, Pair::getLeft,
                 70187097315L, Pair::getRight);
+    }
+
+    @Test
+    public void verifyDay03() {
+        testSolutions(new Day03(), readLines("/2025/input03.txt"),
+                17100L, Pair::getLeft,
+                170418192256861L, Pair::getRight); // TBD
     }
 
     @BeforeAll

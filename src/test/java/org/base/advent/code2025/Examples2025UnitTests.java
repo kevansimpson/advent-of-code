@@ -41,4 +41,16 @@ public class Examples2025UnitTests extends PuzzleTester {
                 1227775554L, Pair::getLeft,
                 4174379265L, Pair::getRight);
     }
+
+    @Test
+    public void testDay03Examples() {
+        final List<String> testData = Arrays.asList(
+                "987654321111111",
+                "811111111111119",
+                "234234234234278",
+                "818181911112111");
+        testSolutions(new Day03(), testData,
+                357L, Pair::getLeft,
+                3121910778619L, Pair::getRight);
+    }
 }
