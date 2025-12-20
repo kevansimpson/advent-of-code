@@ -50,6 +50,13 @@ public class Solutions2025UnitTests extends PuzzleTester {
                 352556672963116L, Pair::getRight);
     }
 
+
+    @Test
+    public void verifyDay06() {
+        testParallelSolutions(new Day06(pool), readLines("/2025/input06.txt"),
+                6757749566978L, 10603075273949L);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2025);

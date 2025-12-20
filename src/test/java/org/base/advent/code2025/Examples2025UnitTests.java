@@ -75,19 +75,21 @@ public class Examples2025UnitTests extends PuzzleTester {
     @Test
     public void testDay05Examples() {
         final List<String> testData = Arrays.asList(
-                "3-5",
-                "10-14",
-                "16-20",
-                "12-18",
+                "3-5", "10-14", "16-20", "12-18",
                 "",
-                "1",
-                "5",
-                "8",
-                "11",
-                "17",
-                "32");
+                "1", "5", "8", "11", "17", "32");
         testSolutions(new Day05(), testData,
                 3, Pair::getLeft,
                 14L, Pair::getRight);
+    }
+
+    @Test
+    public void testDay06Examples() {
+        final List<String> testData = Arrays.asList(
+                "123 328  51 64 ",
+                " 45 64  387 23 ",
+                "  6 98  215 314",
+                "*   +   *   +  ");
+        testParallelSolutions(new Day06(pool), testData, 4277556L, 3263827L);
     }
 }
