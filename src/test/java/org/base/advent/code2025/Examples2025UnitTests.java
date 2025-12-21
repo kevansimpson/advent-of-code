@@ -92,4 +92,26 @@ public class Examples2025UnitTests extends PuzzleTester {
                 "*   +   *   +  ");
         testParallelSolutions(new Day06(pool), testData, 4277556L, 3263827L);
     }
+
+    @Test
+    public void testDay07Examples() {
+        final List<String> testData = Arrays.asList(
+                ".......S.......",
+                "...............",
+                ".......^.......",
+                "...............",
+                "......^.^......",
+                "...............",
+                ".....^.^.^.....",
+                "...............",
+                "....^.^...^....",
+                "...............",
+                "...^.^...^.^...",
+                "...............",
+                "..^...^.....^..",
+                "...............",
+                ".^.^.^.^.^...^.",
+                "...............");
+        testParallelSolutions(new Day07(pool), testData, 21, 40);
+    }
 }
