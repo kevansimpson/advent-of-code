@@ -112,6 +112,6 @@ public class Examples2025UnitTests extends PuzzleTester {
                 "...............",
                 ".^.^.^.^.^...^.",
                 "...............");
-        testParallelSolutions(new Day07(pool), testData, 21, 40);
+        testParallelSolutions(new Day07(pool), testData, 21, 40L);
     }
 }

@@ -59,7 +59,7 @@ public class Solutions2025UnitTests extends PuzzleTester {
     @Test
     public void verifyDay07() {
         testParallelSolutions(new Day07(pool), readLines("/2025/input07.txt"),
-                1553, 87);
+                1553, 15811946526915L);
     }
 
     @BeforeAll
