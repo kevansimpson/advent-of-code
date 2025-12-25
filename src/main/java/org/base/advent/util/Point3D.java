@@ -2,19 +2,22 @@ package org.base.advent.util;
 
 import lombok.EqualsAndHashCode;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.lang.Math.*;
 
 @EqualsAndHashCode
 public class Point3D {
     public static final Point3D ORIGIN = new Point3D(0, 0, 0);
     public static final BiFunction<Point3D, Point3D, Long> MANHATTAN_DISTANCE =
-            (a, b) -> Math.abs(b.x - a.x) + Math.abs(b.y - a.y) + Math.abs(b.z - a.z);
+            (a, b) -> abs(b.x - a.x) + abs(b.y - a.y) + abs(b.z - a.z);
+    public static final BiFunction<Point3D, Point3D, Double> EUCLIDEAN_DISTANCE =
+            (a, b) -> sqrt(
+                    pow(abs(b.x - a.x), 2) + pow(abs(b.y - a.y), 2) + pow(abs(b.z - a.z), 2));
 
     public final long x;
     public final long y;
@@ -43,6 +46,10 @@ public class Point3D {
                 move(-1, 0, 0), move(1, 0, 0),
                 move(0, -1, 0), move(0, 1, 0),
                 move(0, 0, -1), move(0, 0, 1)));
+    }
+
+    public double euclideanDistance(Point3D pt) {
+        return EUCLIDEAN_DISTANCE.apply(this, pt);
     }
 
     public long manhattanDistance() {
