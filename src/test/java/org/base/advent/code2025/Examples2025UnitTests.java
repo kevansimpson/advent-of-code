@@ -132,7 +132,7 @@ public class Examples2025UnitTests extends PuzzleTester {
         final List<String> testData = Arrays.asList(
                 "7,1", "11,1", "11,7", "9,7",
                 "9,5", "2,5", "2,3", "7,3");
-        testSolutions(new Day09(), testData,
+        testSolutions(new Day09(2), testData,
                 50L, Pair::getLeft,
                 24L, Pair::getRight);
     }

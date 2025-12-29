@@ -41,6 +41,12 @@ public class Day09 implements Function<List<String>, Pair<Long, Long>> {
         }
     }
 
+    private int heuristicDivisor;
+
+    public Day09(int heuristicDivisor) {
+        this.heuristicDivisor = heuristicDivisor;
+    }
+
     @Override
     public Pair<Long, Long> apply(List<String> input) {
         List<Point> points = input.stream().map(Point::point).toList();
@@ -68,7 +74,7 @@ public class Day09 implements Function<List<String>, Pair<Long, Long>> {
         // Calculate polygon dimensions
         long polyWidth = polyMaxX - polyMinX;
         long polyHeight = polyMaxY - polyMinY;
-        long maxReasonableArea = polyWidth * polyHeight / 5;  // Heuristic
+        long maxReasonableArea = polyWidth * polyHeight / heuristicDivisor;  // Heuristic
 
         long part2 = 0;
         outer: while (!queue.isEmpty()) {
