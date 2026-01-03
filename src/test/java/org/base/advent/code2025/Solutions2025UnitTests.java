@@ -83,6 +83,13 @@ public class Solutions2025UnitTests extends PuzzleTester {
                 14677L, Pair::getRight);
     }
 
+    @Test
+    public void verifyDay11() {
+        testSolutions(new Day11(pool), readLines("/2025/input11.txt"),
+                574, Pair::getLeft,
+                306594217920240L, Pair::getRight);
+    }
+
     @BeforeAll
     public static void start() {
         banner(2025);

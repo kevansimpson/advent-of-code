@@ -147,4 +147,35 @@ public class Examples2025UnitTests extends PuzzleTester {
                 7, Pair::getLeft,
                 33L, Pair::getRight);
     }
+
+    @Test
+    public void testDay11Examples() {
+        final List<String> testData1 = Arrays.asList(
+                "aaa: you hhh",
+                "you: bbb ccc",
+                "bbb: ddd eee",
+                "ccc: ddd eee fff",
+                "ddd: ggg",
+                "eee: out",
+                "fff: out",
+                "ggg: out",
+                "hhh: ccc fff iii",
+                "iii: out");
+        testSolutions(new Day11(pool), testData1, 5, Pair::getLeft, 0L, Pair::getRight);
+        final List<String> testData2 = Arrays.asList(
+                "svr: aaa bbb",
+                "aaa: fft",
+                "fft: ccc",
+                "bbb: tty",
+                "tty: ccc",
+                "ccc: ddd eee",
+                "ddd: hub",
+                "hub: fff",
+                "eee: dac",
+                "dac: fff",
+                "fff: ggg hhh",
+                "ggg: out",
+                "hhh: out");
+        testSolutions(new Day11(pool), testData2, 0, Pair::getLeft, 2L, Pair::getRight);
+    }
 }
